@@ -111,9 +111,9 @@
                 <executions>
                     <execution>
                         <configuration>
-                            <mainClass>uk.co.danielrendall.fractdim.app.FractDim</mainClass>
+                            <mainClass>uk.co.danielrendall.imagetiler.image.ImageTiler</mainClass>
                             <onejarVersion>0.96</onejarVersion>
-                            <filename>FractDim.jar</filename>
+                            <filename>ImageTiler.jar</filename>
                         </configuration>
                         <goals>
                             <goal>one-jar</goal>
