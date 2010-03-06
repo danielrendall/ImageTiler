@@ -24,6 +24,9 @@ public class ImageTiler {
     @Option(name = "-o", usage = "the output file", required = true)
     private File outputFile;
 
+    @Option(name = "-t", usage = "tile type", required = false)
+    private String type = "Simple";
+
     public static void main(String[] args) {
         new ImageTiler().doMain(args);
     }
@@ -51,7 +54,8 @@ public class ImageTiler {
     }
 
     private void process() {
-        ImageTile imageTile = new GemImageTile();
+        try {
+        ImageTile imageTile = (ImageTile) Class.forName("uk.co.danielrendall.imagetiler.image." + type + "ImageTile").newInstance();
 //        imageTile.initialize(args);
         final int tileWidth = imageTile.getWidth();
         final int tileHeight = imageTile.getHeight();
@@ -86,6 +90,9 @@ public class ImageTiler {
                 System.out.println("Couldn't read image");
             }
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
