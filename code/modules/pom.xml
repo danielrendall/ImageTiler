@@ -111,7 +111,7 @@
                 <executions>
                     <execution>
                         <configuration>
-                            <mainClass>uk.co.danielrendall.imagetiler.image.ImageTiler</mainClass>
+                            <mainClass>uk.co.danielrendall.imagetiler.App</mainClass>
                             <onejarVersion>0.96</onejarVersion>
                             <filename>ImageTiler.jar</filename>
                         </configuration>
