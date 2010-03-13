@@ -5,6 +5,8 @@ import org.apache.batik.transcoder.TranscoderException;
 import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.svg2svg.SVGTranscoder;
+import org.apache.log4j.Logger;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -17,6 +19,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 
+
 /**
  * Created by IntelliJ IDEA.
  * User: daniel
@@ -25,6 +28,8 @@ import java.io.Writer;
  * To change this template use File | Settings | File Templates.
  */
 public class SVGTiler {
+
+    public final static Logger log = Logger.getLogger(SVGTiler.class);
 
     private final File inputFile;
     private final File outputFile;
@@ -68,11 +73,11 @@ public class SVGTiler {
                     Element outerGroup = createElement("g");
 
                     final Raster raster = input.getRaster();
-                    System.out.println("There are " + raster.getNumBands() + " bands");
+                    log.debug("There are " + raster.getNumBands() + " bands");
                     for (int y=0; y < height; y++) {
                         for (int x=0; x < width; x++) {
                             int pixel[] = new int[4];
-                            System.out.println("Getting x=" + x + " y=" + y);
+                            log.debug("Getting x=" + x + " y=" + y);
                             raster.getPixel(x,y,pixel);
                             Color color = new Color(pixel[0], pixel[1], pixel[2]);
 
@@ -102,7 +107,7 @@ public class SVGTiler {
                     writer.flush();
                     writer.close();
                 } else {
-                    System.out.println("Couldn't read image");
+                    log.debug("Couldn't read image");
                 }
             } catch (IOException e) {
                  e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
