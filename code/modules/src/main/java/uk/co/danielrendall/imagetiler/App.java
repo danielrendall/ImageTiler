@@ -32,6 +32,9 @@ public class App {
     @Option(name = "-t", usage = "tile type", required = false)
     private String type = "Simple";
 
+    @Option(name = "-s", usage = "scan strategy", required = false)
+    private String strategy = "Grid";
+
     public static void main(String[] args) {
         new App().doMain(args);
     }
@@ -45,9 +48,9 @@ public class App {
             // parse the arguments.
             parser.parseArgument(args);
             if ("image".equalsIgnoreCase(outputFormat)) {
-                new ImageTiler(inputFile, outputFile, type).process();
+                new ImageTiler(inputFile, outputFile, type, strategy).process();
             } else {
-                new SVGTiler(inputFile, outputFile, type).process();
+                new SVGTiler(inputFile, outputFile, type, strategy).process();
             }
 
         } catch (CmdLineException e) {

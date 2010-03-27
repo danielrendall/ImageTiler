@@ -9,6 +9,8 @@ import org.apache.log4j.Logger;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import uk.co.danielrendall.imagetiler.ScannerStrategy;
+import uk.co.danielrendall.imagetiler.ScannerStrategyFactory;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -34,21 +36,23 @@ public class SVGTiler {
     private final File inputFile;
     private final File outputFile;
     private final String type;
+    private final String strategy;
     private Document document;
 
     private static double SCALE = 10.0;
 
-    public SVGTiler(File inputFile, File outputFile, String type) {
+    public SVGTiler(File inputFile, File outputFile, String type, String strategy) {
         this.inputFile = inputFile;
         this.outputFile = outputFile;
         this.type = type;
+        this.strategy = strategy;
     }
 
 
     public void process() {
         try {
             SVGTile svgTile = (SVGTile) Class.forName("uk.co.danielrendall.imagetiler.svg." + type + "SVGTile").newInstance();
-
+            ScannerStrategyFactory factory = new ScannerStrategyFactory(strategy);
     
 //            svgTile.initialize(args);
 
@@ -74,27 +78,28 @@ public class SVGTiler {
 
                     final Raster raster = input.getRaster();
                     log.debug("There are " + raster.getNumBands() + " bands");
-                    for (int y=0; y < height; y++) {
-                        for (int x=0; x < width; x++) {
-                            int pixel[] = new int[4];
-                            log.debug("Getting x=" + x + " y=" + y);
-                            raster.getPixel(x,y,pixel);
-                            Color color = new Color(pixel[0], pixel[1], pixel[2]);
+                    ScannerStrategy scannerStrategy = factory.createStrategy(0, width, 0, height);
+                    for (Pixel p = scannerStrategy.next(); scannerStrategy.hasNext(); p = scannerStrategy.next()) {
+                        int x = p.getX();
+                        int y = p.getY();
+                        int pixel[] = new int[4];
+                        log.debug("Getting x=" + x + " y=" + y);
+                        raster.getPixel(x,y,pixel);
+                        Color color = new Color(pixel[0], pixel[1], pixel[2]);
 
-                            double left = SCALE * ((double) x  - (width/(double)2.0));
-                            double top = SCALE * ((double) y  - (height/(double)2.0));
-                            double right = left + SCALE;
-                            double bottom = top + SCALE;
+                        double left = SCALE * ((double) x  - (width/(double)2.0));
+                        double top = SCALE * ((double) y  - (height/(double)2.0));
+                        double right = left + SCALE;
+                        double bottom = top + SCALE;
 
-                            Element group = createElement("g");
-                            //group.setAttributeNS(null, "transform","translate(100,100)");
-                            if (svgTile.getTile(group, new TileContext(left, right, top, bottom, color, this))) {
-                                outerGroup.appendChild(group);
-                            } else {
-                                System.err.println("Skipping tile at x=" + x + " y=" + y);
-                            }
-
+                        Element group = createElement("g");
+                        //group.setAttributeNS(null, "transform","translate(100,100)");
+                        if (svgTile.getTile(group, new TileContext(left, right, top, bottom, color, this))) {
+                            outerGroup.appendChild(group);
+                        } else {
+                            log.debug("Skipping tile at x=" + x + " y=" + y);
                         }
+
                     }
                     outerGroup.setAttributeNS(null, "transform","translate(" + (svgWidth/(double)2.0) + "," + (svgHeight/(double)2.0) + ")");
                     root.appendChild(outerGroup);

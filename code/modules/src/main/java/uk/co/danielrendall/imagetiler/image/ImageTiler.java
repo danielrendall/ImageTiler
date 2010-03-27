@@ -3,6 +3,9 @@ package uk.co.danielrendall.imagetiler.image;
 import org.kohsuke.args4j.Option;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.CmdLineException;
+import uk.co.danielrendall.imagetiler.ScannerStrategy;
+import uk.co.danielrendall.imagetiler.ScannerStrategyFactory;
+import uk.co.danielrendall.imagetiler.svg.Pixel;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -21,18 +24,21 @@ public class ImageTiler {
     private final File inputFile;
     private final File outputFile;
     private final String type;
+    private final String strategy;
 
-    public ImageTiler(File inputFile, File outputFile, String type) {
+    public ImageTiler(File inputFile, File outputFile, String type, String strategy) {
         this.inputFile = inputFile;
         this.outputFile = outputFile;
         this.type = type;
+        this.strategy = strategy;
     }
 
 
     public void process() {
         try {
             ImageTile imageTile = (ImageTile) Class.forName("uk.co.danielrendall.imagetiler.image." + type + "ImageTile").newInstance();
-//        imageTile.initialize(args);
+            ScannerStrategyFactory factory = new ScannerStrategyFactory(strategy);
+
             final int tileWidth = imageTile.getWidth();
             final int tileHeight = imageTile.getHeight();
             try {
@@ -48,17 +54,17 @@ public class ImageTiler {
 
                     WritableRaster wr = biOut.getRaster();
 
+                    ScannerStrategy scannerStrategy = factory.createStrategy(0, bi.getWidth(), 0, bi.getHeight());
+                    for (Pixel p = scannerStrategy.next(); scannerStrategy.hasNext(); p = scannerStrategy.next()) {
+                        int x = p.getX();
+                        int y = p.getY();
+                        int pixel[] = new int[4];
+                        bi.getRaster().getPixel(x,y,pixel);
+                        Color color = new Color(pixel[0], pixel[1], pixel[2]);
+                        int xTile = x * tileWidth;
+                        int yTile = y * tileHeight;
+                        imageTile.getTile(biOut.getSubimage(xTile, yTile, tileWidth, tileHeight), color);
 
-                    for (int y=0; y < bi.getHeight(); y++) {
-                        for (int x=0; x < bi.getWidth(); x++) {
-                            int pixel[] = new int[4];
-                            bi.getRaster().getPixel(x,y,pixel);
-                            Color color = new Color(pixel[0], pixel[1], pixel[2]);
-                            int xTile = x * tileWidth;
-                            int yTile = y * tileHeight;
-                            imageTile.getTile(biOut.getSubimage(xTile, yTile, tileWidth, tileHeight), color);
-
-                        }
                     }
                     biOut.setData(wr);
                     ImageIO.write(biOut, "jpg", outputFile);
