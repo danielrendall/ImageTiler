@@ -3,6 +3,7 @@ package uk.co.danielrendall.imagetiler.svg.tiles;
 import org.w3c.dom.Element;
 import uk.co.danielrendall.imagetiler.svg.TileContext;
 import uk.co.danielrendall.imagetiler.svg.shapes.*;
+import uk.co.danielrendall.mathlib.geom2d.Point;
 
 import java.awt.Color;
 
@@ -31,74 +32,80 @@ public class SquareExtrudedSVGTile extends SimpleSVGTile {
             double effectiveBottom = context.getBottom() - (height * 0.15d);
             double effectiveRight = context.getRight() - (width * 0.15d);
 
+            Point tl = new Point(effectiveLeft, effectiveTop);
+            Point bl = new Point(effectiveLeft, effectiveBottom);
+            Point tr = new Point(effectiveRight, effectiveTop);
+            Point br = new Point(effectiveRight, effectiveBottom);
+                    
+
             switch (context.getQuadrant()) {
 
                 case NE:
-                    p.addPoint(0.0d, 0.0d);
-                    p.addPoint(effectiveLeft, effectiveTop);
-                    p.addPoint(effectiveLeft, effectiveBottom);
+                    p.addPoint(Point.ORIGIN);
+                    p.addPoint(tl);
+                    p.addPoint(bl);
                     group.appendChild(p.getElement(context));
                     p.clear();
-                    p.addPoint(0.0d, 0.0d);
-                    p.addPoint(effectiveRight, effectiveBottom);
-                    p.addPoint(effectiveLeft, effectiveBottom);
+                    p.addPoint(Point.ORIGIN);
+                    p.addPoint(br);
+                    p.addPoint(bl);
                     group.appendChild(p.getElement(context));
                     break;
                 case N:
-                    p.addPoint(0.0d, 0.0d);
-                    p.addPoint(effectiveRight, effectiveBottom);
-                    p.addPoint(effectiveLeft, effectiveBottom);
+                    p.addPoint(Point.ORIGIN);
+                    p.addPoint(br);
+                    p.addPoint(bl);
                     group.appendChild(p.getElement(context));
                     break;
                 case NW:
-                    p.addPoint(0.0d, 0.0d);
-                    p.addPoint(effectiveRight, effectiveTop);
-                    p.addPoint(effectiveRight, effectiveBottom);
+                    p.addPoint(Point.ORIGIN);
+                    p.addPoint(tr);
+                    p.addPoint(br);
                     group.appendChild(p.getElement(context));
                     p.clear();
-                    p.addPoint(0.0d, 0.0d);
-                    p.addPoint(effectiveLeft, effectiveBottom);
-                    p.addPoint(effectiveRight, effectiveBottom);
+                    p.addPoint(Point.ORIGIN);
+                    p.addPoint(bl);
+                    p.addPoint(br);
                     group.appendChild(p.getElement(context));
                     break;
                 case W:
-                    p.addPoint(0.0d, 0.0d);
-                    p.addPoint(effectiveRight, effectiveTop);
-                    p.addPoint(effectiveRight, effectiveBottom);
+                    p.addPoint(Point.ORIGIN);
+                    p.addPoint(tr);
+                    p.addPoint(br);
                     group.appendChild(p.getElement(context));
                     break;
                 case SW:
-                    p.addPoint(0.0d, 0.0d);
-                    p.addPoint(effectiveRight, effectiveBottom);
-                    p.addPoint(effectiveRight, effectiveTop);
+                    p.addPoint(Point.ORIGIN);
+                    p.addPoint(br);
+                    p.addPoint(tr);
                     group.appendChild(p.getElement(context));
                     p.clear();
-                    p.addPoint(0.0d, 0.0d);
-                    p.addPoint(effectiveLeft, effectiveTop);
-                    p.addPoint(effectiveRight, effectiveTop);
+                    p.addPoint(Point.ORIGIN);
+                    p.addPoint(tl);
+                    p.addPoint(tr);
                     group.appendChild(p.getElement(context));
                     break;
                 case S:
-                    p.addPoint(0.0d, 0.0d);
-                    p.addPoint(effectiveLeft, effectiveTop);
-                    p.addPoint(effectiveRight, effectiveTop);
+                    p.addPoint(Point.ORIGIN);
+                    p.addPoint(tl);
+                    p.addPoint(tr);
                     group.appendChild(p.getElement(context));
                     break;
                 case SE:
-                    p.addPoint(0.0d, 0.0d);
-                    p.addPoint(effectiveLeft, effectiveBottom);
-                    p.addPoint(effectiveLeft, effectiveTop);
+                    p.addPoint(Point.ORIGIN);
+                    p.addPoint(bl);
+                    p.addPoint(tl);
                     group.appendChild(p.getElement(context));
                     p.clear();
-                    p.addPoint(0.0d, 0.0d);
-                    p.addPoint(effectiveRight, effectiveTop);
-                    p.addPoint(effectiveLeft, effectiveTop);
+                    p.addPoint(Point.ORIGIN);
+                    p.addPoint(tr);
+                    p.addPoint(tl);
                     group.appendChild(p.getElement(context));
                     break;
                 case E:
-                    p.addPoint(0.0d, 0.0d);
-                    p.addPoint(effectiveLeft, effectiveBottom);
-                    p.addPoint(effectiveLeft, effectiveTop);
+                    p.addPoint(Point.ORIGIN);
+                    p.addPoint(bl);
+                    p.addPoint(tl);
                     group.appendChild(p.getElement(context));
                     break;
                 default:

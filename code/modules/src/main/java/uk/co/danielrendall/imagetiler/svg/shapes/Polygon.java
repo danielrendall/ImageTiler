@@ -1,7 +1,9 @@
 package uk.co.danielrendall.imagetiler.svg.shapes;
 
 import org.w3c.dom.Element;
+import uk.co.danielrendall.imagetiler.Pixel;
 import uk.co.danielrendall.imagetiler.svg.TileContext;
+import uk.co.danielrendall.mathlib.geom2d.Point;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -16,19 +18,27 @@ import java.util.List;
  */
 public class Polygon extends BaseShape {
 
-    private List<Point2D> points;
+    private List<Point> points;
 
     public Polygon() {
         super();
         clear();
     }
 
-    public void addPoint(double x, double y) {
-        points.add(new Point2D.Double(x, y));
+    public void addPoint(Point p) {
+        points.add(p);
     }
 
     public void clear() {
-        points = new ArrayList<Point2D>();
+        points = new ArrayList<Point>();
+    }
+
+    // mutates state - maybe bad?
+    public void rotate(Point center, double angle) {
+        for (int i = 0; i < points.size(); i++) {
+            Point point = points.get(i);
+            points.set(i, center.displace(center.line(point).getVec().rotate(angle)));
+        }
     }
 
 
@@ -36,10 +46,10 @@ public class Polygon extends BaseShape {
         Element e = context.createElement("path");
         boolean isFirst = true;
         StringBuffer path = new StringBuffer();
-        for (Point2D point : points) {
+        for (Point point : points) {
             path.append(isFirst ? "M " : "L ");
             isFirst = false;
-            path.append(point.getX()).append(" ").append(point.getY()).append(" ");
+            path.append(point.x()).append(" ").append(point.y()).append(" ");
         }
         path.append("z");
         e.setAttributeNS(null, "d", path.toString());

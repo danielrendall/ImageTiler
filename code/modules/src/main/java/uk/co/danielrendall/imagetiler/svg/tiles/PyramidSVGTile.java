@@ -2,8 +2,10 @@ package uk.co.danielrendall.imagetiler.svg.tiles;
 
 import org.w3c.dom.Element;
 import uk.co.danielrendall.imagetiler.svg.TileContext;
+import uk.co.danielrendall.imagetiler.svg.shapes.Polygon;
+import uk.co.danielrendall.mathlib.geom2d.Point;
 
-import java.awt.*;
+import java.awt.Color;
 
 /**
  * Created by IntelliJ IDEA.
@@ -21,20 +23,23 @@ public class PyramidSVGTile extends SimpleSVGTile {
             final double right = context.getRight();
             final double top = context.getTop();
             final double bottom = context.getBottom();
-            final double midHeight = context.getMidHeight();
-            final double midWidth = context.getMidWidth();
 
             final double indent = context.getWidth() * 0.15;
 
-            uk.co.danielrendall.imagetiler.svg.shapes.Polygon p;
-            p = new uk.co.danielrendall.imagetiler.svg.shapes.Polygon();
+            Point center = context.getCenter();
+            Point tl = new Point(left + indent, top + indent);
+            Point bl = new Point(left + indent, bottom - indent);
+            Point tr = new Point(right - indent, top + indent);
+            Point br = new Point(right - indent, bottom - indent);
+            
+            Polygon p = new Polygon();
             p.setFill("white");
             p.setStroke("black");
             p.setStrokeWidth(indent/5);
-            p.addPoint(left+indent, top+indent);
-            p.addPoint(right-indent, top+indent);
-            p.addPoint(right-indent, bottom-indent);
-            p.addPoint(left+indent, bottom-indent);
+            p.addPoint(tl);
+            p.addPoint(tr);
+            p.addPoint(br);
+            p.addPoint(bl);
             group.appendChild(p.getElement(context));
 
             p.clear();
@@ -43,29 +48,29 @@ public class PyramidSVGTile extends SimpleSVGTile {
             p.setStroke("");
             p.setStrokeWidth(0);
 
-            p.addPoint(left + indent, top + indent);
-            p.addPoint(right - indent, top + indent);
-            p.addPoint(midWidth, midHeight);
+            p.addPoint(tl);
+            p.addPoint(tr);
+            p.addPoint(center);
             group.appendChild(p.getElement(context));
 
             p.setFillOpacity(0.8);
             p.clear();
-            p.addPoint(left + indent, bottom - indent);
-            p.addPoint(left + indent, top + indent);
-            p.addPoint(midWidth, midHeight);
+            p.addPoint(bl);
+            p.addPoint(tl);
+            p.addPoint(center);
             group.appendChild(p.getElement(context));
 
             p.clear();
-            p.addPoint(right - indent, top + indent);
-            p.addPoint(right - indent, bottom - indent);
-            p.addPoint(midWidth, midHeight);
+            p.addPoint(tr);
+            p.addPoint(br);
+            p.addPoint(center);
             group.appendChild(p.getElement(context));
 
             p.setFillOpacity(1.0);
             p.clear();
-            p.addPoint(right - indent, bottom - indent);
-            p.addPoint(left + indent, bottom - indent);
-            p.addPoint(midWidth, midHeight);
+            p.addPoint(br);
+            p.addPoint(bl);
+            p.addPoint(center);
             group.appendChild(p.getElement(context));
 
 

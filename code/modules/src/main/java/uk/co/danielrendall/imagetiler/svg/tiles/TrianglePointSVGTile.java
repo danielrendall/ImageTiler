@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.w3c.dom.Element;
 import uk.co.danielrendall.imagetiler.svg.TileContext;
 import uk.co.danielrendall.imagetiler.svg.shapes.*;
+import uk.co.danielrendall.mathlib.geom2d.Point;
 
 import java.awt.Color;
 
@@ -31,15 +32,12 @@ public class TrianglePointSVGTile extends SimpleSVGTile {
             p.setStrokeWidth(radius * 0.03d);
             p.setFillOpacity(1.0d);
 
-            double x1 = context.getMidWidth() + radius * Math.cos(context.getAngle() + (Math.PI / 2.0));
-            double y1 = context.getMidHeight() + radius * Math.sin(context.getAngle() + (Math.PI / 2.0));
+            Point p1 = new Point(radius, 0.0d).rotate(context.getAngle() + (Math.PI / 2.0));
+            Point p2 = new Point(radius, 0.0d).rotate(context.getAngle() - (Math.PI / 2.0));
 
-            double x2 = context.getMidWidth() + radius * Math.cos(context.getAngle() - (Math.PI / 2.0));
-            double y2 = context.getMidHeight() + radius * Math.sin(context.getAngle() - (Math.PI / 2.0));
-
-            p.addPoint(0.0d, 0.0d);
-            p.addPoint(x1, y1);
-            p.addPoint(x2, y2);
+            p.addPoint(Point.ORIGIN);
+            p.addPoint(p1);
+            p.addPoint(p2);
 
 //            log.info(p);
             group.appendChild(p.getElement(context));
