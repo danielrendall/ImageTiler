@@ -51,7 +51,7 @@ public class SVGTiler {
 
     public void process() {
         try {
-            SVGTile svgTile = (SVGTile) Class.forName("uk.co.danielrendall.imagetiler.svg." + type + "SVGTile").newInstance();
+            SVGTile svgTile = (SVGTile) Class.forName("uk.co.danielrendall.imagetiler.svg.tiles." + type + "SVGTile").newInstance();
             ScannerStrategyFactory factory = new ScannerStrategyFactory(strategy);
     
 //            svgTile.initialize(args);

@@ -1,6 +1,8 @@
-package uk.co.danielrendall.imagetiler.svg;
+package uk.co.danielrendall.imagetiler.svg.tiles;
 
 import org.w3c.dom.Element;
+import uk.co.danielrendall.imagetiler.svg.SVGTile;
+import uk.co.danielrendall.imagetiler.svg.TileContext;
 import uk.co.danielrendall.imagetiler.svg.shapes.Rectangle;
 
 import java.awt.*;

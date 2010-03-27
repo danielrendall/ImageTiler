@@ -1,4 +1,6 @@
-package uk.co.danielrendall.imagetiler.image;
+package uk.co.danielrendall.imagetiler.image.tiles;
+
+import uk.co.danielrendall.imagetiler.image.ImageTile;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

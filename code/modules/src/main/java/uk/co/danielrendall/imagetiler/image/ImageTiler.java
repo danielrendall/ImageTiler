@@ -36,7 +36,7 @@ public class ImageTiler {
 
     public void process() {
         try {
-            ImageTile imageTile = (ImageTile) Class.forName("uk.co.danielrendall.imagetiler.image." + type + "ImageTile").newInstance();
+            ImageTile imageTile = (ImageTile) Class.forName("uk.co.danielrendall.imagetiler.image.tiles." + type + "ImageTile").newInstance();
             ScannerStrategyFactory factory = new ScannerStrategyFactory(strategy);
 
             final int tileWidth = imageTile.getWidth();
