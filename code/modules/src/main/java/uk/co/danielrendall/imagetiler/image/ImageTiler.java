@@ -1,15 +1,14 @@
 package uk.co.danielrendall.imagetiler.image;
 
-import org.kohsuke.args4j.Option;
-import org.kohsuke.args4j.CmdLineParser;
-import org.kohsuke.args4j.CmdLineException;
+import uk.co.danielrendall.imagetiler.RasterPixelFilter;
 import uk.co.danielrendall.imagetiler.ScannerStrategy;
 import uk.co.danielrendall.imagetiler.ScannerStrategyFactory;
-import uk.co.danielrendall.imagetiler.svg.Pixel;
+import uk.co.danielrendall.imagetiler.Pixel;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
@@ -52,14 +51,15 @@ public class ImageTiler {
                     g.setColor(Color.WHITE);
                     g.fillRect(0,0,biOut.getWidth(), biOut.getHeight());
 
+                    final Raster raster = bi.getRaster();
                     WritableRaster wr = biOut.getRaster();
 
-                    ScannerStrategy scannerStrategy = factory.createStrategy(0, bi.getWidth(), 0, bi.getHeight());
+                    ScannerStrategy scannerStrategy = factory.createStrategy(0, bi.getWidth(), 0, bi.getHeight(), new RasterPixelFilter(raster));
                     for (Pixel p = scannerStrategy.next(); scannerStrategy.hasNext(); p = scannerStrategy.next()) {
                         int x = p.getX();
                         int y = p.getY();
                         int pixel[] = new int[4];
-                        bi.getRaster().getPixel(x,y,pixel);
+                        raster.getPixel(x,y,pixel);
                         Color color = new Color(pixel[0], pixel[1], pixel[2]);
                         int xTile = x * tileWidth;
                         int yTile = y * tileHeight;

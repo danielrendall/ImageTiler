@@ -23,13 +23,13 @@ public class TrianglePointSVGTile extends SimpleSVGTile {
             double width = context.getWidth();
             double height = context.getHeight();
 
-            double radius = (width + height) / 4.0d;
+            double radius = (width + height) ; // / 4.0d
 
             Polygon p = new Polygon();
             p.setFill(hexValue(context.getColor()));
             p.setStroke("black");
             p.setStrokeWidth(radius * 0.03d);
-            p.setFillOpacity(0.5d);
+            p.setFillOpacity(1.0d);
 
             double x1 = context.getMidWidth() + radius * Math.cos(context.getAngle() + (Math.PI / 2.0));
             double y1 = context.getMidHeight() + radius * Math.sin(context.getAngle() + (Math.PI / 2.0));
@@ -41,7 +41,7 @@ public class TrianglePointSVGTile extends SimpleSVGTile {
             p.addPoint(x1, y1);
             p.addPoint(x2, y2);
 
-            log.info(p);
+//            log.info(p);
             group.appendChild(p.getElement(context));
 
             return true;

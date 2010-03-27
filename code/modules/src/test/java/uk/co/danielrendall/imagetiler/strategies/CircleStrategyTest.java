@@ -1,8 +1,9 @@
 package uk.co.danielrendall.imagetiler.strategies;
 
 import org.junit.Test;
+import uk.co.danielrendall.imagetiler.NullPixelFilter;
+import uk.co.danielrendall.imagetiler.Pixel;
 import uk.co.danielrendall.imagetiler.ScannerStrategy;
-import uk.co.danielrendall.imagetiler.svg.Pixel;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -17,7 +18,7 @@ import static org.junit.Assert.assertFalse;
 public class CircleStrategyTest {
     @Test
     public void testSimpleGrid() {
-        ScannerStrategy strategy = new CircleStrategy(0, 2, 0, 2);
+        ScannerStrategy strategy = new CircleStrategy(0, 2, 0, 2, new NullPixelFilter());
         assertEquals(new Pixel(0,0), strategy.next());
         assertEquals(new Pixel(1,0), strategy.next());
         assertEquals(new Pixel(1,1), strategy.next());
@@ -27,7 +28,7 @@ public class CircleStrategyTest {
 
     @Test
     public void testBiggerGrid() {
-        ScannerStrategy strategy = new CircleStrategy(-2, 4, -2, 4);
+        ScannerStrategy strategy = new CircleStrategy(-2, 4, -2, 4, new NullPixelFilter());
         assertEquals(new Pixel(-2,-2), strategy.next());
         assertEquals(new Pixel(1,-2), strategy.next());
         assertEquals(new Pixel(1,1), strategy.next());

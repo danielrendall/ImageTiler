@@ -9,6 +9,8 @@ import org.apache.log4j.Logger;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import uk.co.danielrendall.imagetiler.Pixel;
+import uk.co.danielrendall.imagetiler.RasterPixelFilter;
 import uk.co.danielrendall.imagetiler.ScannerStrategy;
 import uk.co.danielrendall.imagetiler.ScannerStrategyFactory;
 
@@ -78,7 +80,7 @@ public class SVGTiler {
 
                     final Raster raster = input.getRaster();
                     log.debug("There are " + raster.getNumBands() + " bands");
-                    ScannerStrategy scannerStrategy = factory.createStrategy(0, width, 0, height);
+                    ScannerStrategy scannerStrategy = factory.createStrategy(0, width, 0, height, new RasterPixelFilter(raster));
                     while (scannerStrategy.hasNext()) {
                         Pixel p = scannerStrategy.next();
                         int x = p.getX();

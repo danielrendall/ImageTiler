@@ -1,8 +1,9 @@
 package uk.co.danielrendall.imagetiler.strategies;
 
 import org.apache.log4j.Logger;
+import uk.co.danielrendall.imagetiler.Pixel;
+import uk.co.danielrendall.imagetiler.PixelFilter;
 import uk.co.danielrendall.imagetiler.ScannerStrategy;
-import uk.co.danielrendall.imagetiler.svg.Pixel;
 
 import java.util.*;
 
@@ -18,14 +19,17 @@ public class CircleStrategy extends ScannerStrategy {
 
     private final Iterator<Pixel> pixelIterator;
     
-    public CircleStrategy(int xMin, int width, int yMin, int height) {
-        super(xMin, width, yMin, height);
+    public CircleStrategy(int xMin, int width, int yMin, int height, PixelFilter filter) {
+        super(xMin, width, yMin, height, filter);
         double xCenter = ((double) xMin) + ((double)width / 2.0d);
         double yCenter = ((double) yMin) + ((double)height / 2.0d);
         SortedSet<Pixel> pixels = new TreeSet<Pixel>(new RadiusComparator(xCenter, yCenter));
-        GridStrategy strategy = new GridStrategy(xMin, width, yMin, height);
-        while (strategy.hasNext()) pixels.add(strategy.next());
-        log.info("Should be " + width * height + " pixels, I have " + pixels.size());
+        GridStrategy strategy = new GridStrategy(xMin, width, yMin, height, filter);
+        while (strategy.hasNext()) {
+            Pixel next = strategy.next();
+            if (filter.shouldInclude(next)) pixels.add(next);
+        }
+        log.info("Max pixels " + width * height + " pixels, I have " + pixels.size());
         pixelIterator = pixels.iterator();
     }
 

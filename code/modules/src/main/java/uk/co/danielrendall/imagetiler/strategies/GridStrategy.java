@@ -1,7 +1,8 @@
 package uk.co.danielrendall.imagetiler.strategies;
 
+import uk.co.danielrendall.imagetiler.Pixel;
+import uk.co.danielrendall.imagetiler.PixelFilter;
 import uk.co.danielrendall.imagetiler.ScannerStrategy;
-import uk.co.danielrendall.imagetiler.svg.Pixel;
 
 /**
  * Created by IntelliJ IDEA.
@@ -15,8 +16,8 @@ public class GridStrategy extends ScannerStrategy {
     private int x, y;
     private boolean hasNext;
 
-    public GridStrategy(int xMin, int width, int yMin, int height) {
-        super(xMin, width, yMin, height);
+    public GridStrategy(int xMin, int width, int yMin, int height, PixelFilter filter) {
+        super(xMin, width, yMin, height, filter);
         x = xMin;
         y = yMin;
         hasNext = true;

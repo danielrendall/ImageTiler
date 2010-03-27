@@ -1,4 +1,4 @@
-package uk.co.danielrendall.imagetiler.svg;
+package uk.co.danielrendall.imagetiler;
 
 /**
  * Created by IntelliJ IDEA.

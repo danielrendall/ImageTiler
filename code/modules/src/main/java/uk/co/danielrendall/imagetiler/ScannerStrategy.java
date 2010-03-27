@@ -1,6 +1,6 @@
 package uk.co.danielrendall.imagetiler;
 
-import uk.co.danielrendall.imagetiler.svg.Pixel;
+import uk.co.danielrendall.imagetiler.Pixel;
 
 import java.util.Iterator;
 
@@ -17,15 +17,17 @@ public abstract class ScannerStrategy implements Iterator<Pixel> {
     protected final int width;
     protected final int yMin;
     protected final int height;
+    protected final PixelFilter filter;
 
     protected final int xMax;
     protected final int yMax;
 
-    protected ScannerStrategy(int xMin, int width, int yMin, int height) {
+    protected ScannerStrategy(int xMin, int width, int yMin, int height, PixelFilter filter) {
         this.xMin = xMin;
         this.width = width;
         this.yMin = yMin;
         this.height = height;
+        this.filter = filter;
 
         this.xMax = xMin + width - 1;
         this.yMax = yMin + height - 1;
