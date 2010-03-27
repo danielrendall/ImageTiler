@@ -79,7 +79,8 @@ public class SVGTiler {
                     final Raster raster = input.getRaster();
                     log.debug("There are " + raster.getNumBands() + " bands");
                     ScannerStrategy scannerStrategy = factory.createStrategy(0, width, 0, height);
-                    for (Pixel p = scannerStrategy.next(); scannerStrategy.hasNext(); p = scannerStrategy.next()) {
+                    while (scannerStrategy.hasNext()) {
+                        Pixel p = scannerStrategy.next();
                         int x = p.getX();
                         int y = p.getY();
                         int pixel[] = new int[4];

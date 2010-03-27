@@ -35,6 +35,7 @@ public class TileContext {
     private final double bottom;
     private final double midWidth;
     private final double midHeight;
+    private final double angle;
     private final Color color;
     private final SVGTiler tiler;
 
@@ -47,6 +48,7 @@ public class TileContext {
         this.midHeight = (top + bottom) / 2.0d;
         this.color = color;
         this.tiler = tiler;
+        angle = (this.midWidth != 0.0d && this.midHeight != 0.0d) ? Math.atan2(this.midHeight, this.midWidth) : 0.0d;
     }
 
     public final double getLeft() {
@@ -89,17 +91,21 @@ public class TileContext {
         return tiler.getScale();
     }
 
+    public final double getAngle() {
+        return angle;
+    }
+
     public Compass getOctant() {
         if ((midWidth == 0.0d) && (midHeight == 0.0d)) return Compass.CENTER;
-        double tan = Math.atan2(midHeight, midWidth);
-        if (tan < OCT1) return Compass.W;
-        if (tan < OCT2) return Compass.NW;
-        if (tan < OCT3) return Compass.N;
-        if (tan < OCT4) return Compass.NE;
-        if (tan < OCT5) return Compass.E;
-        if (tan < OCT6) return Compass.SE;
-        if (tan < OCT7) return Compass.S;
-        if (tan < OCT8) return Compass.SW;
+        double angle = Math.atan2(midHeight, midWidth);
+        if (angle < OCT1) return Compass.W;
+        if (angle < OCT2) return Compass.NW;
+        if (angle < OCT3) return Compass.N;
+        if (angle < OCT4) return Compass.NE;
+        if (angle < OCT5) return Compass.E;
+        if (angle < OCT6) return Compass.SE;
+        if (angle < OCT7) return Compass.S;
+        if (angle < OCT8) return Compass.SW;
         return Compass.W;
     }
 
@@ -110,10 +116,9 @@ public class TileContext {
         } else if (midHeight == 0.0d) {
             if (midWidth < 0.0d) return Compass.W; else return Compass.E;
         }
-        double tan = Math.atan2(getMidHeight(), getMidWidth());
-        if (tan < QUAD1) return Compass.NW;
-        if (tan < QUAD2) return Compass.NE;
-        if (tan < QUAD3) return Compass.SE;
+        if (angle < QUAD1) return Compass.NW;
+        if (angle < QUAD2) return Compass.NE;
+        if (angle < QUAD3) return Compass.SE;
         return Compass.SW;
     }
 }

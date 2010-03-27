@@ -59,4 +59,14 @@ public abstract class BaseShape implements Shape {
 
     protected abstract Element _getElement(TileContext context);
 
+    @Override
+    public String toString() {
+        return "BaseShape{" +
+                "fill='" + fill + '\'' +
+                ", stroke='" + stroke + '\'' +
+                ", strokeWidth=" + strokeWidth +
+                ", fillOpacity=" + fillOpacity +
+                ", transform='" + transform + '\'' +
+                '}';
+    }
 }

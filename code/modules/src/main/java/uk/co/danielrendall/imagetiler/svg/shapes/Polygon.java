@@ -46,4 +46,10 @@ public class Polygon extends BaseShape {
         return e;
     }
 
+    @Override
+    public String toString() {
+        return "Polygon{" +
+                "points=" + points + super.toString() +
+                '}';
+    }
 }

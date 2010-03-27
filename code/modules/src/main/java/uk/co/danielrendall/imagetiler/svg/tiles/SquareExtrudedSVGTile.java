@@ -21,9 +21,10 @@ public class SquareExtrudedSVGTile extends SimpleSVGTile {
             double width = context.getWidth();
             double height = context.getHeight();
             Polygon p = new Polygon();
-            p.setFill("white");
+            p.setFill(hexValue(context.getColor()));
             p.setStroke("black");
             p.setStrokeWidth(width * 0.03d);
+            p.setFillOpacity(0.2d);
 
             double effectiveLeft = context.getLeft() + (width * 0.15d);
             double effectiveTop = context.getTop() + (height * 0.15d);

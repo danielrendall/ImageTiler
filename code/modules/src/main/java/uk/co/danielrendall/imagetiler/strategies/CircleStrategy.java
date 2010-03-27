@@ -1,5 +1,6 @@
 package uk.co.danielrendall.imagetiler.strategies;
 
+import org.apache.log4j.Logger;
 import uk.co.danielrendall.imagetiler.ScannerStrategy;
 import uk.co.danielrendall.imagetiler.svg.Pixel;
 
@@ -13,6 +14,7 @@ import java.util.*;
  * To change this template use File | Settings | File Templates.
  */
 public class CircleStrategy extends ScannerStrategy {
+    public final static Logger log = Logger.getLogger(CircleStrategy.class);
 
     private final Iterator<Pixel> pixelIterator;
     
@@ -22,7 +24,8 @@ public class CircleStrategy extends ScannerStrategy {
         double yCenter = ((double) yMin) + ((double)height / 2.0d);
         SortedSet<Pixel> pixels = new TreeSet<Pixel>(new RadiusComparator(xCenter, yCenter));
         GridStrategy strategy = new GridStrategy(xMin, width, yMin, height);
-        for (pixels.add(strategy.next()); strategy.hasNext(); pixels.add(strategy.next()));
+        while (strategy.hasNext()) pixels.add(strategy.next());
+        log.info("Should be " + width * height + " pixels, I have " + pixels.size());
         pixelIterator = pixels.iterator();
     }
 
