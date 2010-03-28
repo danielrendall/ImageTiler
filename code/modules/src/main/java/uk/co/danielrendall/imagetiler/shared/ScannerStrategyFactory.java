@@ -1,4 +1,4 @@
-package uk.co.danielrendall.imagetiler;
+package uk.co.danielrendall.imagetiler.shared;
 
 import org.apache.log4j.Logger;
 import uk.co.danielrendall.imagetiler.strategies.GridStrategy;

@@ -9,10 +9,7 @@ import org.apache.log4j.Logger;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import uk.co.danielrendall.imagetiler.Pixel;
-import uk.co.danielrendall.imagetiler.RasterPixelFilter;
-import uk.co.danielrendall.imagetiler.ScannerStrategy;
-import uk.co.danielrendall.imagetiler.ScannerStrategyFactory;
+import uk.co.danielrendall.imagetiler.shared.*;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -39,15 +36,17 @@ public class SVGTiler {
     private final File outputFile;
     private final String type;
     private final String strategy;
+    private final String config;
     private Document document;
 
     private static double SCALE = 10.0;
 
-    public SVGTiler(File inputFile, File outputFile, String type, String strategy) {
+    public SVGTiler(File inputFile, File outputFile, String type, String strategy, String config) {
         this.inputFile = inputFile;
         this.outputFile = outputFile;
         this.type = type;
         this.strategy = strategy;
+        this.config = config;
     }
 
 
@@ -55,6 +54,7 @@ public class SVGTiler {
         try {
             SVGTile svgTile = (SVGTile) Class.forName("uk.co.danielrendall.imagetiler.svg.tiles." + type + "SVGTile").newInstance();
             ScannerStrategyFactory factory = new ScannerStrategyFactory(strategy);
+            ConfigStore store = new ConfigStore(config);
     
 //            svgTile.initialize(args);
 
@@ -97,7 +97,7 @@ public class SVGTiler {
 
                         Element group = createElement("g");
                         //group.setAttributeNS(null, "transform","translate(100,100)");
-                        if (svgTile.getTile(group, new TileContext(left, right, top, bottom, color, this))) {
+                        if (svgTile.getTile(group, new TileContext(left, right, top, bottom, color, this, store))) {
                             outerGroup.appendChild(group);
                         } else {
                             log.debug("Skipping tile at x=" + x + " y=" + y);

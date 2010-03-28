@@ -1,9 +1,9 @@
 package uk.co.danielrendall.imagetiler.image;
 
-import uk.co.danielrendall.imagetiler.RasterPixelFilter;
-import uk.co.danielrendall.imagetiler.ScannerStrategy;
-import uk.co.danielrendall.imagetiler.ScannerStrategyFactory;
-import uk.co.danielrendall.imagetiler.Pixel;
+import uk.co.danielrendall.imagetiler.shared.RasterPixelFilter;
+import uk.co.danielrendall.imagetiler.shared.ScannerStrategy;
+import uk.co.danielrendall.imagetiler.shared.ScannerStrategyFactory;
+import uk.co.danielrendall.imagetiler.shared.Pixel;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -24,12 +24,14 @@ public class ImageTiler {
     private final File outputFile;
     private final String type;
     private final String strategy;
+    private final String config;
 
-    public ImageTiler(File inputFile, File outputFile, String type, String strategy) {
+    public ImageTiler(File inputFile, File outputFile, String type, String strategy, String config) {
         this.inputFile = inputFile;
         this.outputFile = outputFile;
         this.type = type;
         this.strategy = strategy;
+        this.config = config;
     }
 
 

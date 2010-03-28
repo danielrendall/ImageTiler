@@ -24,6 +24,8 @@ public class TrianglePointSVGTile extends SimpleSVGTile {
             double width = context.getWidth();
             double height = context.getHeight();
 
+            double distance = context.getDistance();
+
             double radius = (width + height) ; // / 4.0d
 
             Polygon p = new Polygon();

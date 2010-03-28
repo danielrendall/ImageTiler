@@ -1,4 +1,4 @@
-package uk.co.danielrendall.imagetiler;
+package uk.co.danielrendall.imagetiler.shared;
 
 import java.awt.*;
 import java.awt.image.Raster;

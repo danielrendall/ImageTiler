@@ -1,8 +1,8 @@
 package uk.co.danielrendall.imagetiler.strategies;
 
-import uk.co.danielrendall.imagetiler.Pixel;
-import uk.co.danielrendall.imagetiler.PixelFilter;
-import uk.co.danielrendall.imagetiler.ScannerStrategy;
+import uk.co.danielrendall.imagetiler.shared.Pixel;
+import uk.co.danielrendall.imagetiler.shared.PixelFilter;
+import uk.co.danielrendall.imagetiler.shared.ScannerStrategy;
 
 /**
  * Created by IntelliJ IDEA.

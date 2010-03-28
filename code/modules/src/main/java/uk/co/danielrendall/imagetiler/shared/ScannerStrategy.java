@@ -1,6 +1,6 @@
-package uk.co.danielrendall.imagetiler;
+package uk.co.danielrendall.imagetiler.shared;
 
-import uk.co.danielrendall.imagetiler.Pixel;
+import uk.co.danielrendall.imagetiler.shared.Pixel;
 
 import java.util.Iterator;
 

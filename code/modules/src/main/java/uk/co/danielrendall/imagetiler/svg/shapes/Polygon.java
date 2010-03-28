@@ -1,11 +1,9 @@
 package uk.co.danielrendall.imagetiler.svg.shapes;
 
 import org.w3c.dom.Element;
-import uk.co.danielrendall.imagetiler.Pixel;
 import uk.co.danielrendall.imagetiler.svg.TileContext;
 import uk.co.danielrendall.mathlib.geom2d.Point;
 
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 

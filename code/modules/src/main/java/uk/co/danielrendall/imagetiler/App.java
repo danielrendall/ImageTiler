@@ -35,6 +35,9 @@ public class App {
     @Option(name = "-s", usage = "scan strategy", required = false)
     private String strategy = "Grid";
 
+    @Option(name = "-c", usage = "configuration", required = false)
+    private String config = "";
+
     public static void main(String[] args) {
         new App().doMain(args);
     }
@@ -48,9 +51,9 @@ public class App {
             // parse the arguments.
             parser.parseArgument(args);
             if ("image".equalsIgnoreCase(outputFormat)) {
-                new ImageTiler(inputFile, outputFile, type, strategy).process();
+                new ImageTiler(inputFile, outputFile, type, strategy, config).process();
             } else {
-                new SVGTiler(inputFile, outputFile, type, strategy).process();
+                new SVGTiler(inputFile, outputFile, type, strategy, config).process();
             }
 
         } catch (CmdLineException e) {

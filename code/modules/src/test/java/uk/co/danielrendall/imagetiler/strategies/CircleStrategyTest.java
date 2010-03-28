@@ -1,9 +1,9 @@
 package uk.co.danielrendall.imagetiler.strategies;
 
 import org.junit.Test;
-import uk.co.danielrendall.imagetiler.NullPixelFilter;
-import uk.co.danielrendall.imagetiler.Pixel;
-import uk.co.danielrendall.imagetiler.ScannerStrategy;
+import uk.co.danielrendall.imagetiler.shared.NullPixelFilter;
+import uk.co.danielrendall.imagetiler.shared.Pixel;
+import uk.co.danielrendall.imagetiler.shared.ScannerStrategy;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

@@ -1,4 +1,4 @@
-package uk.co.danielrendall.imagetiler;
+package uk.co.danielrendall.imagetiler.shared;
 
 /**
  * Created by IntelliJ IDEA.
