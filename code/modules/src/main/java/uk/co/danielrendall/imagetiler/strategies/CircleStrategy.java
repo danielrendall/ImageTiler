@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import uk.co.danielrendall.imagetiler.shared.Pixel;
 import uk.co.danielrendall.imagetiler.shared.PixelFilter;
 import uk.co.danielrendall.imagetiler.shared.ScannerStrategy;
+import uk.co.danielrendall.mathlib.geom2d.Point;
 
 import java.util.*;
 
@@ -21,9 +22,8 @@ public class CircleStrategy extends ScannerStrategy {
     
     public CircleStrategy(int xMin, int width, int yMin, int height, PixelFilter filter) {
         super(xMin, width, yMin, height, filter);
-        double xCenter = ((double) xMin) + ((double)width / 2.0d);
-        double yCenter = ((double) yMin) + ((double)height / 2.0d);
-        SortedSet<Pixel> pixels = new TreeSet<Pixel>(new RadiusComparator(xCenter, yCenter));
+        Point center = new Point(((double) xMin) + ((double)width / 2.0d), ((double) yMin) + ((double)height / 2.0d));
+        SortedSet<Pixel> pixels = new TreeSet<Pixel>(getRadiusComparator(center));
         GridStrategy strategy = new GridStrategy(xMin, width, yMin, height, filter);
         while (strategy.hasNext()) {
             Pixel next = strategy.next();
@@ -41,15 +41,17 @@ public class CircleStrategy extends ScannerStrategy {
         return pixelIterator.next();
     }
 
-    private static class RadiusComparator implements Comparator<Pixel> {
-        private final double xCenter;
-        private final double yCenter;
+    protected Comparator<Pixel> getRadiusComparator(Point center) {
+        return new RadiusComparator(center);
+    }
+
+    protected static class RadiusComparator implements Comparator<Pixel> {
+        private final Point center;
         private final Map<Pixel, Double> distanceCache;
         private final Map<Pixel, Double> angleCache;
 
-        private RadiusComparator(double xCenter, double yCenter) {
-            this.xCenter = xCenter;
-            this.yCenter = yCenter;
+        private RadiusComparator(Point center) {
+            this.center = center;
             distanceCache = new HashMap<Pixel, Double>();
             angleCache = new HashMap<Pixel, Double>();
         }
@@ -64,11 +66,8 @@ public class CircleStrategy extends ScannerStrategy {
             Double d = distanceCache.get(p);
             if (d != null) return d;
             // need to compare using middle of square
-            double px = 0.5d + (double) p.getX();
-            double py = 0.5d + (double) p.getY();
-            double dx = px - xCenter;
-            double dy = py - yCenter;
-            double distance = Math.sqrt(dx * dx + dy * dy);
+            Point pixelCenter = new Point(0.5d + (double) p.getX(), 0.5d + (double) p.getY());
+            double distance = pixelCenter.line(center).length();
             distanceCache.put(p, distance);
             return distance;
         }
@@ -77,13 +76,11 @@ public class CircleStrategy extends ScannerStrategy {
             Double d = angleCache.get(p);
             if (d != null) return d;
             // need to compare using middle of square
-            double px = 0.5d + (double) p.getX();
-            double py = 0.5d + (double) p.getY();
-            double dx = px - xCenter;
-            double angle = py - yCenter;
-            double distance = Math.atan2(angle, dx);
-            angleCache.put(p, distance);
-            return distance;
+            Point pixelCenter = new Point(0.5d + (double) p.getX(), 0.5d + (double) p.getY());
+
+            double angle = center.line(pixelCenter).getVec().angle();
+            angleCache.put(p, angle);
+            return angle;
         }
     }
 }

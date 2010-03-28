@@ -24,18 +24,22 @@ public class PyramidSVGTile extends SimpleSVGTile {
             final double top = context.getTop();
             final double bottom = context.getBottom();
 
-            final double indent = context.getWidth() * 0.15;
+            double inset = context.getDouble("inset", 0.15d);
+            double sw = context.getDouble("strokewidth", 0.03d);
+            double darkOpacity = context.getDouble("darkopacity", 0.8d);
+            double lightOpacity = context.getDouble("lightopacity", 0.6d);
 
             Point center = context.getCenter();
-            Point tl = new Point(left + indent, top + indent);
-            Point bl = new Point(left + indent, bottom - indent);
-            Point tr = new Point(right - indent, top + indent);
-            Point br = new Point(right - indent, bottom - indent);
+            Point tl = new Point(left + inset, top + inset);
+            Point bl = new Point(left + inset, bottom - inset);
+            Point tr = new Point(right - inset, top + inset);
+            Point br = new Point(right - inset, bottom - inset);
             
             Polygon p = new Polygon();
             p.setFill("white");
             p.setStroke("black");
-            p.setStrokeWidth(indent/5);
+            p.setStrokeWidth(sw);
+            
             p.addPoint(tl);
             p.addPoint(tr);
             p.addPoint(br);
@@ -44,7 +48,7 @@ public class PyramidSVGTile extends SimpleSVGTile {
 
             p.clear();
             p.setFill(hexValue(context.getColor()));
-            p.setFillOpacity(0.6);
+            p.setFillOpacity(lightOpacity);
             p.setStroke("");
             p.setStrokeWidth(0);
 
@@ -53,7 +57,7 @@ public class PyramidSVGTile extends SimpleSVGTile {
             p.addPoint(center);
             group.appendChild(p.getElement(context));
 
-            p.setFillOpacity(0.8);
+            p.setFillOpacity(darkOpacity);
             p.clear();
             p.addPoint(bl);
             p.addPoint(tl);

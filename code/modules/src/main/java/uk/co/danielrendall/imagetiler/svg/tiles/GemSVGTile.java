@@ -24,20 +24,23 @@ public class GemSVGTile extends SimpleSVGTile {
             final double top = context.getTop();
             final double bottom = context.getBottom();
 
-            final double indent = context.getWidth() * 0.1;
+            double inset = context.getDouble("inset", 0.1d);
+            double sw = context.getDouble("strokewidth", 0.03d);
+            double darkOpacity = context.getDouble("darkopacity", 0.8d);
+            double lightOpacity = context.getDouble("lightopacity", 0.6d);
 
             Polygon p;
             p = new Polygon();
             p.setFill("");
             p.setStroke("black");
-            p.setStrokeWidth(indent/10);
+            p.setStrokeWidth(sw);
 
             Point center = context.getCenter();
 
-            Point pLeft = new Point(left + indent, center.y());
-            Point pTop = new Point(center.x(), top+indent);
-            Point pRight = new Point(right - indent, center.y());
-            Point pBottom = new Point(center.x(), bottom - indent);
+            Point pLeft = new Point(left + inset, center.y());
+            Point pTop = new Point(center.x(), top+inset);
+            Point pRight = new Point(right - inset, center.y());
+            Point pBottom = new Point(center.x(), bottom - inset);
 
             p.addPoint(pLeft);
             p.addPoint(pTop);
@@ -55,7 +58,7 @@ public class GemSVGTile extends SimpleSVGTile {
             p.addPoint(center);
             group.appendChild(p.getElement(context));
 
-            p.setFillOpacity(0.8);
+            p.setFillOpacity(darkOpacity);
             p.clear();
             p.addPoint(pLeft);
             p.addPoint(pBottom);
@@ -68,7 +71,7 @@ public class GemSVGTile extends SimpleSVGTile {
             p.addPoint(center);
             group.appendChild(p.getElement(context));
 
-            p.setFillOpacity(0.6);
+            p.setFillOpacity(lightOpacity);
             p.clear();
             p.addPoint(pRight);
             p.addPoint(pBottom);
