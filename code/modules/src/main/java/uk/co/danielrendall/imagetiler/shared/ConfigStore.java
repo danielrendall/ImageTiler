@@ -57,7 +57,11 @@ public class ConfigStore {
 
     // returns null if no value
     public Double getDouble(String key) {
-        return doubles.get(key.toLowerCase());
+        Double d = doubles.get(key.toLowerCase());
+        if (d != null) return d;
+        Integer i = getInt(key);
+        if (i != null) return (double) i;
+        return null;
     }
 
 }

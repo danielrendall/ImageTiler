@@ -5,6 +5,7 @@ import org.w3c.dom.Element;
 import uk.co.danielrendall.imagetiler.svg.TileContext;
 import uk.co.danielrendall.imagetiler.svg.shapes.*;
 import uk.co.danielrendall.mathlib.geom2d.Point;
+import uk.co.danielrendall.mathlib.geom2d.Vec;
 
 import java.awt.Color;
 
@@ -24,22 +25,27 @@ public class TrianglePointSVGTile extends SimpleSVGTile {
             double width = context.getWidth();
             double height = context.getHeight();
 
+            double sw = context.getDouble("strokewidth", 0.03d);
+
+            Point center = context.getCenter();
             double distance = context.getDistance();
 
-            double radius = (width + height) ; // / 4.0d
+            double weight = context.getDouble("weight", distance);
+
+            double radius = ((width + height) / 4.0d) * distance / weight ;
 
             Polygon p = new Polygon();
             p.setFill(hexValue(context.getColor()));
             p.setStroke("black");
-            p.setStrokeWidth(radius * 0.03d);
+            p.setStrokeWidth(sw);
             p.setFillOpacity(1.0d);
 
-            Point p1 = new Point(radius, 0.0d).rotate(context.getAngle() + (Math.PI / 2.0));
-            Point p2 = new Point(radius, 0.0d).rotate(context.getAngle() - (Math.PI / 2.0));
+            Vec v1 = new Vec(radius, 0.0d).rotate(context.getAngle() + (Math.PI / 2.0));
+            Vec v2 = new Vec(radius, 0.0d).rotate(context.getAngle() - (Math.PI / 2.0));
 
             p.addPoint(Point.ORIGIN);
-            p.addPoint(p1);
-            p.addPoint(p2);
+            p.addPoint(center.displace(v1));
+            p.addPoint(center.displace(v2));
 
 //            log.info(p);
             group.appendChild(p.getElement(context));

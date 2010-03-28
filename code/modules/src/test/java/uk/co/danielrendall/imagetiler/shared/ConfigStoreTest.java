@@ -22,6 +22,10 @@ public class ConfigStoreTest {
         assertEquals(9.7d, store.getDouble("gamma"), 0.0001d);
         assertEquals(new Integer(2), store.getInt("delta"));
         assertEquals(new Integer(67), store.getInt("BETA"));
+
+        // conversion to double
+        assertEquals(67.0d, store.getDouble("beta"), 0.0001d);
+
         assertNull(store.getDouble("Epsilon"));
         assertNull(store.getInt("ZETA"));
     }
