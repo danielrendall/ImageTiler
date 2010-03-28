@@ -26,14 +26,19 @@ public class StarSVGTile extends SimpleSVGTile {
             double width = context.getWidth();
             double height = context.getHeight();
 
-            double innerRadius = (width + height) / 4.0d ; // / 4.0d
-            double outerRadius = (width + height) / 2.0d ; // / 4.0d
+            double inset = context.getDouble("inset", 0.1d);
+            double sw = context.getDouble("strokewidth", 0.03d);
+            double inner = context.getDouble("innerradius", 0.5d);
+            double outer = context.getDouble("outerradius", 1.0d);
+
+            double innerRadius = ((width + height) / 4.0d) * inner ;
+            double outerRadius = ((width + height) / 4.0d) * outer ;
 
             Polygon p = new Polygon();
 
             p.setFill(hexValue(context.getColor()));
             p.setStroke("black");
-            p.setStrokeWidth(innerRadius * 0.03d);
+            p.setStrokeWidth(sw);
             p.setFillOpacity(1.0d);
 
             Point center = context.getCenter();
