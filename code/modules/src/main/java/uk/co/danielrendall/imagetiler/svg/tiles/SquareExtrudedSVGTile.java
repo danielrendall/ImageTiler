@@ -21,16 +21,21 @@ public class SquareExtrudedSVGTile extends SimpleSVGTile {
         if (!context.getColor().equals(Color.WHITE)) {
             double width = context.getWidth();
             double height = context.getHeight();
+            double inset = context.getDouble("inset", 0.15d);
+            double sw = context.getDouble("strokewidth", 0.03d);
+            double csw = context.getDouble("columnstrokewidth", 0.008d);
+            double opacity = context.getDouble("opacity", 0.8d);
+
             Polygon p = new Polygon();
             p.setFill(hexValue(context.getColor()));
             p.setStroke("black");
-            p.setStrokeWidth(width * 0.03d);
-            p.setFillOpacity(0.2d);
+            p.setStrokeWidth(csw);
+            p.setFillOpacity(opacity);
 
-            double effectiveLeft = context.getLeft() + (width * 0.15d);
-            double effectiveTop = context.getTop() + (height * 0.15d);
-            double effectiveBottom = context.getBottom() - (height * 0.15d);
-            double effectiveRight = context.getRight() - (width * 0.15d);
+            double effectiveLeft = context.getLeft() + (width * inset);
+            double effectiveTop = context.getTop() + (height * inset);
+            double effectiveBottom = context.getBottom() - (height * inset);
+            double effectiveRight = context.getRight() - (width * inset);
 
             Point tl = new Point(effectiveLeft, effectiveTop);
             Point bl = new Point(effectiveLeft, effectiveBottom);
@@ -42,70 +47,70 @@ public class SquareExtrudedSVGTile extends SimpleSVGTile {
 
                 case NE:
                     p.addPoint(Point.ORIGIN);
-                    p.addPoint(tl);
                     p.addPoint(bl);
+                    p.addPoint(tl);
                     group.appendChild(p.getElement(context));
                     p.clear();
                     p.addPoint(Point.ORIGIN);
-                    p.addPoint(br);
-                    p.addPoint(bl);
+                    p.addPoint(tr);
+                    p.addPoint(tl);
                     group.appendChild(p.getElement(context));
                     break;
                 case N:
                     p.addPoint(Point.ORIGIN);
-                    p.addPoint(br);
-                    p.addPoint(bl);
+                    p.addPoint(tr);
+                    p.addPoint(tl);
                     group.appendChild(p.getElement(context));
                     break;
                 case NW:
                     p.addPoint(Point.ORIGIN);
-                    p.addPoint(tr);
                     p.addPoint(br);
+                    p.addPoint(tr);
                     group.appendChild(p.getElement(context));
                     p.clear();
                     p.addPoint(Point.ORIGIN);
-                    p.addPoint(bl);
-                    p.addPoint(br);
+                    p.addPoint(tl);
+                    p.addPoint(tr);
                     group.appendChild(p.getElement(context));
                     break;
                 case W:
                     p.addPoint(Point.ORIGIN);
-                    p.addPoint(tr);
                     p.addPoint(br);
+                    p.addPoint(tr);
                     group.appendChild(p.getElement(context));
                     break;
                 case SW:
                     p.addPoint(Point.ORIGIN);
-                    p.addPoint(br);
                     p.addPoint(tr);
+                    p.addPoint(br);
                     group.appendChild(p.getElement(context));
                     p.clear();
                     p.addPoint(Point.ORIGIN);
-                    p.addPoint(tl);
-                    p.addPoint(tr);
+                    p.addPoint(bl);
+                    p.addPoint(br);
                     group.appendChild(p.getElement(context));
                     break;
                 case S:
                     p.addPoint(Point.ORIGIN);
-                    p.addPoint(tl);
-                    p.addPoint(tr);
+                    p.addPoint(bl);
+                    p.addPoint(br);
                     group.appendChild(p.getElement(context));
                     break;
                 case SE:
                     p.addPoint(Point.ORIGIN);
-                    p.addPoint(bl);
                     p.addPoint(tl);
+                    p.addPoint(bl);
                     group.appendChild(p.getElement(context));
                     p.clear();
                     p.addPoint(Point.ORIGIN);
-                    p.addPoint(tr);
-                    p.addPoint(tl);
+                    p.addPoint(br);
+                    p.addPoint(bl);
                     group.appendChild(p.getElement(context));
                     break;
                 case E:
                     p.addPoint(Point.ORIGIN);
-                    p.addPoint(bl);
                     p.addPoint(tl);
+                    p.addPoint(bl);
                     group.appendChild(p.getElement(context));
                     break;
                 default:
@@ -119,7 +124,7 @@ public class SquareExtrudedSVGTile extends SimpleSVGTile {
             r.setHeight(effectiveBottom - effectiveTop);
             r.setFill(hexValue(context.getColor()));
             r.setStroke("black");
-            r.setStrokeWidth(width * 0.03d);
+            r.setStrokeWidth(sw);
             Element e = r.getElement(context);
             group.appendChild(e);
 
