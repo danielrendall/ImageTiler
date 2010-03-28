@@ -27,13 +27,16 @@ public class SimpleSVGTile implements SVGTile {
             Rectangle r = new Rectangle();
             double width = context.getWidth();
             double height = context.getHeight();
-            r.setX(context.getLeft() + (width * 0.15d));
-            r.setY(context.getTop() + (height * 0.15d));
-            r.setWidth(width * 0.7d);
-            r.setHeight(height * 0.7d);
+            double inset = context.getDouble("inset", 0.15d);
+            double sw = context.getDouble("strokewidth", 0.03d);
+
+            r.setX(context.getLeft() + (width * inset));
+            r.setY(context.getTop() + (height * inset));
+            r.setWidth(width * (1.0d - 2.0d * inset));
+            r.setHeight(height * (1.0d - 2.0d * inset));
             r.setFill(hexValue(context.getColor()));
             r.setStroke("black");
-            r.setStrokeWidth(width * 0.03d);
+            r.setStrokeWidth(width * sw);
             Element e = r.getElement(context);
             group.appendChild(e);
             return true;
