@@ -105,4 +105,9 @@ public class TileContext {
         Double res = store.getDouble(key);
         return (res != null) ? res : d;
     }
+
+    public boolean getBoolean(String key, boolean b) {
+        Boolean res = store.getBoolean(key);
+        return (res != null) ? res : b;
+    }
 }

@@ -16,10 +16,12 @@ public class ConfigStore {
     public final static Logger log = Logger.getLogger(ConfigStore.class);
     private final Map<String, Double> doubles;
     private final Map<String, Integer> ints;
+    private final Map<String, Boolean> bools;
 
     public ConfigStore(String config) {
         doubles = new HashMap<String, Double>();
         ints = new HashMap<String, Integer>();
+        bools = new HashMap<String, Boolean>();
         if (!"".equals(config)) {
             String[] bits = config.split(",");
             for(String bit: bits) {
@@ -29,7 +31,11 @@ public class ConfigStore {
                 } else {
                     String key = kvp[0].trim().toLowerCase();
                     String value = kvp[1].trim();
-                    if (value.indexOf(".") > -1) {
+                    if (Boolean.toString(true).equalsIgnoreCase(value)) {
+                        bools.put(key, true);
+                    } else if (Boolean.toString(false).equalsIgnoreCase(value)) {
+                        bools.put(key, false);
+                    } else if (value.indexOf(".") > -1) {
                         try {
                             double d = Double.parseDouble(value);
                             doubles.put(key, d);
@@ -64,4 +70,8 @@ public class ConfigStore {
         return null;
     }
 
+    // returns false if no value
+    public Boolean getBoolean(String key) {
+        return bools.get(key.toLowerCase());
+    }
 }
