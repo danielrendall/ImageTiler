@@ -18,6 +18,8 @@ public class ConfigStore {
     private final Map<String, Integer> ints;
     private final Map<String, Boolean> bools;
 
+    // rather a lot happening in this constructor - could use
+    // a builder and pass some UnmodifiableMaps to this
     public ConfigStore(String config) {
         doubles = new HashMap<String, Double>();
         ints = new HashMap<String, Integer>();
@@ -61,6 +63,11 @@ public class ConfigStore {
         return ints.get(key.toLowerCase());
     }
 
+    public Integer getInt(String key, int defaultValue) {
+        Integer i = getInt(key);
+        return (i != null) ? i : defaultValue;
+    }
+
     // returns null if no value
     public Double getDouble(String key) {
         Double d = doubles.get(key.toLowerCase());
@@ -70,8 +77,18 @@ public class ConfigStore {
         return null;
     }
 
-    // returns false if no value
+    public Double getDouble(String key, double defaultValue) {
+        Double d = getDouble(key);
+        return (d != null) ? d : defaultValue;
+    }
+
+    // returns null if no value
     public Boolean getBoolean(String key) {
-        return bools.get(key.toLowerCase());
+        return bools.containsKey(key) ? bools.get(key.toLowerCase()) : null;
+    }
+
+    public Boolean getBoolean(String key, boolean defaultValue) {
+        Boolean b = getBoolean(key);
+        return (b != null) ? b : defaultValue;
     }
 }

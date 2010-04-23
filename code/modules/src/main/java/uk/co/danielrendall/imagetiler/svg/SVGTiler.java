@@ -32,34 +32,40 @@ public class SVGTiler {
 
     public final static Logger log = Logger.getLogger(SVGTiler.class);
 
-    private final File inputFile;
-    private final File outputFile;
-    private final String type;
-    private final String strategy;
-    private final String config;
     private Document document;
+    private final SVGTileFactory tileFactory;
+    private final ScannerStrategyFactory strategyFactory;
 
+    // reasonable hard-coded value, could be made configurable, but user
+    // could scale the resulting image manually anyway.
     private static double SCALE = 10.0;
 
-    public SVGTiler(File inputFile, File outputFile, String type, String strategy, String config) {
-        this.inputFile = inputFile;
-        this.outputFile = outputFile;
-        this.type = type;
-        this.strategy = strategy;
-        this.config = config;
+    public SVGTiler(String type, String strategy, ConfigStore store) {
+        tileFactory = new SVGTileFactory(type, store);
+        strategyFactory = new ScannerStrategyFactory(strategy);
     }
 
 
-    public void process() {
+    public void process(File inputFile, File outputFile) {
         try {
-            SVGTile svgTile = (SVGTile) Class.forName("uk.co.danielrendall.imagetiler.svg.tiles." + type + "SVGTile").newInstance();
-            ScannerStrategyFactory factory = new ScannerStrategyFactory(strategy);
-            ConfigStore store = new ConfigStore(config);
-    
+
+            // Can't simply create a ScannerStrategy now, because we need to configure it with the
+            // image being processed so it can do intelligent things with white pixels.
+
+            // Old implementation - required the tile to do sensible things with
+            // the command-line arguments. Better way - use the ConfigStore to
+            // manage conversion to doubles etc.
+            // Another way - have a TileFactory which does the instantiation of the
+            // tile and preconfigures 'global' command-line settings for it, because
+            // currently each time getTile() is called it will be pulling the same
+            // data from the ConfigStore. But it's not as if speed / efficiency are
+            // pressing issues.
 //            svgTile.initialize(args);
 
             SVGDOMImplementation domImpl = (SVGDOMImplementation) SVGDOMImplementation.getDOMImplementation();
             document = domImpl.createDocument(SVGDOMImplementation.SVG_NAMESPACE_URI, "svg", null);
+
+            SVGTile svgTile = tileFactory.getTile();
 
             try {
                 BufferedImage input = ImageIO.read(inputFile);
@@ -80,7 +86,7 @@ public class SVGTiler {
 
                     final Raster raster = input.getRaster();
                     log.debug("There are " + raster.getNumBands() + " bands");
-                    ScannerStrategy scannerStrategy = factory.createStrategy(0, width, 0, height, new RasterPixelFilter(raster));
+                    ScannerStrategy scannerStrategy = strategyFactory.createStrategy(0, width, 0, height, new RasterPixelFilter(raster));
                     while (scannerStrategy.hasNext()) {
                         Pixel p = scannerStrategy.next();
                         int x = p.getX();
@@ -97,7 +103,7 @@ public class SVGTiler {
 
                         Element group = createElement("g");
                         //group.setAttributeNS(null, "transform","translate(100,100)");
-                        if (svgTile.getTile(group, new TileContext(left, right, top, bottom, color, this, store))) {
+                        if (svgTile.getTile(group, new TileContext(left, right, top, bottom, color, this))) {
                             outerGroup.appendChild(group);
                         } else {
                             log.debug("Skipping tile at x=" + x + " y=" + y);
@@ -134,5 +140,9 @@ public class SVGTiler {
 
     public int getScale() {
         return (int)SCALE;
+    }
+
+    public String describeOptions() {
+        return tileFactory.describeOptions();
     }
 }

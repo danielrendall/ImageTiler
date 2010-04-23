@@ -2,6 +2,7 @@ package uk.co.danielrendall.imagetiler.svg.tiles;
 
 import org.apache.log4j.Logger;
 import org.w3c.dom.Element;
+import uk.co.danielrendall.imagetiler.annotations.DoubleParameter;
 import uk.co.danielrendall.imagetiler.svg.TileContext;
 import uk.co.danielrendall.imagetiler.svg.shapes.*;
 import uk.co.danielrendall.mathlib.geom2d.Point;
@@ -18,7 +19,35 @@ import java.awt.Color;
  */
 public class StarSVGTile extends SimpleSVGTile {
     public final static Logger log = Logger.getLogger(StarSVGTile.class);
+
+    private static final String NAME_INNER_RADIUS = "innerRadius";
+    private static final String DESCRIPTION_INNER_RADIUS = "Fractional inner radius of star";
+
+    private static final String NAME_OUTER_RADIUS = "outerRadius";
+    private static final String DESCRIPTION_OUTER_RADIUS = "Fractional outer radius of star";
+
     private final double increment = Math.PI / 5.0d;
+
+    private final double innerRadius;
+    private final double outerRadius;
+
+    public StarSVGTile(
+            @DoubleParameter(name = NAME_INSET, description = DESCRIPTION_INSET, defaultValue=0.15d, minValue = 0.0d, maxValue = 0.5d)
+            double inset,
+            @DoubleParameter(name = NAME_STROKE_WIDTH, description = DESCRIPTION_STROKE_WIDTH, defaultValue=0.05d, minValue = 0.001d, maxValue = 0.5d)
+            double strokeWidth,
+            @DoubleParameter(name = NAME_DARK_OPACITY, description = DESCRIPTION_DARK_OPACITY, defaultValue=0.8d, minValue = 0.0d, maxValue = 1.0d)
+            double darkOpacity,
+            @DoubleParameter(name = NAME_LIGHT_OPACITY, description = DESCRIPTION_LIGHT_OPACITY, defaultValue=0.6d, minValue = 0.0d, maxValue = 1.0d)
+            double lightOpacity,
+            @DoubleParameter(name = NAME_INNER_RADIUS, description = DESCRIPTION_INNER_RADIUS, defaultValue = 0.5d, minValue = 0.001d, maxValue = 10d)
+            double innerRadius,
+            @DoubleParameter(name = NAME_OUTER_RADIUS, description = DESCRIPTION_OUTER_RADIUS, defaultValue = 1.0d, minValue = 0.001d, maxValue = 10d)
+            double outerRadius) {
+        super(inset, strokeWidth, darkOpacity, lightOpacity);
+        this.innerRadius = innerRadius;
+        this.outerRadius = outerRadius;
+    }
 
     public boolean getTile(Element group, TileContext context) {
 
@@ -26,33 +55,28 @@ public class StarSVGTile extends SimpleSVGTile {
             double width = context.getWidth();
             double height = context.getHeight();
 
-            double inset = context.getDouble("inset", 0.1d);
-            double sw = context.getDouble("strokewidth", 0.03d);
-            double inner = context.getDouble("innerradius", 0.5d);
-            double outer = context.getDouble("outerradius", 1.0d);
-
-            double innerRadius = ((width + height) / 4.0d) * inner ;
-            double outerRadius = ((width + height) / 4.0d) * outer ;
+            double inner = ((width + height) / 4.0d) * innerRadius;
+            double outer = ((width + height) / 4.0d) * outerRadius;
 
             Polygon p = new Polygon();
 
             p.setFill(hexValue(context.getColor()));
             p.setStroke("black");
-            p.setStrokeWidth(sw);
+            p.setStrokeWidth(strokeWidth);
             p.setFillOpacity(1.0d);
 
             Point center = context.getCenter();
 
-            p.addPoint(center.displace(getVec(innerRadius, -Math.PI)));
-            p.addPoint(center.displace(getVec(outerRadius, -Math.PI + increment)));
-            p.addPoint(center.displace(getVec(innerRadius, -Math.PI + 2.0d * increment)));
-            p.addPoint(center.displace(getVec(outerRadius, -Math.PI + 3.0d * increment)));
-            p.addPoint(center.displace(getVec(innerRadius, -Math.PI + 4.0d * increment)));
-            p.addPoint(center.displace(getVec(outerRadius, -Math.PI + 5.0d * increment)));
-            p.addPoint(center.displace(getVec(innerRadius, -Math.PI + 6.0d * increment)));
-            p.addPoint(center.displace(getVec(outerRadius, -Math.PI + 7.0d * increment)));
-            p.addPoint(center.displace(getVec(innerRadius, -Math.PI + 8.0d * increment)));
-            p.addPoint(center.displace(getVec(outerRadius, -Math.PI + 9.0d * increment)));
+            p.addPoint(center.displace(getVec(inner, -Math.PI)));
+            p.addPoint(center.displace(getVec(outer, -Math.PI + increment)));
+            p.addPoint(center.displace(getVec(inner, -Math.PI + 2.0d * increment)));
+            p.addPoint(center.displace(getVec(outer, -Math.PI + 3.0d * increment)));
+            p.addPoint(center.displace(getVec(inner, -Math.PI + 4.0d * increment)));
+            p.addPoint(center.displace(getVec(outer, -Math.PI + 5.0d * increment)));
+            p.addPoint(center.displace(getVec(inner, -Math.PI + 6.0d * increment)));
+            p.addPoint(center.displace(getVec(outer, -Math.PI + 7.0d * increment)));
+            p.addPoint(center.displace(getVec(inner, -Math.PI + 8.0d * increment)));
+            p.addPoint(center.displace(getVec(outer, -Math.PI + 9.0d * increment)));
 
             p.rotate(context.getCenter(), context.getAngle());
 

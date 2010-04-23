@@ -27,11 +27,14 @@ public class Polygon extends BaseShape {
         points.add(p);
     }
 
+    // TODO - maybe make this a BaseShape thing
     public void clear() {
         points = new ArrayList<Point>();
     }
 
-    // mutates state - maybe bad?
+    // TODO - mutates state - maybe bad?
+    // possibly better to store the rotation center and angle, then
+    // do the rotation at the _getElement 'build' stage
     public void rotate(Point center, double angle) {
         for (int i = 0; i < points.size(); i++) {
             Point point = points.get(i);

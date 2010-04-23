@@ -15,6 +15,10 @@ import java.awt.Color;
  * Time: 9:37:09 PM
  * To change this template use File | Settings | File Templates.
  */
+
+// Class is a facade, giving the SVGTile implementation a simple way of accessing
+// various pieces of information which may be properties of the location, computed
+// properties, or command-line settings
 public class TileContext {
 
     public final static Logger log = Logger.getLogger(TileContext.class);
@@ -23,19 +27,17 @@ public class TileContext {
     private final double right;
     private final double top;
     private final double bottom;
-    private final ConfigStore store;
     private final Point center;
     private final double angle;
     private final Color color;
     private final SVGTiler tiler;
     private final double distance;
 
-    public TileContext(double left, double right, double top, double bottom, Color color, SVGTiler tiler, ConfigStore store) {
+    public TileContext(double left, double right, double top, double bottom, Color color, SVGTiler tiler) {
         this.left = left;
         this.right = right;
         this.top = top;
         this.bottom = bottom;
-        this.store = store;
         this.center = new Point(((left + right) / 2.0d), ((top + bottom) / 2.0d));
         this.color = color;
         this.tiler = tiler;
@@ -94,20 +96,5 @@ public class TileContext {
 
     public Point.Compass getQuadrant() {
         return center.getQuadrant();
-    }
-
-    public int getInt(String key, int i) {
-        Integer res = store.getInt(key);
-        return (res != null) ? res : i;
-    }
-
-    public double getDouble(String key, double d) {
-        Double res = store.getDouble(key);
-        return (res != null) ? res : d;
-    }
-
-    public boolean getBoolean(String key, boolean b) {
-        Boolean res = store.getBoolean(key);
-        return (res != null) ? res : b;
     }
 }

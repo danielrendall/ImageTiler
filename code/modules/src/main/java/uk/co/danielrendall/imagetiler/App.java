@@ -1,17 +1,13 @@
 package uk.co.danielrendall.imagetiler;
 
 import uk.co.danielrendall.imagetiler.image.*;
+import uk.co.danielrendall.imagetiler.shared.ConfigStore;
 import uk.co.danielrendall.imagetiler.svg.*;
 import org.kohsuke.args4j.Option;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.CmdLineException;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.awt.image.WritableRaster;
 import java.io.File;
-import java.io.IOException;
 
 /**
  * Created by Daniel Rendall, Square Root of Minus 1 Ltd.
@@ -20,14 +16,14 @@ import java.io.IOException;
  */
 public class App {
 
-    @Option(name = "-i", usage = "the input file", required = true)
-    private File inputFile;
+    @Option(name = "-i", usage = "the input file", required = false)
+    private File inputFile = null;
 
-    @Option(name = "-o", usage = "the output file", required = true)
-    private File outputFile;
+    @Option(name = "-o", usage = "the output file", required = false)
+    private File outputFile = null;
 
-    @Option(name = "-f", usage = "output format (svg or image)", required = true)
-    private String outputFormat = "image";
+    @Option(name = "-f", usage = "output format (svg or image)", required = false)
+    private String outputFormat = "svg";
 
     @Option(name = "-t", usage = "tile type", required = false)
     private String type = "Simple";
@@ -37,6 +33,9 @@ public class App {
 
     @Option(name = "-c", usage = "configuration", required = false)
     private String config = "";
+
+    @Option(name = "-h", usage = "help", required = false)
+    private boolean help = false;
 
     public static void main(String[] args) {
         new App().doMain(args);
@@ -50,10 +49,28 @@ public class App {
         try {
             // parse the arguments.
             parser.parseArgument(args);
+            ConfigStore store = new ConfigStore(config);
             if ("image".equalsIgnoreCase(outputFormat)) {
-                new ImageTiler(inputFile, outputFile, type, strategy, config).process();
+                ImageTiler tiler = new ImageTiler(type, strategy, store);
+                if (help) {
+                    System.out.println("No help available");
+                } else {
+                    if (inputFile == null || outputFile == null) {
+                        throw new CmdLineException("Input and output files must be supplied");
+                    }
+                    tiler.process(inputFile, outputFile);
+                }
             } else {
-                new SVGTiler(inputFile, outputFile, type, strategy, config).process();
+                SVGTiler tiler = new SVGTiler(type, strategy, store);
+                if (help) {
+                    System.out.println("For tile type '" + type + "'");
+                    System.out.println(tiler.describeOptions());
+                } else {
+                    if (inputFile == null || outputFile == null) {
+                        throw new CmdLineException("Input and output files must be supplied");
+                    }
+                    tiler.process(inputFile, outputFile);
+                }
             }
 
         } catch (CmdLineException e) {

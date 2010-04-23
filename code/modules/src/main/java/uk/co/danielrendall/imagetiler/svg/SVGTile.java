@@ -10,11 +10,6 @@ import org.w3c.dom.Element;
  * To change this template use File | Settings | File Templates.
  */
 public interface SVGTile {
-    /**
-     * Accept command line parameters; details may vary depending on tile
-     * @param args
-     */
-    void initialize(String[] args);
 
     /**
      *

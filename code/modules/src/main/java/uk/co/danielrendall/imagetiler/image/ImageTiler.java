@@ -1,9 +1,6 @@
 package uk.co.danielrendall.imagetiler.image;
 
-import uk.co.danielrendall.imagetiler.shared.RasterPixelFilter;
-import uk.co.danielrendall.imagetiler.shared.ScannerStrategy;
-import uk.co.danielrendall.imagetiler.shared.ScannerStrategyFactory;
-import uk.co.danielrendall.imagetiler.shared.Pixel;
+import uk.co.danielrendall.imagetiler.shared.*;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -20,22 +17,18 @@ import java.io.IOException;
  */
 public class ImageTiler {
 
-    private final File inputFile;
-    private final File outputFile;
     private final String type;
     private final String strategy;
-    private final String config;
+    private final ConfigStore store;
 
-    public ImageTiler(File inputFile, File outputFile, String type, String strategy, String config) {
-        this.inputFile = inputFile;
-        this.outputFile = outputFile;
+    public ImageTiler(String type, String strategy, ConfigStore store) {
         this.type = type;
         this.strategy = strategy;
-        this.config = config;
+        this.store = store;
     }
 
 
-    public void process() {
+    public void process(File inputFile, File outputFile) {
         try {
             ImageTile imageTile = (ImageTile) Class.forName("uk.co.danielrendall.imagetiler.image.tiles." + type + "ImageTile").newInstance();
             ScannerStrategyFactory factory = new ScannerStrategyFactory(strategy);

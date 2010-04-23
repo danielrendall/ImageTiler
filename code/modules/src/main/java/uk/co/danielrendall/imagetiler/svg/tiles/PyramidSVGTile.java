@@ -1,6 +1,7 @@
 package uk.co.danielrendall.imagetiler.svg.tiles;
 
 import org.w3c.dom.Element;
+import uk.co.danielrendall.imagetiler.annotations.DoubleParameter;
 import uk.co.danielrendall.imagetiler.svg.TileContext;
 import uk.co.danielrendall.imagetiler.svg.shapes.Polygon;
 import uk.co.danielrendall.mathlib.geom2d.Point;
@@ -16,6 +17,18 @@ import java.awt.Color;
  */
 public class PyramidSVGTile extends SimpleSVGTile {
 
+    public PyramidSVGTile(
+            @DoubleParameter(name = NAME_INSET, description = DESCRIPTION_INSET, defaultValue=0.15d, minValue = 0.0d, maxValue = 0.5d)
+            double inset,
+            @DoubleParameter(name = NAME_STROKE_WIDTH, description = DESCRIPTION_STROKE_WIDTH, defaultValue=0.05d, minValue = 0.001d, maxValue = 0.5d)
+            double strokeWidth,
+            @DoubleParameter(name = NAME_DARK_OPACITY, description = DESCRIPTION_DARK_OPACITY, defaultValue=0.8d, minValue = 0.0d, maxValue = 1.0d)
+            double darkOpacity,
+            @DoubleParameter(name = NAME_LIGHT_OPACITY, description = DESCRIPTION_LIGHT_OPACITY, defaultValue=0.6d, minValue = 0.0d, maxValue = 1.0d)
+            double lightOpacity) {
+        super(inset, strokeWidth, darkOpacity, lightOpacity);
+    }
+
     public boolean getTile(Element group, TileContext context) {
         if (!context.getColor().equals(Color.WHITE)) {
 
@@ -23,11 +36,6 @@ public class PyramidSVGTile extends SimpleSVGTile {
             final double right = context.getRight();
             final double top = context.getTop();
             final double bottom = context.getBottom();
-
-            double inset = context.getDouble("inset", 0.15d);
-            double sw = context.getDouble("strokewidth", 0.03d);
-            double darkOpacity = context.getDouble("darkopacity", 0.8d);
-            double lightOpacity = context.getDouble("lightopacity", 0.6d);
 
             Point center = context.getCenter();
             Point tl = new Point(left + inset, top + inset);
@@ -38,7 +46,7 @@ public class PyramidSVGTile extends SimpleSVGTile {
             Polygon p = new Polygon();
             p.setFill("white");
             p.setStroke("black");
-            p.setStrokeWidth(sw);
+            p.setStrokeWidth(strokeWidth);
             
             p.addPoint(tl);
             p.addPoint(tr);
@@ -76,10 +84,6 @@ public class PyramidSVGTile extends SimpleSVGTile {
             p.addPoint(bl);
             p.addPoint(center);
             group.appendChild(p.getElement(context));
-
-
-
-
             return true;
         } else {
             return false;

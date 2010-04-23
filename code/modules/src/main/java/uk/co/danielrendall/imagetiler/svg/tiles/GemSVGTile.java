@@ -1,6 +1,7 @@
 package uk.co.danielrendall.imagetiler.svg.tiles;
 
 import org.w3c.dom.Element;
+import uk.co.danielrendall.imagetiler.annotations.DoubleParameter;
 import uk.co.danielrendall.imagetiler.svg.TileContext;
 import uk.co.danielrendall.imagetiler.svg.shapes.Polygon;
 import uk.co.danielrendall.mathlib.geom2d.Point;
@@ -15,6 +16,18 @@ import java.awt.Color;
  * To change this template use File | Settings | File Templates.
  */
 public class GemSVGTile extends SimpleSVGTile {
+    
+    public GemSVGTile(
+            @DoubleParameter(name = NAME_INSET, description = DESCRIPTION_INSET, defaultValue=0.15d, minValue = 0.0d, maxValue = 0.5d)
+            double inset,
+            @DoubleParameter(name = NAME_STROKE_WIDTH, description = DESCRIPTION_STROKE_WIDTH, defaultValue=0.05d, minValue = 0.001d, maxValue = 0.5d)
+            double strokeWidth,
+            @DoubleParameter(name = NAME_DARK_OPACITY, description = DESCRIPTION_DARK_OPACITY, defaultValue=0.8d, minValue = 0.0d, maxValue = 1.0d)
+            double darkOpacity,
+            @DoubleParameter(name = NAME_LIGHT_OPACITY, description = DESCRIPTION_LIGHT_OPACITY, defaultValue=0.6d, minValue = 0.0d, maxValue = 1.0d)
+            double lightOpacity) {
+        super(inset, strokeWidth, darkOpacity, lightOpacity);
+    }
 
     public boolean getTile(Element group, TileContext context) {
         if (!context.getColor().equals(Color.WHITE)) {
@@ -24,16 +37,11 @@ public class GemSVGTile extends SimpleSVGTile {
             final double top = context.getTop();
             final double bottom = context.getBottom();
 
-            double inset = context.getDouble("inset", 0.1d);
-            double sw = context.getDouble("strokewidth", 0.03d);
-            double darkOpacity = context.getDouble("darkopacity", 0.8d);
-            double lightOpacity = context.getDouble("lightopacity", 0.6d);
-
             Polygon p;
             p = new Polygon();
             p.setFill("");
             p.setStroke("black");
-            p.setStrokeWidth(sw);
+            p.setStrokeWidth(strokeWidth);
 
             Point center = context.getCenter();
 

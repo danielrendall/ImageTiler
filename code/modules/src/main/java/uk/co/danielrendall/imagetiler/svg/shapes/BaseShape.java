@@ -11,6 +11,10 @@ import uk.co.danielrendall.imagetiler.svg.TileContext;
  * Time: 10:51:18 PM
  * To change this template use File | Settings | File Templates.
  */
+
+// The Polygon and Rectangle classes which extend this are both builders -
+// one adds points to them and finally calls getElement to get the SVG element
+
 public abstract class BaseShape implements Shape {
 
     private String fill = "";
