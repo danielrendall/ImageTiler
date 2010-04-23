@@ -4,6 +4,7 @@ import org.apache.batik.dom.svg.SVGDOMImplementation;
 import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.svg2svg.SVGTranscoder;
+import org.junit.Ignore;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -17,6 +18,7 @@ import java.io.Writer;
  * Time: 10:46:20 PM
  * To change this template use File | Settings | File Templates.
  */
+@Ignore
 public class SVGTest {
 
     public Document createDocument() {
