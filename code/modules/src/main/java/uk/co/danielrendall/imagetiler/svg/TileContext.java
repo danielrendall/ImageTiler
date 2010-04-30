@@ -3,6 +3,7 @@ package uk.co.danielrendall.imagetiler.svg;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Element;
 import uk.co.danielrendall.imagetiler.shared.ConfigStore;
+import uk.co.danielrendall.mathlib.geom2d.Compass;
 import uk.co.danielrendall.mathlib.geom2d.Point;
 import uk.co.danielrendall.mathlib.geom2d.Vec;
 
@@ -90,11 +91,11 @@ public class TileContext {
         return angle;
     }
 
-    public Point.Compass getOctant() {
+    public Compass getOctant() {
         return center.getOctant();
     }
 
-    public Point.Compass getQuadrant() {
+    public Compass getQuadrant() {
         return center.getQuadrant();
     }
 }
