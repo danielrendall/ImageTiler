@@ -1,6 +1,7 @@
 package uk.co.danielrendall.imagetiler.svg;
 
 import org.apache.log4j.Logger;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import uk.co.danielrendall.imagetiler.shared.ConfigStore;
 import uk.co.danielrendall.mathlib.geom2d.Compass;
@@ -31,16 +32,18 @@ public class TileContext {
     private final Point center;
     private final double angle;
     private final Color color;
+    private final Document document;
     private final SVGTiler tiler;
     private final double distance;
 
-    public TileContext(double left, double right, double top, double bottom, Color color, SVGTiler tiler) {
+    public TileContext(double left, double right, double top, double bottom, Color color, Document document, SVGTiler tiler) {
         this.left = left;
         this.right = right;
         this.top = top;
         this.bottom = bottom;
         this.center = new Point(((left + right) / 2.0d), ((top + bottom) / 2.0d));
         this.color = color;
+        this.document = document;
         this.tiler = tiler;
         this.distance = Math.sqrt(this.center.x() * this.center.x() + this.center.y() * this.center.y());
         new Vec(center).angle();
@@ -76,7 +79,7 @@ public class TileContext {
     }
 
     public final Element createElement(String name) {
-        return tiler.createElement(name);
+        return tiler.createElement(document, name);
     }
 
     public final double getWidth() {

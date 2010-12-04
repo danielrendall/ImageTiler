@@ -32,7 +32,6 @@ public class SVGTiler {
 
     public final static Logger log = Logger.getLogger(SVGTiler.class);
 
-    private Document document;
     private final SVGTileFactory tileFactory;
     private final ScannerStrategyFactory strategyFactory;
 
@@ -45,8 +44,31 @@ public class SVGTiler {
         strategyFactory = new ScannerStrategyFactory(strategy);
     }
 
-
     public void process(File inputFile, File outputFile) {
+        try {
+            BufferedImage input = ImageIO.read(inputFile);
+            if (input != null) {
+                Document document = process(input);
+                if (document != null) {
+                    SVGTranscoder t = new SVGTranscoder();
+                    TranscoderInput transInput = new TranscoderInput(document);
+                    Writer writer = new FileWriter(outputFile);
+                    TranscoderOutput transOutput = new TranscoderOutput(writer);
+                    t.transcode(transInput, transOutput);
+                    writer.flush();
+                    writer.close();
+                }
+            } else {
+                log.debug("Couldn't read image");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (TranscoderException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+    }
+
+    public Document process(BufferedImage input) {
         try {
 
             // Can't simply create a ScannerStrategy now, because we need to configure it with the
@@ -63,83 +85,67 @@ public class SVGTiler {
 //            svgTile.initialize(args);
 
             SVGDOMImplementation domImpl = (SVGDOMImplementation) SVGDOMImplementation.getDOMImplementation();
-            document = domImpl.createDocument(SVGDOMImplementation.SVG_NAMESPACE_URI, "svg", null);
+            Document document = domImpl.createDocument(SVGDOMImplementation.SVG_NAMESPACE_URI, "svg", null);
 
             SVGTile svgTile = tileFactory.getTile();
 
-            try {
-                BufferedImage input = ImageIO.read(inputFile);
-                if (input != null) {
+                int width = input.getWidth();
+                int height = input.getHeight();
 
-                    int width = input.getWidth();
-                    int height = input.getHeight();
-
-                    double svgWidth = ((double)width) * SCALE;
-                    double svgHeight = ((double)height) * SCALE;
+                double svgWidth = ((double) width) * SCALE;
+                double svgHeight = ((double) height) * SCALE;
 
 
-                    Element root = document.getDocumentElement();
-                    root.setAttributeNS(null, "width", "" + svgWidth);
-                    root.setAttributeNS(null, "height", "" + svgHeight);
+                Element root = document.getDocumentElement();
+                root.setAttributeNS(null, "width", "" + svgWidth);
+                root.setAttributeNS(null, "height", "" + svgHeight);
 
-                    Element outerGroup = createElement("g");
+                Element outerGroup = createElement(document, "g");
 
-                    final Raster raster = input.getRaster();
-                    log.debug("There are " + raster.getNumBands() + " bands");
-                    ScannerStrategy scannerStrategy = strategyFactory.createStrategy(0, width, 0, height, new RasterPixelFilter(raster));
-                    while (scannerStrategy.hasNext()) {
-                        Pixel p = scannerStrategy.next();
-                        int x = p.getX();
-                        int y = p.getY();
-                        int pixel[] = new int[4];
-                        log.debug("Getting x=" + x + " y=" + y);
-                        raster.getPixel(x,y,pixel);
-                        Color color = new Color(pixel[0], pixel[1], pixel[2]);
+                final Raster raster = input.getRaster();
+                log.debug("There are " + raster.getNumBands() + " bands");
+                ScannerStrategy scannerStrategy = strategyFactory.createStrategy(0, width, 0, height, new RasterPixelFilter(raster));
+                while (scannerStrategy.hasNext()) {
+                    Pixel p = scannerStrategy.next();
+                    int x = p.getX();
+                    int y = p.getY();
+                    int pixel[] = new int[4];
+                    log.debug("Getting x=" + x + " y=" + y);
+                    raster.getPixel(x, y, pixel);
+                    Color color = new Color(pixel[0], pixel[1], pixel[2]);
 
-                        double left = SCALE * ((double) x  - (width/(double)2.0));
-                        double top = SCALE * ((double) y  - (height/(double)2.0));
-                        double right = left + SCALE;
-                        double bottom = top + SCALE;
+                    double left = SCALE * ((double) x - (width / (double) 2.0));
+                    double top = SCALE * ((double) y - (height / (double) 2.0));
+                    double right = left + SCALE;
+                    double bottom = top + SCALE;
 
-                        Element group = createElement("g");
-                        //group.setAttributeNS(null, "transform","translate(100,100)");
-                        if (svgTile.getTile(group, new TileContext(left, right, top, bottom, color, this))) {
-                            outerGroup.appendChild(group);
-                        } else {
-                            log.debug("Skipping tile at x=" + x + " y=" + y);
-                        }
-
+                    Element group = createElement(document, "g");
+                    //group.setAttributeNS(null, "transform","translate(100,100)");
+                    if (svgTile.getTile(group, new TileContext(left, right, top, bottom, color, document, this))) {
+                        outerGroup.appendChild(group);
+                    } else {
+                        log.debug("Skipping tile at x=" + x + " y=" + y);
                     }
-                    outerGroup.setAttributeNS(null, "transform","translate(" + (svgWidth/(double)2.0) + "," + (svgHeight/(double)2.0) + ")");
-                    root.appendChild(outerGroup);
 
-                    SVGTranscoder t = new SVGTranscoder();
-                    TranscoderInput transInput = new TranscoderInput(document);
-                    Writer writer = new FileWriter(outputFile);
-                    TranscoderOutput transOutput = new TranscoderOutput(writer);
-                    t.transcode(transInput, transOutput);
-                    writer.flush();
-                    writer.close();
-                } else {
-                    log.debug("Couldn't read image");
                 }
-            } catch (IOException e) {
-                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            } catch (TranscoderException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            }
+                outerGroup.setAttributeNS(null, "transform", "translate(" + (svgWidth / (double) 2.0) + "," + (svgHeight / (double) 2.0) + ")");
+                root.appendChild(outerGroup);
+
+                return document;
+
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
     }
 
-    public Element createElement(String name) {
+    public Element createElement(Document document, String name) {
         return document.createElementNS(SVGDOMImplementation.SVG_NAMESPACE_URI, name);
     }
 
     public int getScale() {
-        return (int)SCALE;
+        return (int) SCALE;
     }
 
     public String describeOptions() {

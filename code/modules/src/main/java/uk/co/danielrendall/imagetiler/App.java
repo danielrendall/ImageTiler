@@ -1,6 +1,6 @@
 package uk.co.danielrendall.imagetiler;
 
-import uk.co.danielrendall.imagetiler.image.*;
+import uk.co.danielrendall.imagetiler.image.ImageTiler;
 import uk.co.danielrendall.imagetiler.shared.ConfigStore;
 import uk.co.danielrendall.imagetiler.svg.*;
 import org.kohsuke.args4j.Option;

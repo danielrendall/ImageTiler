@@ -34,7 +34,7 @@ public class RotatedSquareSVGTile extends SimpleSVGTile {
     private final boolean diamond;
 
     public RotatedSquareSVGTile(
-            @DoubleParameter(name = NAME_INSET, description = DESCRIPTION_INSET, defaultValue=0.15d, minValue = 0.0d, maxValue = 0.5d)
+            @DoubleParameter(name = NAME_INSET, description = DESCRIPTION_INSET, defaultValue=0.15d, minValue = -2.0d, maxValue = 2.0d)
             double inset,
             @DoubleParameter(name = NAME_STROKE_WIDTH, description = DESCRIPTION_STROKE_WIDTH, defaultValue=0.05d, minValue = 0.001d, maxValue = 0.5d)
             double strokeWidth,
