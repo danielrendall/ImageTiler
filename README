@@ -1,0 +1,3 @@
+This is a simple application to generate interesting SVG files from bitmaps. There's currently
+no documentation, but I'm slowly trying to turn it into a GUI rather than a command line 
+application.
