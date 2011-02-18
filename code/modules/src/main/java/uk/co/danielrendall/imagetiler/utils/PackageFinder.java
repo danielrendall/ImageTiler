@@ -18,50 +18,76 @@
 
 package uk.co.danielrendall.imagetiler.utils;
 
-import org.junit.Test;
-
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * @author Daniel Rendall
  */
-public class FindClassesTest {
+public class PackageFinder {
 
-    public static void main(String[] args) throws IOException {
-        new FindClassesTest().testFindProps();
-    }
 
-    @Test
-    public void testFindProps() throws IOException {
+    public List<ClassInfo> getAllTileClasses() throws IOException, ClassNotFoundException, URISyntaxException {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        List<ClassInfo> ret = new ArrayList<ClassInfo>();
         assert classLoader != null;
         Enumeration<URL> resources = classLoader.getResources("packages.properties");
-        List<File> dirs = new ArrayList<File>();
         while (resources.hasMoreElements()) {
             URL resource = resources.nextElement();
-            dirs.add(new File(resource.getFile()));
-            System.out.println(resource.toExternalForm());
+            Properties props = new Properties();
+            props.load(resource.openStream());
+            String author = props.getProperty("imagetiler.author");
+            String url = props.getProperty("imagetiler.url");
+            String tiles = props.getProperty("imagetiler.tiles");
+            addAllTileClasses(ret, tiles, author, url);
         }
-
-    }
-    @Test
-    public void testFindClasses() {
-        try {
-            Class[] classes = getClasses("uk.co.danielrendall.imagetiler.svg.tiles");
-            int i=1;
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
+        return ret;
     }
 
+    private void addAllTileClasses(List<ClassInfo> ret, String packageName, String author, String url) throws IOException, ClassNotFoundException {
+        Class[] allClasses = getClasses(packageName);
+        for (int i = 0; i < allClasses.length; i++) {
+            Class clazz = allClasses[i];
+            ret.add(new ClassInfo(clazz, clazz.getName(), author, url));
+        }
+    }
 
+    public class ClassInfo {
+        private final Class clazz;
+        private final String author;
+        private final String url;
+        private final String tileName;
+
+        public ClassInfo(Class clazz, String tileName, String author, String url) {
+            this.author = author;
+            this.clazz = clazz;
+            this.tileName = tileName;
+            this.url = url;
+        }
+
+        public String getAuthor() {
+            return author;
+        }
+
+        public Class getClazz() {
+            return clazz;
+        }
+
+        public String getTileName() {
+            return tileName;
+        }
+
+        public String getUrl() {
+            return url;
+        }
+    }
     // http://snippets.dzone.com/posts/show/4831
 /**
      * Scans all classes accessible from the context class loader which belong to the given package and subpackages.
@@ -71,7 +97,7 @@ public class FindClassesTest {
      * @throws ClassNotFoundException
      * @throws IOException
      */
-    private static Class[] getClasses(String packageName)
+    private Class[] getClasses(String packageName)
             throws ClassNotFoundException, IOException {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         assert classLoader != null;
@@ -97,7 +123,7 @@ public class FindClassesTest {
         * @return The classes
         * @throws ClassNotFoundException
         */
-       private static List<Class> findClasses(File directory, String packageName) throws ClassNotFoundException {
+       private List<Class> findClasses(File directory, String packageName) throws ClassNotFoundException {
            List<Class> classes = new ArrayList<Class>();
            if (!directory.exists()) {
                return classes;
@@ -113,5 +139,4 @@ public class FindClassesTest {
            }
            return classes;
        }
-
 }

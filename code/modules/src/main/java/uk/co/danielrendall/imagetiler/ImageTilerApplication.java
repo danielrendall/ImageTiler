@@ -53,6 +53,10 @@ public class ImageTilerApplication extends SingleFrameApplication {
     private JDialog aboutBox = null;
     private  BufferedImage bitmap = null;
 
+    public static void main(String[] args) {
+        Application.launch(ImageTilerApplication.class, args);
+    }
+
     public BufferedImage getBitmap() {
         return bitmap;
     }
@@ -64,6 +68,7 @@ public class ImageTilerApplication extends SingleFrameApplication {
         appResourceMap.injectComponents(fc);
         return fc;
     }
+    
     /* Set the bound file property and update the GUI.
     */
 
@@ -73,9 +78,6 @@ public class ImageTilerApplication extends SingleFrameApplication {
         firePropertyChange("file", oldValue, this.bitmap);
     }
 
-    public static void main(String[] args) {
-        Application.launch(ImageTilerApplication.class, args);
-    }
 
     @org.jdesktop.application.Action
     public Task open() {
