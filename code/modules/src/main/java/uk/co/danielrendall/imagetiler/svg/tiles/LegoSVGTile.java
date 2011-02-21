@@ -35,7 +35,52 @@ import java.util.List;
  * @author Daniel Rendall
  */
 public class LegoSVGTile extends SimpleSVGTile {
+    /**
+     *   <defs
+     id="defs3151">
+    <linearGradient
+       id="linearGradient3923">
+      <stop
+         id="stop3931"
+         offset="0"
+         style="stop-color:#d2ca00;stop-opacity:1;" />
+      <stop
+         style="stop-color:#fff600;stop-opacity:1;"
+         offset="1"
+         id="stop3927" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3923"
+       id="linearGradient3929"
+       x1="0.9375"
+       y1="-2.5"
+       x2="2.4425826"
+       y2="-0.97650629"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3923"
+       id="linearGradient3951"
+       x1="1.4393398"
+       y1="-3"
+       x2="3.0564513"
+       y2="-1.4379368"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
 
+     ...
+     <path
+        d="M 1.4393398282201788 -3.560660171779821 L 2.439339828220179 -4.560660171779821 L 4.560660171779821 -2.4393398282201786 L 3.560660171779821 -1.4393398282201786 z"
+        transform=""
+        id="path3145"
+        style="fill-opacity:1;fill:url(#linearGradient3951)"
+        stroke-width="0.0"
+        stroke="black"
+        fill-opacity="1.0"
+        fill="#fff600" />
+     
+     */
 
     private static final String NAME_BLOB_RADIUS = "blobRadius";
     private static final String DESCRIPTION_BLOB_RADIUS = "Radius of blob";
@@ -143,6 +188,12 @@ public class LegoSVGTile extends SimpleSVGTile {
             c.setFillOpacity(1.0);
             c.setRadius(effectiveWidth * blobRadius);
 
+            StraightLine line = new StraightLine();
+            line.setFill(hexValue(context.getColor()));
+            line.setStroke("black");
+            line.setStrokeWidth(strokeWidth);
+            line.setFillOpacity(1.0);
+
             p.setStrokeWidth(0.0d);
             p.setFillOpacity(1.0d);
             for (int i = 0; i < blobList.size(); i++) {
@@ -169,6 +220,13 @@ public class LegoSVGTile extends SimpleSVGTile {
                 c.setCentre(displacedCentre);
                 group.appendChild(c.getElement(context));
 
+                line.setStart(lowerCircleTopLeft);
+                line.setEnd(upperCircleTopLeft);
+                group.appendChild(line.getElement(context));
+
+                line.setStart(lowerCircleBottomRight);
+                line.setEnd(upperCircleBottomRight);
+                group.appendChild(line.getElement(context));
 
             }
 
