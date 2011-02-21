@@ -18,6 +18,8 @@
 
 package uk.co.danielrendall.imagetiler.shared;
 
+import uk.co.danielrendall.mathlib.geom2d.Compass;
+
 /**
  * Created by IntelliJ IDEA.
  * User: daniel
@@ -33,6 +35,39 @@ public class Pixel {
     public Pixel(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+
+    public Pixel(Pixel start, int xDisp, int yDisp) {
+        this.x = start.x + xDisp;
+        this.y = start.y + yDisp;
+    }
+
+    public Pixel displace(int distance, Compass direction) {
+        switch (direction) {
+
+            case NE:
+                return new Pixel(this, distance, -distance);
+            case NW:
+                return new Pixel(this, -distance, -distance);
+            case SW:
+                return new Pixel(this, -distance, distance);
+            case SE:
+                return new Pixel(this, distance, distance);
+            case N:
+                return new Pixel(this, 0, -distance);
+            case S:
+                return new Pixel(this, 0, distance);
+            case E:
+                return new Pixel(this, distance, 0);
+            case W:
+                return new Pixel(this, -distance, 0);
+            default:
+                return new Pixel(this, 0, 0);
+        }
+    }
+
+    public Pixel displace(Compass direction) {
+        return displace(1, direction);
     }
 
     public int getX() {
