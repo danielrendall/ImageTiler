@@ -90,6 +90,17 @@ public class ImageTilerApplication extends SingleFrameApplication {
         return task;
     }
 
+    @org.jdesktop.application.Action
+    public Task save() {
+        JFileChooser fc = createFileChooser("saveFileChooser", bmpFileFilter);
+        int option = fc.showOpenDialog(getMainFrame());
+        Task task = null;
+        if (JFileChooser.APPROVE_OPTION == option) {
+            task = new LoadFileTask(fc.getSelectedFile());
+        }
+        return task;
+    }
+
     @Override
     protected void startup() {
         StatusBar statusBar = new StatusBar(this, getContext().getTaskMonitor());
