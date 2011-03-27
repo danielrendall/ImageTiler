@@ -24,10 +24,11 @@ import java.awt.*;
 /**
  * @author Daniel Rendall
  */
-public class SettingsPanel extends JPanel {
+public class BitmapPreviewPanel extends JPanel {
 
-    public SettingsPanel() {
+    public BitmapPreviewPanel() {
         this.setLayout(new BorderLayout());
-        this.add(new JLabel("SettingsPanel"));
+        this.add(new JLabel("BitmapPreviewPanel"));
     }
+
 }

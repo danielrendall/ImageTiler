@@ -38,6 +38,7 @@ public class ImageTilerPanel extends JLayeredPane {
     private final JXMultiSplitPane splitPane;
     private final JSVGCanvas canvas;
     private final SettingsPanel settings;
+    private final BitmapPreviewPanel bitmap;
 
 
     public ImageTilerPanel() {
@@ -47,21 +48,42 @@ public class ImageTilerPanel extends JLayeredPane {
         canvas.getActionMap().setParent(getActionMap());
         JSVGScrollPane canvasScrollPane = new JSVGScrollPane(canvas);
 
-        MultiSplitLayout.Split modelRoot = new MultiSplitLayout.Split();
-        List<MultiSplitLayout.Node> children =
+        MultiSplitLayout.Split leftSide = new MultiSplitLayout.Split();
+        leftSide.setRowLayout(false);
+        List<MultiSplitLayout.Node> leftSideChildren =
                 Arrays.asList(new MultiSplitLayout.Leaf("settings"),
+                        new MultiSplitLayout.Divider(),
+                        new MultiSplitLayout.Leaf("bitmap"));
+        leftSide.setChildren(leftSideChildren);
+
+        MultiSplitLayout mslLeft = new MultiSplitLayout(leftSide);
+        mslLeft.setFloatingDividers(true);
+
+        settings = new SettingsPanel();
+        bitmap = new BitmapPreviewPanel();
+
+        JXMultiSplitPane leftSplitPane = new JXMultiSplitPane(mslLeft);
+        leftSplitPane.add(settings, "settings");
+        leftSplitPane.add(bitmap, "bitmap");
+
+
+
+        MultiSplitLayout.Split modelRoot = new MultiSplitLayout.Split();
+
+        List<MultiSplitLayout.Node> children =
+                Arrays.asList(new MultiSplitLayout.Leaf("leftSide"),
                         new MultiSplitLayout.Divider(),
                         new MultiSplitLayout.Leaf("svg"));
         modelRoot.setChildren(children);
 
+
         MultiSplitLayout msl = new MultiSplitLayout(modelRoot);
         msl.setFloatingDividers(true);
 
-        settings = new SettingsPanel();
 
         splitPane = new JXMultiSplitPane(msl);
 
-        splitPane.add(settings, "settings");
+        splitPane.add(leftSplitPane, "leftSide");
         splitPane.add(canvasScrollPane, "svg");
 
         this.addComponentListener(new ComponentAdapter() {
