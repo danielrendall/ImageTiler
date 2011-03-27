@@ -25,6 +25,9 @@ import org.jdesktop.swingx.JXMultiSplitPane;
 import org.jdesktop.swingx.MultiSplitLayout;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,13 +37,14 @@ import java.util.List;
 public class ImageTilerPanel extends JLayeredPane {
     private final JXMultiSplitPane splitPane;
     private final JSVGCanvas canvas;
+    private final SettingsPanel settings;
 
 
     public ImageTilerPanel() {
 
         canvas = new JSVGCanvas();
         canvas.setDocumentState(AbstractJSVGComponent.ALWAYS_DYNAMIC);
-        getActionMap().setParent(canvas.getActionMap());
+        canvas.getActionMap().setParent(getActionMap());
         JSVGScrollPane canvasScrollPane = new JSVGScrollPane(canvas);
 
         MultiSplitLayout.Split modelRoot = new MultiSplitLayout.Split();
@@ -53,8 +57,22 @@ public class ImageTilerPanel extends JLayeredPane {
         MultiSplitLayout msl = new MultiSplitLayout(modelRoot);
         msl.setFloatingDividers(true);
 
+        settings = new SettingsPanel();
+
         splitPane = new JXMultiSplitPane(msl);
 
+        splitPane.add(settings, "settings");
         splitPane.add(canvasScrollPane, "svg");
+
+        this.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                Rectangle r = e.getComponent().getBounds();
+                splitPane.setBounds(0, 0, r.width, r.height);
+            }
+        });
+
+        this.add(splitPane, DEFAULT_LAYER);
+
     }
 }
