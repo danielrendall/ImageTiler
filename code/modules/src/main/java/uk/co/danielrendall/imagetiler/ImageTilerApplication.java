@@ -69,7 +69,7 @@ public class ImageTilerApplication extends SingleFrameApplication {
     public void setBitmap(BufferedImage bitmap) {
         BufferedImage oldValue = this.bitmap;
         this.bitmap = bitmap;
-        firePropertyChange("file", oldValue, this.bitmap);
+        firePropertyChange("bitmap", oldValue, this.bitmap);
     }
 
 
@@ -112,7 +112,7 @@ public class ImageTilerApplication extends SingleFrameApplication {
     }
 
     private JComponent createMainPanel() {
-        imageTilerPanel = new ImageTilerPanel();
+        imageTilerPanel = new ImageTilerPanel(this);
         return imageTilerPanel;
     }
 

@@ -18,6 +18,8 @@
 
 package uk.co.danielrendall.imagetiler.gui;
 
+import uk.co.danielrendall.imagetiler.ImageTilerApplication;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -26,7 +28,7 @@ import java.awt.*;
  */
 public class SettingsPanel extends JPanel {
 
-    public SettingsPanel() {
+    public SettingsPanel(ImageTilerApplication app) {
         this.setLayout(new BorderLayout());
         this.add(new JLabel("SettingsPanel"));
     }

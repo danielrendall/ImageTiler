@@ -18,17 +18,31 @@
 
 package uk.co.danielrendall.imagetiler.gui;
 
+import uk.co.danielrendall.imagetiler.ImageTilerApplication;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 /**
  * @author Daniel Rendall
  */
 public class BitmapPreviewPanel extends JPanel {
 
-    public BitmapPreviewPanel() {
+    private final JLabel label;
+    public BitmapPreviewPanel(ImageTilerApplication app) {
         this.setLayout(new BorderLayout());
-        this.add(new JLabel("BitmapPreviewPanel"));
+        label = new JLabel();
+        add(label, BorderLayout.CENTER);
+        app.addPropertyChangeListener("bitmap", new PropertyChangeListener(){
+            public void propertyChange(PropertyChangeEvent evt) {
+                BufferedImage newImage = (BufferedImage) evt.getNewValue();
+                Icon icon = new ImageIcon(newImage);
+                label.setIcon(icon);
+            }
+        });
     }
 
 }

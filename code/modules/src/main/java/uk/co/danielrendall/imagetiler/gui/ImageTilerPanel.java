@@ -23,6 +23,7 @@ import org.apache.batik.swing.JSVGScrollPane;
 import org.apache.batik.swing.svg.AbstractJSVGComponent;
 import org.jdesktop.swingx.JXMultiSplitPane;
 import org.jdesktop.swingx.MultiSplitLayout;
+import uk.co.danielrendall.imagetiler.ImageTilerApplication;
 
 import javax.swing.*;
 import java.awt.*;
@@ -41,7 +42,7 @@ public class ImageTilerPanel extends JLayeredPane {
     private final BitmapPreviewPanel bitmap;
 
 
-    public ImageTilerPanel() {
+    public ImageTilerPanel(ImageTilerApplication app) {
 
         canvas = new JSVGCanvas();
         canvas.setDocumentState(AbstractJSVGComponent.ALWAYS_DYNAMIC);
@@ -59,8 +60,8 @@ public class ImageTilerPanel extends JLayeredPane {
         MultiSplitLayout mslLeft = new MultiSplitLayout(leftSide);
         mslLeft.setFloatingDividers(true);
 
-        settings = new SettingsPanel();
-        bitmap = new BitmapPreviewPanel();
+        settings = new SettingsPanel(app);
+        bitmap = new BitmapPreviewPanel(app);
 
         JXMultiSplitPane leftSplitPane = new JXMultiSplitPane(mslLeft);
         leftSplitPane.add(settings, "settings");
