@@ -31,18 +31,21 @@ import java.beans.PropertyChangeListener;
  */
 public class BitmapPreviewPanel extends JPanel {
 
-    private final JLabel label;
+    private BufferedImage image;
+
     public BitmapPreviewPanel(ImageTilerApplication app) {
-        this.setLayout(new BorderLayout());
-        label = new JLabel();
-        add(label, BorderLayout.CENTER);
         app.addPropertyChangeListener("bitmap", new PropertyChangeListener(){
             public void propertyChange(PropertyChangeEvent evt) {
                 BufferedImage newImage = (BufferedImage) evt.getNewValue();
-                Icon icon = new ImageIcon(newImage);
-                label.setIcon(icon);
+                BitmapPreviewPanel.this.image = newImage;
+                BitmapPreviewPanel.this.repaint();
             }
         });
     }
 
+    @Override
+    public void paintComponent(Graphics g) {
+        Rectangle bounds = getBounds();
+        g.drawImage(image, 0, 0, bounds.width, bounds.height, null);
+    }
 }
