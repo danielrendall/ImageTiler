@@ -24,22 +24,16 @@ import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.jdesktop.application.*;
 import uk.co.danielrendall.imagetiler.gui.ImageTilerPanel;
 import uk.co.danielrendall.imagetiler.gui.StatusBar;
-import uk.co.danielrendall.imagetiler.logging.Log;
+import uk.co.danielrendall.imagetiler.tasks.LoadFileTask;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.Action;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileFilter;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.EventObject;
-import java.util.logging.Level;
 
 
 /**
@@ -72,7 +66,7 @@ public class ImageTilerApplication extends SingleFrameApplication {
     /* Set the bound file property and update the GUI.
     */
 
-    private void setBitmap(BufferedImage bitmap) {
+    public void setBitmap(BufferedImage bitmap) {
         BufferedImage oldValue = this.bitmap;
         this.bitmap = bitmap;
         firePropertyChange("file", oldValue, this.bitmap);
@@ -85,7 +79,7 @@ public class ImageTilerApplication extends SingleFrameApplication {
         int option = fc.showOpenDialog(getMainFrame());
         Task task = null;
         if (JFileChooser.APPROVE_OPTION == option) {
-            task = new LoadFileTask(fc.getSelectedFile());
+            task = new LoadFileTask(this, fc.getSelectedFile());
         }
         return task;
     }
@@ -96,7 +90,7 @@ public class ImageTilerApplication extends SingleFrameApplication {
         int option = fc.showOpenDialog(getMainFrame());
         Task task = null;
         if (JFileChooser.APPROVE_OPTION == option) {
-            task = new LoadFileTask(fc.getSelectedFile());
+            task = new LoadFileTask(this, fc.getSelectedFile());
         }
         return task;
     }
@@ -317,54 +311,4 @@ public class ImageTilerApplication extends SingleFrameApplication {
         }
     };
 
-    private static class LoadBitmapFileTask extends Task<BufferedImage, Void> {
-        private final File file;
-
-        LoadBitmapFileTask(Application application, File file) {
-            super(application);
-            this.file = file;
-        }
-
-        public final File getFile() {
-            return file;
-        }
-
-        @Override
-        protected BufferedImage doInBackground() throws IOException {
-            setProgress(1.0f);
-            return ImageIO.read(file);
-        }
-    }
-
-    private class LoadFileTask extends LoadBitmapFileTask {
-        /* Construct the LoadFileTask object.  The constructor
-         * will run on the EDT, so we capture a reference to the
-         * File to be loaded here.  To keep things simple, the
-         * resources for this Task are specified to be in the same
-         * ResourceMap as the DocumentExample class's resources.
-         * They're defined in resources/DocumentExample.properties.
-         */
-        LoadFileTask(File file) {
-	    super(ImageTilerApplication.this, file);
-        }
-        /* Called on the EDT if doInBackground completes without
-         * error and this Task isn't cancelled.  We update the
-         * GUI as well as the file and modified properties here.
-         */
-        @Override protected void succeeded(BufferedImage bitmap) {
-            setBitmap(bitmap);
-        }
-        /* Called on the EDT if doInBackground fails because
-         * an uncaught exception is thrown.  We show an error
-         * dialog here.  The dialog is configured with resources
-         * loaded from this Tasks's ResourceMap.
-         */
-        @Override protected void failed(Throwable e) {
-            Log.gui.warn("couldn't load " + getFile(), e);
-            String msg = getResourceMap().getString("loadFailedMessage", getFile());
-            String title = getResourceMap().getString("loadFailedTitle");
-            int type = JOptionPane.ERROR_MESSAGE;
-            JOptionPane.showMessageDialog(getMainFrame(), msg, title, type);
-        }
-    }
 }
