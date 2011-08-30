@@ -31,7 +31,7 @@ public class PackageFinderTests {
 
     @Test
     public void testGetAllTileClasses() throws ClassNotFoundException, IOException, URISyntaxException {
-        List<PackageFinder.ClassInfo> tileClasses = new PackageFinder().getAllTileClasses();
+        List<PackageFinder.ClassInfo> tileClasses = PackageFinder.create().getAllTileClasses();
         int i=0;
         
     }

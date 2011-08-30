@@ -24,7 +24,9 @@ import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.jdesktop.application.*;
 import uk.co.danielrendall.imagetiler.gui.ImageTilerPanel;
 import uk.co.danielrendall.imagetiler.gui.StatusBar;
+import uk.co.danielrendall.imagetiler.logging.Log;
 import uk.co.danielrendall.imagetiler.tasks.LoadFileTask;
+import uk.co.danielrendall.imagetiler.utils.PackageFinder;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -33,7 +35,9 @@ import javax.swing.filechooser.FileFilter;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.EventObject;
+import java.io.IOException;
+import java.util.*;
+import java.util.List;
 
 
 /**
@@ -46,9 +50,14 @@ public class ImageTilerApplication extends SingleFrameApplication {
     ImageTilerPanel imageTilerPanel;
     private JDialog aboutBox = null;
     private  BufferedImage bitmap = null;
+    private final PackageFinder packageFinder;
 
     public static void main(String[] args) {
         Application.launch(ImageTilerApplication.class, args);
+    }
+
+    public ImageTilerApplication() {
+        packageFinder = PackageFinder.create();
     }
 
     public BufferedImage getBitmap() {
@@ -109,6 +118,13 @@ public class ImageTilerApplication extends SingleFrameApplication {
 
     @Override protected void initialize(String[] args) {
         appResourceMap = getContext().getResourceMap();
+        Log.gui.info("Initializing");
+        for(PackageFinder.ClassInfo tileInfo : packageFinder.getAllTileClasses()) {
+            Log.gui.debug("Tile " + tileInfo.getTileName() + " has class " + tileInfo.getClazz().getName());
+        }
+        for(PackageFinder.ClassInfo strategyInfo : packageFinder.getAllStrategyClasses()) {
+            Log.gui.debug("Strategy " + strategyInfo.getTileName() + " has class " + strategyInfo.getClazz().getName());
+        }
     }
 
     private JComponent createMainPanel() {
