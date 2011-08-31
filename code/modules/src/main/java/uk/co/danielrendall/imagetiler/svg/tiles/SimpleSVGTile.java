@@ -20,7 +20,6 @@ package uk.co.danielrendall.imagetiler.svg.tiles;
 
 import org.w3c.dom.Element;
 import uk.co.danielrendall.imagetiler.annotations.DoubleParameter;
-import uk.co.danielrendall.imagetiler.shared.ConfigStore;
 import uk.co.danielrendall.imagetiler.svg.SVGTile;
 import uk.co.danielrendall.imagetiler.svg.TileContext;
 import uk.co.danielrendall.imagetiler.svg.shapes.Rectangle;
@@ -38,36 +37,21 @@ import java.awt.*;
 public class SimpleSVGTile implements SVGTile {
 
 
-    protected static final String NAME_INSET = "inset";
-    protected static final String DESCRIPTION_INSET = "Fractional inset";
+    @DoubleParameter(name = "inset", description = "Fractional inset", defaultValue=0.15d, minValue = 0.0d, maxValue = 0.5d)
+    protected double inset;
+    @DoubleParameter(name = "strokeWidth", description = "Width of stroke as fraction of tile size", defaultValue=0.05d, minValue = 0.001d, maxValue = 0.5d)
+    protected double strokeWidth;
+    @DoubleParameter(name = "darkOpacity", description = "Opacity of dark areas", defaultValue=0.8d, minValue = 0.0d, maxValue = 1.0d)
+    protected double darkOpacity;
+    @DoubleParameter(name = "lightOpacity", description = "Opacity of light areas", defaultValue=0.6d, minValue = 0.0d, maxValue = 1.0d)
+    protected double lightOpacity;
 
-    protected static final String NAME_STROKE_WIDTH = "strokeWidth";
-    protected static final String DESCRIPTION_STROKE_WIDTH = "Width of stroke as fraction of tile size";
+    public SimpleSVGTile() {
+        setParametersToDefaults(this);
+    }
 
-    protected static final String NAME_DARK_OPACITY = "darkOpacity";
-    protected static final String DESCRIPTION_DARK_OPACITY = "Opacity of dark areas";
+    private static void setParametersToDefaults(SimpleSVGTile aTile) {
 
-    protected static final String NAME_LIGHT_OPACITY = "lightOpacity";
-    protected static final String DESCRIPTION_LIGHT_OPACITY = "Opacity of light areas";
-
-    protected final double inset;
-    protected final double strokeWidth;
-    protected final double darkOpacity;
-    protected final double lightOpacity;
-
-    public SimpleSVGTile(
-            @DoubleParameter(name = NAME_INSET, description = DESCRIPTION_INSET, defaultValue=0.15d, minValue = 0.0d, maxValue = 0.5d)
-            double inset,
-            @DoubleParameter(name = NAME_STROKE_WIDTH, description = DESCRIPTION_STROKE_WIDTH, defaultValue=0.05d, minValue = 0.001d, maxValue = 0.5d)
-            double strokeWidth,
-            @DoubleParameter(name = NAME_DARK_OPACITY, description = DESCRIPTION_DARK_OPACITY, defaultValue=0.8d, minValue = 0.0d, maxValue = 1.0d)
-            double darkOpacity,
-            @DoubleParameter(name = NAME_LIGHT_OPACITY, description = DESCRIPTION_LIGHT_OPACITY, defaultValue=0.6d, minValue = 0.0d, maxValue = 1.0d)
-            double lightOpacity) {
-        this.inset = inset;
-        this.strokeWidth = strokeWidth;
-        this.darkOpacity = darkOpacity;
-        this.lightOpacity = lightOpacity;
     }
 
     //    public SimpleSVGTile(ConfigStore store) {

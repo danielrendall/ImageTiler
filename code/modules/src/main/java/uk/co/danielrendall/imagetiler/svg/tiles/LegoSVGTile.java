@@ -35,87 +35,13 @@ import java.util.List;
  * @author Daniel Rendall
  */
 public class LegoSVGTile extends SimpleSVGTile {
-    /**
-     *   <defs
-     id="defs3151">
-    <linearGradient
-       id="linearGradient3923">
-      <stop
-         id="stop3931"
-         offset="0"
-         style="stop-color:#d2ca00;stop-opacity:1;" />
-      <stop
-         style="stop-color:#fff600;stop-opacity:1;"
-         offset="1"
-         id="stop3927" />
-    </linearGradient>
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3923"
-       id="linearGradient3929"
-       x1="0.9375"
-       y1="-2.5"
-       x2="2.4425826"
-       y2="-0.97650629"
-       gradientUnits="userSpaceOnUse" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3923"
-       id="linearGradient3951"
-       x1="1.4393398"
-       y1="-3"
-       x2="3.0564513"
-       y2="-1.4379368"
-       gradientUnits="userSpaceOnUse" />
-  </defs>
 
-     ...
-     <path
-        d="M 1.4393398282201788 -3.560660171779821 L 2.439339828220179 -4.560660171779821 L 4.560660171779821 -2.4393398282201786 L 3.560660171779821 -1.4393398282201786 z"
-        transform=""
-        id="path3145"
-        style="fill-opacity:1;fill:url(#linearGradient3951)"
-        stroke-width="0.0"
-        stroke="black"
-        fill-opacity="1.0"
-        fill="#fff600" />
-     
-     */
-
-    private static final String NAME_BLOB_RADIUS = "blobRadius";
-    private static final String DESCRIPTION_BLOB_RADIUS = "Radius of blob";
-
-    private static final String NAME_BLOB_HEIGHT = "blobHeight";
-    private static final String DESCRIPTION_BLOB_HEIGHT = "Height of the blob";
-
-    private static final String NAME_TILE_DEPTH = "tileDepth";
-    private static final String DESCRIPTION_TILE_DEPTH = "Depth of the lego tile";
-
-    protected final double blobRadius;
-    protected final double blobHeight;
-    protected final double tileDepth;
-
-    public LegoSVGTile(
-            @DoubleParameter(name = NAME_INSET, description = DESCRIPTION_INSET, defaultValue=0.0d, minValue = 0.0d, maxValue = 0.5d)
-            double inset,
-            @DoubleParameter(name = NAME_STROKE_WIDTH, description = DESCRIPTION_STROKE_WIDTH, defaultValue=0.05d, minValue = 0.001d, maxValue = 0.5d)
-            double strokeWidth,
-            @DoubleParameter(name = NAME_DARK_OPACITY, description = DESCRIPTION_DARK_OPACITY, defaultValue=0.8d, minValue = 0.0d, maxValue = 1.0d)
-            double darkOpacity,
-            @DoubleParameter(name = NAME_LIGHT_OPACITY, description = DESCRIPTION_LIGHT_OPACITY, defaultValue=0.6d, minValue = 0.0d, maxValue = 1.0d)
-            double lightOpacity,
-            @DoubleParameter(name = NAME_BLOB_RADIUS, description = DESCRIPTION_BLOB_RADIUS, defaultValue=0.15d, minValue = 0.001d, maxValue = 0.25d)
-            double blobRadius,
-            @DoubleParameter(name = NAME_BLOB_HEIGHT, description = DESCRIPTION_BLOB_HEIGHT, defaultValue=0.1d, minValue = 0.001d, maxValue = 0.3d)
-            double blobHeight,
-            @DoubleParameter(name = NAME_TILE_DEPTH, description = DESCRIPTION_TILE_DEPTH, defaultValue=0.2d, minValue = 0.001d, maxValue = 0.5d)
-            double tileDepth
-    ) {
-        super(inset, strokeWidth, darkOpacity, lightOpacity);
-        this.blobRadius = blobRadius;
-        this.blobHeight = blobHeight;
-        this.tileDepth = tileDepth;
-    }
+    @DoubleParameter(name = "blobRadius", description = "Radius of blob", defaultValue=0.15d, minValue = 0.001d, maxValue = 0.25d)
+    protected double blobRadius;
+    @DoubleParameter(name = "blobHeight", description = "Height of the blob", defaultValue=0.1d, minValue = 0.001d, maxValue = 0.3d)
+    protected double blobHeight;
+    @DoubleParameter(name = "tileDepth", description = "Depth of the lego tile", defaultValue=0.2d, minValue = 0.001d, maxValue = 0.5d)
+    protected double tileDepth;
 
     public boolean getTile(Element group, TileContext context) {
 

@@ -35,25 +35,8 @@ import java.awt.Color;
  */
 public class SquareExtrudedSVGTile extends SimpleSVGTile {
 
-    private static final String NAME_COLUMN_STROKE_WIDTH = "columnStrokeWidth";
-    private static final String DESCRIPTION_COLUMN_STROKE_WIDTH = "Width of stroke for column as fraction of tile size";
-
-    protected final double columnStrokeWidth;
-
-    public SquareExtrudedSVGTile(
-            @DoubleParameter(name = NAME_INSET, description = DESCRIPTION_INSET, defaultValue=0.15d, minValue = 0.0d, maxValue = 0.5d)
-            double inset,
-            @DoubleParameter(name = NAME_STROKE_WIDTH, description = DESCRIPTION_STROKE_WIDTH, defaultValue=0.05d, minValue = 0.001d, maxValue = 0.5d)
-            double strokeWidth,
-            @DoubleParameter(name = NAME_DARK_OPACITY, description = DESCRIPTION_DARK_OPACITY, defaultValue=0.8d, minValue = 0.0d, maxValue = 1.0d)
-            double darkOpacity,
-            @DoubleParameter(name = NAME_LIGHT_OPACITY, description = DESCRIPTION_LIGHT_OPACITY, defaultValue=0.6d, minValue = 0.0d, maxValue = 1.0d)
-            double lightOpacity,
-            @DoubleParameter(name = NAME_COLUMN_STROKE_WIDTH, description = DESCRIPTION_COLUMN_STROKE_WIDTH, defaultValue=0.01d, minValue = 0.001d, maxValue = 0.5d)
-            double columnStrokeWidth) {
-        super(inset, strokeWidth, darkOpacity, lightOpacity);
-        this.columnStrokeWidth = columnStrokeWidth;
-    }
+    @DoubleParameter(name = "columnStrokeWidth", description = "Width of stroke for column as fraction of tile size", defaultValue=0.01d, minValue = 0.001d, maxValue = 0.5d)
+    protected double columnStrokeWidth;
 
     public boolean getTile(Element group, TileContext context) {
 

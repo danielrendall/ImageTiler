@@ -38,34 +38,13 @@ import java.awt.Color;
 public class StarSVGTile extends SimpleSVGTile {
     public final static Logger log = Logger.getLogger(StarSVGTile.class);
 
-    private static final String NAME_INNER_RADIUS = "innerRadius";
-    private static final String DESCRIPTION_INNER_RADIUS = "Fractional inner radius of star";
-
-    private static final String NAME_OUTER_RADIUS = "outerRadius";
-    private static final String DESCRIPTION_OUTER_RADIUS = "Fractional outer radius of star";
-
     private final double increment = Math.PI / 5.0d;
 
-    private final double innerRadius;
-    private final double outerRadius;
+    @DoubleParameter(name = "innerRadius", description = "Fractional inner radius of star", defaultValue = 0.5d, minValue = 0.001d, maxValue = 10d)
+    private double innerRadius;
+    @DoubleParameter(name = "outerRadius", description = "Fractional outer radius of star", defaultValue = 1.0d, minValue = 0.001d, maxValue = 10d)
+    private double outerRadius;
 
-    public StarSVGTile(
-            @DoubleParameter(name = NAME_INSET, description = DESCRIPTION_INSET, defaultValue=0.15d, minValue = 0.0d, maxValue = 0.5d)
-            double inset,
-            @DoubleParameter(name = NAME_STROKE_WIDTH, description = DESCRIPTION_STROKE_WIDTH, defaultValue=0.05d, minValue = 0.001d, maxValue = 0.5d)
-            double strokeWidth,
-            @DoubleParameter(name = NAME_DARK_OPACITY, description = DESCRIPTION_DARK_OPACITY, defaultValue=0.8d, minValue = 0.0d, maxValue = 1.0d)
-            double darkOpacity,
-            @DoubleParameter(name = NAME_LIGHT_OPACITY, description = DESCRIPTION_LIGHT_OPACITY, defaultValue=0.6d, minValue = 0.0d, maxValue = 1.0d)
-            double lightOpacity,
-            @DoubleParameter(name = NAME_INNER_RADIUS, description = DESCRIPTION_INNER_RADIUS, defaultValue = 0.5d, minValue = 0.001d, maxValue = 10d)
-            double innerRadius,
-            @DoubleParameter(name = NAME_OUTER_RADIUS, description = DESCRIPTION_OUTER_RADIUS, defaultValue = 1.0d, minValue = 0.001d, maxValue = 10d)
-            double outerRadius) {
-        super(inset, strokeWidth, darkOpacity, lightOpacity);
-        this.innerRadius = innerRadius;
-        this.outerRadius = outerRadius;
-    }
 
     public boolean getTile(Element group, TileContext context) {
 

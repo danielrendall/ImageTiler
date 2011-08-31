@@ -82,7 +82,7 @@ public class SVGTileFactory {
         } catch (InvocationTargetException e) {
             log.warn("Couldn't create tile - " + e.getMessage(), e);
         }
-        return new SimpleSVGTile(0.1, 0.1, 0.8, 0.6);
+        return new SimpleSVGTile();
     }
 
     private Object getDouble(ConfigStore store, Annotation annotation) throws InstantiationException {

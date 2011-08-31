@@ -40,26 +40,10 @@ public class TrianglePointSVGTile extends SimpleSVGTile {
     public final static Logger log = Logger.getLogger(TrianglePointSVGTile.class);
 
 
-    private final double weight;
-    private final boolean contextWeighting;
-
-    public TrianglePointSVGTile(
-            @DoubleParameter(name = NAME_INSET, description = DESCRIPTION_INSET, defaultValue=0.15d, minValue = 0.0d, maxValue = 0.5d)
-            double inset,
-            @DoubleParameter(name = NAME_STROKE_WIDTH, description = DESCRIPTION_STROKE_WIDTH, defaultValue=0.05d, minValue = 0.001d, maxValue = 0.5d)
-            double strokeWidth,
-            @DoubleParameter(name = NAME_DARK_OPACITY, description = DESCRIPTION_DARK_OPACITY, defaultValue=0.8d, minValue = 0.0d, maxValue = 1.0d)
-            double darkOpacity,
-            @DoubleParameter(name = NAME_LIGHT_OPACITY, description = DESCRIPTION_LIGHT_OPACITY, defaultValue=0.6d, minValue = 0.0d, maxValue = 1.0d)
-            double lightOpacity,
-            @DoubleParameter(name = "weight", description = "How big to make the line", defaultValue = 1.0d, minValue = 0.01d, maxValue = 10d)
-            double weight,
-            @BooleanParameter(name = "contextWeighting", description = "Whether to weight by distance from center", defaultValue = true)
-            boolean contextWeighting) {
-        super(inset, strokeWidth, darkOpacity, lightOpacity);
-        this.weight = weight;
-        this.contextWeighting = contextWeighting;
-    }
+    @DoubleParameter(name = "weight", description = "How big to make the line", defaultValue = 1.0d, minValue = 0.01d, maxValue = 10d)
+    private double weight;
+    @BooleanParameter(name = "contextWeighting", description = "Whether to weight by distance from center", defaultValue = true)
+    private boolean contextWeighting;
 
     public boolean getTile(Element group, TileContext context) {
 
