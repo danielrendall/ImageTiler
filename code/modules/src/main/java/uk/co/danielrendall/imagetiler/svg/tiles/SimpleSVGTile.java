@@ -19,6 +19,7 @@
 package uk.co.danielrendall.imagetiler.svg.tiles;
 
 import org.w3c.dom.Element;
+import uk.co.danielrendall.imagetiler.annotations.ClassDescriptor;
 import uk.co.danielrendall.imagetiler.annotations.DoubleParameter;
 import uk.co.danielrendall.imagetiler.svg.SVGTile;
 import uk.co.danielrendall.imagetiler.svg.TileContext;
@@ -34,6 +35,7 @@ import java.awt.*;
  * Time: 10:02:55 PM
  * To change this template use File | Settings | File Templates.
  */
+@ClassDescriptor(name="Simple", description="Simple square")
 public class SimpleSVGTile implements SVGTile {
 
 

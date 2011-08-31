@@ -19,6 +19,7 @@
 package uk.co.danielrendall.imagetiler.svg.testtiles;
 
 import org.w3c.dom.Element;
+import uk.co.danielrendall.imagetiler.annotations.ClassDescriptor;
 import uk.co.danielrendall.imagetiler.annotations.DoubleParameter;
 import uk.co.danielrendall.imagetiler.svg.SVGTile;
 import uk.co.danielrendall.imagetiler.svg.TileContext;
@@ -30,28 +31,17 @@ import java.awt.*;
 /**
  * Test class to test finding of classes
  */
+@ClassDescriptor(name="Test", description="Test tile")
 public class TestSVGTile implements SVGTile {
 
 
-    protected static final String NAME_INSET = "inset";
-    protected static final String DESCRIPTION_INSET = "Fractional inset";
-
-    protected static final String NAME_STROKE_WIDTH = "strokeWidth";
-    protected static final String DESCRIPTION_STROKE_WIDTH = "Width of stroke as fraction of tile size";
-
-    protected static final String NAME_DARK_OPACITY = "darkOpacity";
-    protected static final String DESCRIPTION_DARK_OPACITY = "Opacity of dark areas";
-
-    protected static final String NAME_LIGHT_OPACITY = "lightOpacity";
-    protected static final String DESCRIPTION_LIGHT_OPACITY = "Opacity of light areas";
-
-    @DoubleParameter(name = NAME_INSET, description = DESCRIPTION_INSET, defaultValue=0.15d, minValue = 0.0d, maxValue = 0.5d)
+    @DoubleParameter(name = "inset", description = "Fractional inset", defaultValue=0.15d, minValue = 0.0d, maxValue = 0.5d)
     protected double inset;
-    @DoubleParameter(name = NAME_STROKE_WIDTH, description = DESCRIPTION_STROKE_WIDTH, defaultValue=0.05d, minValue = 0.001d, maxValue = 0.5d)
+    @DoubleParameter(name = "strokeWidth", description = "Width of stroke as fraction of tile size", defaultValue=0.05d, minValue = 0.001d, maxValue = 0.5d)
     protected double strokeWidth;
-    @DoubleParameter(name = NAME_DARK_OPACITY, description = DESCRIPTION_DARK_OPACITY, defaultValue=0.8d, minValue = 0.0d, maxValue = 1.0d)
+    @DoubleParameter(name = "darkOpacity", description = "Opacity of dark areas", defaultValue=0.8d, minValue = 0.0d, maxValue = 1.0d)
     protected double darkOpacity;
-    @DoubleParameter(name = NAME_LIGHT_OPACITY, description = DESCRIPTION_LIGHT_OPACITY, defaultValue=0.6d, minValue = 0.0d, maxValue = 1.0d)
+    @DoubleParameter(name = "lightOpacity", description = "Opacity of light areas", defaultValue=0.6d, minValue = 0.0d, maxValue = 1.0d)
     protected double lightOpacity;
 
     public boolean getTile(Element group, TileContext context) {

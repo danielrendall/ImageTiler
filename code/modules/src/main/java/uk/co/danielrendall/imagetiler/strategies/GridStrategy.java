@@ -18,6 +18,7 @@
 
 package uk.co.danielrendall.imagetiler.strategies;
 
+import uk.co.danielrendall.imagetiler.annotations.ClassDescriptor;
 import uk.co.danielrendall.imagetiler.shared.Pixel;
 import uk.co.danielrendall.imagetiler.shared.PixelFilter;
 import uk.co.danielrendall.imagetiler.shared.ScannerStrategy;
@@ -29,6 +30,7 @@ import uk.co.danielrendall.imagetiler.shared.ScannerStrategy;
  * Time: 10:34:25
  * To change this template use File | Settings | File Templates.
  */
+@ClassDescriptor(name="Grid", description="Row then column from top-left to bottom-right")
 public class GridStrategy extends ScannerStrategy {
 
     private int x, y;

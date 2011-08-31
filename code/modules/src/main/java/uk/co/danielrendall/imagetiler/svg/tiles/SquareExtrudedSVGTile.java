@@ -19,6 +19,7 @@
 package uk.co.danielrendall.imagetiler.svg.tiles;
 
 import org.w3c.dom.Element;
+import uk.co.danielrendall.imagetiler.annotations.ClassDescriptor;
 import uk.co.danielrendall.imagetiler.annotations.DoubleParameter;
 import uk.co.danielrendall.imagetiler.svg.TileContext;
 import uk.co.danielrendall.imagetiler.svg.shapes.*;
@@ -33,6 +34,7 @@ import java.awt.Color;
  * Time: 12:38:16
  * To change this template use File | Settings | File Templates.
  */
+@ClassDescriptor(name="SquareExtruded", description="Square with lines from corners to center of image")
 public class SquareExtrudedSVGTile extends SimpleSVGTile {
 
     @DoubleParameter(name = "columnStrokeWidth", description = "Width of stroke for column as fraction of tile size", defaultValue=0.01d, minValue = 0.001d, maxValue = 0.5d)

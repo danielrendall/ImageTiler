@@ -21,6 +21,7 @@ package uk.co.danielrendall.imagetiler.svg.tiles;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Element;
 import uk.co.danielrendall.imagetiler.annotations.BooleanParameter;
+import uk.co.danielrendall.imagetiler.annotations.ClassDescriptor;
 import uk.co.danielrendall.imagetiler.annotations.DoubleParameter;
 import uk.co.danielrendall.imagetiler.svg.TileContext;
 import uk.co.danielrendall.imagetiler.svg.shapes.*;
@@ -36,6 +37,7 @@ import java.awt.Color;
  * Time: 16:05:34
  * To change this template use File | Settings | File Templates.
  */
+@ClassDescriptor(name="TrianglePoint", description="Triangle with apex at center of image")
 public class TrianglePointSVGTile extends SimpleSVGTile {
     public final static Logger log = Logger.getLogger(TrianglePointSVGTile.class);
 

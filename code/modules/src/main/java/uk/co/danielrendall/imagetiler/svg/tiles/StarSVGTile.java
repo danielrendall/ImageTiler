@@ -20,6 +20,7 @@ package uk.co.danielrendall.imagetiler.svg.tiles;
 
 import org.apache.log4j.Logger;
 import org.w3c.dom.Element;
+import uk.co.danielrendall.imagetiler.annotations.ClassDescriptor;
 import uk.co.danielrendall.imagetiler.annotations.DoubleParameter;
 import uk.co.danielrendall.imagetiler.svg.TileContext;
 import uk.co.danielrendall.imagetiler.svg.shapes.*;
@@ -35,9 +36,11 @@ import java.awt.Color;
  * Time: 21:08:22
  * To change this template use File | Settings | File Templates.
  */
+@ClassDescriptor(name="Star", description="5-pointed star")
 public class StarSVGTile extends SimpleSVGTile {
     public final static Logger log = Logger.getLogger(StarSVGTile.class);
 
+    // TODO - make this configurable, also the initial angle
     private final double increment = Math.PI / 5.0d;
 
     @DoubleParameter(name = "innerRadius", description = "Fractional inner radius of star", defaultValue = 0.5d, minValue = 0.001d, maxValue = 10d)

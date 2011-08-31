@@ -25,6 +25,10 @@ import org.jdesktop.application.*;
 import uk.co.danielrendall.imagetiler.gui.ImageTilerPanel;
 import uk.co.danielrendall.imagetiler.gui.StatusBar;
 import uk.co.danielrendall.imagetiler.logging.Log;
+import uk.co.danielrendall.imagetiler.registry.ClassDescription;
+import uk.co.danielrendall.imagetiler.registry.PluginRegistry;
+import uk.co.danielrendall.imagetiler.shared.ScannerStrategy;
+import uk.co.danielrendall.imagetiler.svg.SVGTile;
 import uk.co.danielrendall.imagetiler.tasks.LoadFileTask;
 import uk.co.danielrendall.imagetiler.utils.ClassInfo;
 import uk.co.danielrendall.imagetiler.utils.PackageFinder;
@@ -44,19 +48,27 @@ import java.util.*;
  */
 public class ImageTilerApplication extends SingleFrameApplication {
 
+    public final static String PLUGIN_TYPE_TILE = "tile";
+    public final static String PLUGIN_TYPE_STRATEGY = "strategy";
+
+
     private static final Insets zeroInsets = new Insets(0, 0, 0, 0);
     private ResourceMap appResourceMap;
     ImageTilerPanel imageTilerPanel;
     private JDialog aboutBox = null;
     private  BufferedImage bitmap = null;
-    private final PackageFinder packageFinder;
+    private final PluginRegistry pluginRegistry;
 
     public static void main(String[] args) {
         Application.launch(ImageTilerApplication.class, args);
     }
 
     public ImageTilerApplication() {
-        packageFinder = PackageFinder.create();
+        pluginRegistry = PluginRegistry
+                .builder()
+                .withPropertiesAndClass(PLUGIN_TYPE_TILE, "tiles.properties", SVGTile.class)
+                .withPropertiesAndClass(PLUGIN_TYPE_STRATEGY, "strategies.properties", ScannerStrategy.class)
+                .build();
     }
 
     public BufferedImage getBitmap() {
@@ -118,11 +130,12 @@ public class ImageTilerApplication extends SingleFrameApplication {
     @Override protected void initialize(String[] args) {
         appResourceMap = getContext().getResourceMap();
         Log.gui.info("Initializing");
-        for(ClassInfo tileInfo : packageFinder.getAllTileClasses()) {
-            Log.gui.debug("Tile " + tileInfo.getTileName() + " has class " + tileInfo.getClazz().getName());
+
+        for(ClassDescription info : pluginRegistry.getClassDescriptions(PLUGIN_TYPE_TILE)) {
+            Log.gui.debug("Tile " + info.getName() + " has class " + info.getClazz().getName());
         }
-        for(ClassInfo strategyInfo : packageFinder.getAllStrategyClasses()) {
-            Log.gui.debug("Strategy " + strategyInfo.getTileName() + " has class " + strategyInfo.getClazz().getName());
+        for(ClassDescription info : pluginRegistry.getClassDescriptions(PLUGIN_TYPE_STRATEGY)) {
+            Log.gui.debug("Tile " + info.getName() + " has class " + info.getClazz().getName());
         }
     }
 
@@ -131,15 +144,15 @@ public class ImageTilerApplication extends SingleFrameApplication {
         return imageTilerPanel;
     }
 
-    public Vector<ClassInfo> getTileClassesList() {
-        Vector<ClassInfo> classes = new Vector<ClassInfo>();
-        classes.addAll(packageFinder.getAllTileClasses());
+    public Vector<ClassDescription> getTileClassesList() {
+        Vector<ClassDescription> classes = new Vector<ClassDescription>();
+        classes.addAll(pluginRegistry.getClassDescriptions(PLUGIN_TYPE_TILE));
         return classes;
     }
 
-    public Vector<ClassInfo> getStrategyClassesList() {
-        Vector<ClassInfo> classes = new Vector<ClassInfo>();
-        classes.addAll(packageFinder.getAllStrategyClasses());
+    public Vector<ClassDescription> getStrategyClassesList() {
+        Vector<ClassDescription> classes = new Vector<ClassDescription>();
+        classes.addAll(pluginRegistry.getClassDescriptions(PLUGIN_TYPE_STRATEGY));
         return classes;
     }
     /* Returns a JMenu named menuName that contains a JMenuItem

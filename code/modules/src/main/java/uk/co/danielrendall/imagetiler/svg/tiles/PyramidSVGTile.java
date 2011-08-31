@@ -19,6 +19,7 @@
 package uk.co.danielrendall.imagetiler.svg.tiles;
 
 import org.w3c.dom.Element;
+import uk.co.danielrendall.imagetiler.annotations.ClassDescriptor;
 import uk.co.danielrendall.imagetiler.annotations.DoubleParameter;
 import uk.co.danielrendall.imagetiler.svg.TileContext;
 import uk.co.danielrendall.imagetiler.svg.shapes.Polygon;
@@ -33,6 +34,7 @@ import java.awt.Color;
  * Time: 10:41:54 PM
  * To change this template use File | Settings | File Templates.
  */
+@ClassDescriptor(name="Pyramid", description="Top view of a pyramid")
 public class PyramidSVGTile extends SimpleSVGTile {
 
     public boolean getTile(Element group, TileContext context) {

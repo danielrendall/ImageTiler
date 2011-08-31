@@ -19,6 +19,7 @@
 package uk.co.danielrendall.imagetiler.svg.tiles;
 
 import org.w3c.dom.Element;
+import uk.co.danielrendall.imagetiler.annotations.ClassDescriptor;
 import uk.co.danielrendall.imagetiler.annotations.DoubleParameter;
 import uk.co.danielrendall.imagetiler.svg.TileContext;
 import uk.co.danielrendall.imagetiler.svg.shapes.*;
@@ -34,6 +35,7 @@ import java.util.List;
 /**
  * @author Daniel Rendall
  */
+@ClassDescriptor(name="Lego", description="Thin 2x2 lego block")
 public class LegoSVGTile extends SimpleSVGTile {
 
     @DoubleParameter(name = "blobRadius", description = "Radius of blob", defaultValue=0.15d, minValue = 0.001d, maxValue = 0.25d)

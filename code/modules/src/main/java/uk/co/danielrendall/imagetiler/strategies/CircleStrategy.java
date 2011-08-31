@@ -19,6 +19,7 @@
 package uk.co.danielrendall.imagetiler.strategies;
 
 import org.apache.log4j.Logger;
+import uk.co.danielrendall.imagetiler.annotations.ClassDescriptor;
 import uk.co.danielrendall.imagetiler.shared.Pixel;
 import uk.co.danielrendall.imagetiler.shared.PixelFilter;
 import uk.co.danielrendall.imagetiler.shared.ScannerStrategy;
@@ -33,6 +34,7 @@ import java.util.*;
  * Time: 11:29:51
  * To change this template use File | Settings | File Templates.
  */
+@ClassDescriptor(name="Circle", description="Concentric circles running out from the center")
 public class CircleStrategy extends ScannerStrategy {
     public final static Logger log = Logger.getLogger(CircleStrategy.class);
 

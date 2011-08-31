@@ -18,6 +18,7 @@
 
 package uk.co.danielrendall.imagetiler.strategies;
 
+import uk.co.danielrendall.imagetiler.annotations.ClassDescriptor;
 import uk.co.danielrendall.imagetiler.shared.Pixel;
 import uk.co.danielrendall.imagetiler.shared.PixelFilter;
 import uk.co.danielrendall.imagetiler.shared.ScannerStrategy;
@@ -28,6 +29,7 @@ import uk.co.danielrendall.mathlib.geom2d.Compass;
  * use with the Lego tile, so that the overlaps come out right.
  * @author Daniel Rendall
  */
+@ClassDescriptor(name="Isometric", description="Starts at top-left, fills diagonal rows and finishes at bottom-right")
 public class IsometricStrategy extends ScannerStrategy {
 
     private Pixel currentStart;
