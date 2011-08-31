@@ -16,28 +16,41 @@
  * along with ImageTiler.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package uk.co.danielrendall.imagetiler.gui;
-
-import uk.co.danielrendall.imagetiler.ImageTilerApplication;
-
-import javax.swing.*;
-import java.awt.*;
+package uk.co.danielrendall.imagetiler.utils;
 
 /**
- * @author Daniel Rendall
- */
-public class SettingsPanel extends JPanel {
+* @author Daniel Rendall
+*/
+public class ClassInfo {
+    private final Class clazz;
+    private final String author;
+    private final String url;
+    private final String tileName;
 
-    private final JComboBox tilesDropDown;
-    private final JComboBox strategiesDropDown;
+    public ClassInfo(Class clazz, String tileName, String author, String url) {
+        this.author = author;
+        this.clazz = clazz;
+        this.tileName = tileName;
+        this.url = url;
+    }
 
-    public SettingsPanel(ImageTilerApplication app) {
-        this.setLayout(new GridBagLayout());
-        this.add(new JLabel("SettingsPanel"));
-        tilesDropDown = new JComboBox(app.getTileClassesList());
-        this.add(tilesDropDown);
-        strategiesDropDown = new JComboBox(app.getStrategyClassesList());
-        this.add(strategiesDropDown);
+    public String getAuthor() {
+        return author;
+    }
 
+    public Class getClazz() {
+        return clazz;
+    }
+
+    public String getTileName() {
+        return tileName;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public String toString() {
+        return getTileName();
     }
 }

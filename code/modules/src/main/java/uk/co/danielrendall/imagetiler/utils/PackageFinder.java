@@ -99,35 +99,6 @@ public class PackageFinder {
         }
     }
 
-    public static class ClassInfo {
-        private final Class clazz;
-        private final String author;
-        private final String url;
-        private final String tileName;
-
-        public ClassInfo(Class clazz, String tileName, String author, String url) {
-            this.author = author;
-            this.clazz = clazz;
-            this.tileName = tileName;
-            this.url = url;
-        }
-
-        public String getAuthor() {
-            return author;
-        }
-
-        public Class getClazz() {
-            return clazz;
-        }
-
-        public String getTileName() {
-            return tileName;
-        }
-
-        public String getUrl() {
-            return url;
-        }
-    }
     // http://snippets.dzone.com/posts/show/4831
 
     /**

@@ -26,6 +26,7 @@ import uk.co.danielrendall.imagetiler.gui.ImageTilerPanel;
 import uk.co.danielrendall.imagetiler.gui.StatusBar;
 import uk.co.danielrendall.imagetiler.logging.Log;
 import uk.co.danielrendall.imagetiler.tasks.LoadFileTask;
+import uk.co.danielrendall.imagetiler.utils.ClassInfo;
 import uk.co.danielrendall.imagetiler.utils.PackageFinder;
 
 import javax.swing.*;
@@ -35,9 +36,7 @@ import javax.swing.filechooser.FileFilter;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
-import java.util.List;
 
 
 /**
@@ -119,10 +118,10 @@ public class ImageTilerApplication extends SingleFrameApplication {
     @Override protected void initialize(String[] args) {
         appResourceMap = getContext().getResourceMap();
         Log.gui.info("Initializing");
-        for(PackageFinder.ClassInfo tileInfo : packageFinder.getAllTileClasses()) {
+        for(ClassInfo tileInfo : packageFinder.getAllTileClasses()) {
             Log.gui.debug("Tile " + tileInfo.getTileName() + " has class " + tileInfo.getClazz().getName());
         }
-        for(PackageFinder.ClassInfo strategyInfo : packageFinder.getAllStrategyClasses()) {
+        for(ClassInfo strategyInfo : packageFinder.getAllStrategyClasses()) {
             Log.gui.debug("Strategy " + strategyInfo.getTileName() + " has class " + strategyInfo.getClazz().getName());
         }
     }
@@ -132,6 +131,17 @@ public class ImageTilerApplication extends SingleFrameApplication {
         return imageTilerPanel;
     }
 
+    public Vector<ClassInfo> getTileClassesList() {
+        Vector<ClassInfo> classes = new Vector<ClassInfo>();
+        classes.addAll(packageFinder.getAllTileClasses());
+        return classes;
+    }
+
+    public Vector<ClassInfo> getStrategyClassesList() {
+        Vector<ClassInfo> classes = new Vector<ClassInfo>();
+        classes.addAll(packageFinder.getAllStrategyClasses());
+        return classes;
+    }
     /* Returns a JMenu named menuName that contains a JMenuItem
      * for each of the specified action names (see #getAction above).
      * Actions named "---" are turned into JSeparators.
