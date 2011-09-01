@@ -33,18 +33,19 @@ import java.util.*;
 public class ChessboardStrategy extends ScannerStrategy {
     public final static Logger log = Logger.getLogger(ChessboardStrategy.class);
 
-    private final Iterator<Pixel> pixelIterator;
+    private Iterator<Pixel> pixelIterator;
 
-    public ChessboardStrategy(int xMin, int width, int yMin, int height, PixelFilter filter) {
-        super(xMin, width, yMin, height, filter);
-        ScannerStrategy strategy = new CircleStrategy(xMin, width, yMin, height, filter);
+    public void doAfterInitialise() {
+        ScannerStrategy strategy = new CircleStrategy();
+        strategy.initialise(this);
         List<Pixel> pixels = new ArrayList<Pixel>();
         PixelFilter white = new ChessboardPixelFilter(filter, true);
         while (strategy.hasNext()) {
             Pixel next = strategy.next();
             if (white.shouldInclude(next)) pixels.add(next);
         }
-        strategy = new CircleStrategy(xMin, width, yMin, height, filter);
+        strategy = new CircleStrategy();
+        strategy.initialise(this);
         PixelFilter black = new ChessboardPixelFilter(filter, false);
         while (strategy.hasNext()) {
             Pixel next = strategy.next();

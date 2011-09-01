@@ -31,16 +31,20 @@ import java.util.Iterator;
  */
 public abstract class ScannerStrategy implements Iterator<Pixel> {
 
-    protected final int xMin;
-    protected final int width;
-    protected final int yMin;
-    protected final int height;
-    protected final PixelFilter filter;
+    protected int xMin;
+    protected int width;
+    protected int yMin;
+    protected int height;
+    protected PixelFilter filter;
 
-    protected final int xMax;
-    protected final int yMax;
+    protected int xMax;
+    protected int yMax;
 
-    protected ScannerStrategy(int xMin, int width, int yMin, int height, PixelFilter filter) {
+    public void initialise(ScannerStrategy another) {
+        initialise(another.xMin, another.width, another.yMin, another.height, another.filter);
+    }
+
+    public void initialise(int xMin, int width, int yMin, int height, PixelFilter filter) {
         this.xMin = xMin;
         this.width = width;
         this.yMin = yMin;
@@ -49,7 +53,10 @@ public abstract class ScannerStrategy implements Iterator<Pixel> {
 
         this.xMax = xMin + width - 1;
         this.yMax = yMin + height - 1;
+        doAfterInitialise();
     }
+
+    public abstract void doAfterInitialise();
 
     public final void remove() {
         throw new UnsupportedOperationException();

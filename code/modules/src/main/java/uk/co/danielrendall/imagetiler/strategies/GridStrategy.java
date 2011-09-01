@@ -36,8 +36,7 @@ public class GridStrategy extends ScannerStrategy {
     private int x, y;
     private boolean hasNext;
 
-    public GridStrategy(int xMin, int width, int yMin, int height, PixelFilter filter) {
-        super(xMin, width, yMin, height, filter);
+    public void doAfterInitialise() {
         x = xMin;
         y = yMin;
         hasNext = true;

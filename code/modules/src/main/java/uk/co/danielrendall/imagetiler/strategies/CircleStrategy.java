@@ -38,13 +38,13 @@ import java.util.*;
 public class CircleStrategy extends ScannerStrategy {
     public final static Logger log = Logger.getLogger(CircleStrategy.class);
 
-    private final Iterator<Pixel> pixelIterator;
-    
-    public CircleStrategy(int xMin, int width, int yMin, int height, PixelFilter filter) {
-        super(xMin, width, yMin, height, filter);
+    private Iterator<Pixel> pixelIterator;
+
+    public void doAfterInitialise() {
         Point center = new Point(((double) xMin) + ((double)width / 2.0d), ((double) yMin) + ((double)height / 2.0d));
         SortedSet<Pixel> pixels = new TreeSet<Pixel>(getRadiusComparator(center));
-        GridStrategy strategy = new GridStrategy(xMin, width, yMin, height, filter);
+        GridStrategy strategy = new GridStrategy();
+        strategy.initialise(this);
         while (strategy.hasNext()) {
             Pixel next = strategy.next();
             if (filter.shouldInclude(next)) pixels.add(next);

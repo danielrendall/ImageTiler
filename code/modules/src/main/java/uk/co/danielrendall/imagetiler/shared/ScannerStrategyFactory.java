@@ -39,22 +39,22 @@ public class ScannerStrategyFactory {
         this.strategy = strategy;
     }
 
-    public ScannerStrategy createStrategy(int xMin, int xMax, int yMin, int yMax, PixelFilter filter) {
-        try {
-            Class scannerStrategyClass = Class.forName("uk.co.danielrendall.imagetiler.strategies." + strategy + "Strategy");
-            Constructor cons = scannerStrategyClass.getConstructor(int.class, int.class, int.class, int.class, PixelFilter.class);
-            return (ScannerStrategy) cons.newInstance(xMin, xMax, yMin, yMax, filter);
-        } catch (InstantiationException e) {
-            log.warn("Couldn't create scanner - " + e.getMessage(), e);
-        } catch (IllegalAccessException e) {
-            log.warn("Couldn't create scanner - " + e.getMessage(), e);
-        } catch (ClassNotFoundException e) {
-            log.warn("Couldn't create scanner - " + e.getMessage(), e);
-        } catch (NoSuchMethodException e) {
-            log.warn("Couldn't create scanner - " + e.getMessage(), e);
-        } catch (InvocationTargetException e) {
-            log.warn("Couldn't create scanner - " + e.getMessage(), e);
-        }
-        return new GridStrategy(xMin, xMax, yMin, yMax, filter);
-    }
+//    public ScannerStrategy createStrategy(int xMin, int xMax, int yMin, int yMax, PixelFilter filter) {
+//        try {
+//            Class scannerStrategyClass = Class.forName("uk.co.danielrendall.imagetiler.strategies." + strategy + "Strategy");
+//            Constructor cons = scannerStrategyClass.getConstructor(int.class, int.class, int.class, int.class, PixelFilter.class);
+//            return (ScannerStrategy) cons.newInstance(xMin, xMax, yMin, yMax, filter);
+//        } catch (InstantiationException e) {
+//            log.warn("Couldn't create scanner - " + e.getMessage(), e);
+//        } catch (IllegalAccessException e) {
+//            log.warn("Couldn't create scanner - " + e.getMessage(), e);
+//        } catch (ClassNotFoundException e) {
+//            log.warn("Couldn't create scanner - " + e.getMessage(), e);
+//        } catch (NoSuchMethodException e) {
+//            log.warn("Couldn't create scanner - " + e.getMessage(), e);
+//        } catch (InvocationTargetException e) {
+//            log.warn("Couldn't create scanner - " + e.getMessage(), e);
+//        }
+//        return new GridStrategy(xMin, xMax, yMin, yMax, filter);
+//    }
 }

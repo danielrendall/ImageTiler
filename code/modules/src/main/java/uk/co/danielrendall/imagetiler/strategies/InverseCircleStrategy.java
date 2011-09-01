@@ -35,10 +35,7 @@ import java.util.Comparator;
  */
 @ClassDescriptor(name="Inverse Circle", description="Concentric circles coming in from the outside")
 public class InverseCircleStrategy extends CircleStrategy {
-    public InverseCircleStrategy(int xMin, int width, int yMin, int height, PixelFilter filter) {
-        super(xMin, width, yMin, height, filter);
-    }
-
+    
     @Override
     protected Comparator<Pixel> getRadiusComparator(Point center) {
         Comparator<Pixel> basic = super.getRadiusComparator(center);

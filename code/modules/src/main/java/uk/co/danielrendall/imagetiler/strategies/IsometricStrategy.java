@@ -37,8 +37,7 @@ public class IsometricStrategy extends ScannerStrategy {
 
     private boolean isOnTopRow;
 
-    public IsometricStrategy(int xMin, int width, int yMin, int height, PixelFilter filter) {
-        super(xMin, width, yMin, height, filter);
+    public void doAfterInitialise() {
         currentStart = new Pixel(xMax, 0);
         current = currentStart;
         isOnTopRow = true;

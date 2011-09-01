@@ -36,7 +36,8 @@ public class GridStrategyTest {
 
     @Test
     public void testSimpleGrid() {
-        ScannerStrategy strategy = new GridStrategy(0, 2, 0, 2, new NullPixelFilter());
+        ScannerStrategy strategy = new GridStrategy();
+        strategy.initialise(0, 2, 0, 2, new NullPixelFilter());
         assertEquals(new Pixel(0,0), strategy.next());
         assertEquals(new Pixel(1,0), strategy.next());
         assertEquals(new Pixel(0,1), strategy.next());
@@ -46,7 +47,8 @@ public class GridStrategyTest {
 
     @Test
     public void testBiggerGrid() {
-        ScannerStrategy strategy = new GridStrategy(-2, 4, -2, 4, new NullPixelFilter());
+        ScannerStrategy strategy = new GridStrategy();
+        strategy.initialise(-2, 4, -2, 4, new NullPixelFilter());
         assertEquals(new Pixel(-2,-2), strategy.next());
         assertEquals(new Pixel(-1,-2), strategy.next());
         assertEquals(new Pixel(0,-2), strategy.next());
