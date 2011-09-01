@@ -18,7 +18,6 @@
 
 package uk.co.danielrendall.imagetiler;
 
-import uk.co.danielrendall.imagetiler.image.ImageTiler;
 import uk.co.danielrendall.imagetiler.shared.ConfigStore;
 import uk.co.danielrendall.imagetiler.svg.*;
 import org.kohsuke.args4j.Option;
@@ -39,9 +38,6 @@ public class App {
 
     @Option(name = "-o", usage = "the output file", required = false)
     private File outputFile = null;
-
-    @Option(name = "-f", usage = "output format (svg or image)", required = false)
-    private String outputFormat = "svg";
 
     @Option(name = "-t", usage = "tile type", required = false)
     private String type = "Simple";
@@ -68,27 +64,15 @@ public class App {
             // parse the arguments.
             parser.parseArgument(args);
             ConfigStore store = new ConfigStore(config);
-            if ("image".equalsIgnoreCase(outputFormat)) {
-                ImageTiler tiler = new ImageTiler(type, strategy, store);
-                if (help) {
-                    System.out.println("No help available");
-                } else {
-                    if (inputFile == null || outputFile == null) {
-                        throw new CmdLineException("Input and output files must be supplied");
-                    }
-                    tiler.process(inputFile, outputFile);
-                }
+            SVGTiler tiler = new SVGTiler(type, strategy, store);
+            if (help) {
+                System.out.println("For tile type '" + type + "'");
+                System.out.println(tiler.describeOptions());
             } else {
-                SVGTiler tiler = new SVGTiler(type, strategy, store);
-                if (help) {
-                    System.out.println("For tile type '" + type + "'");
-                    System.out.println(tiler.describeOptions());
-                } else {
-                    if (inputFile == null || outputFile == null) {
-                        throw new CmdLineException("Input and output files must be supplied");
-                    }
-                    tiler.process(inputFile, outputFile);
+                if (inputFile == null || outputFile == null) {
+                    throw new CmdLineException("Input and output files must be supplied");
                 }
+                tiler.process(inputFile, outputFile);
             }
 
         } catch (CmdLineException e) {
