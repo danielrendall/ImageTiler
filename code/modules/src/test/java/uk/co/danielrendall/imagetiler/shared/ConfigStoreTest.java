@@ -19,7 +19,6 @@
 package uk.co.danielrendall.imagetiler.shared;
 
 import org.junit.Test;
-import uk.co.danielrendall.imagetiler.strategies.GridStrategy;
 
 import static org.junit.Assert.*;
 

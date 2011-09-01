@@ -19,6 +19,7 @@
 package uk.co.danielrendall.imagetiler.svg;
 
 import org.w3c.dom.Element;
+import uk.co.danielrendall.imagetiler.annotations.AnnotationHelper;
 
 /**
  * Created by IntelliJ IDEA.
@@ -27,7 +28,13 @@ import org.w3c.dom.Element;
  * Time: 9:36:01 PM
  * To change this template use File | Settings | File Templates.
  */
-public interface SVGTile {
+public abstract class SVGTile {
+
+    protected final AnnotationHelper helper;
+
+    protected SVGTile() {
+        this.helper = AnnotationHelper.create(this);
+    }
 
     /**
      *
@@ -35,6 +42,6 @@ public interface SVGTile {
      * @param context Information about the current location in the image
      */
 
-    boolean getTile(Element group, TileContext context);
+    public abstract boolean getTile(Element group, TileContext context);
 
 }

@@ -36,8 +36,7 @@ import java.awt.*;
  * To change this template use File | Settings | File Templates.
  */
 @ClassDescriptor(name="Simple", description="Simple square")
-public class SimpleSVGTile implements SVGTile {
-
+public class SimpleSVGTile extends SVGTile {
 
     @DoubleParameter(name = "inset", description = "Fractional inset", defaultValue=0.15d, minValue = 0.0d, maxValue = 0.5d)
     protected double inset;
@@ -48,21 +47,7 @@ public class SimpleSVGTile implements SVGTile {
     @DoubleParameter(name = "lightOpacity", description = "Opacity of light areas", defaultValue=0.6d, minValue = 0.0d, maxValue = 1.0d)
     protected double lightOpacity;
 
-    public SimpleSVGTile() {
-        setParametersToDefaults(this);
-    }
-
-    private static void setParametersToDefaults(SimpleSVGTile aTile) {
-
-    }
-
-    //    public SimpleSVGTile(ConfigStore store) {
-//        this.inset = store.getDouble("inset");
-//        this.strokeWidth = store.getDouble("strokeWidth");
-//        this.darkOpacity = store.getDouble("darkOpacity");
-//        this.lightOpacity = store.getDouble("lightOpacity");
-//    }
-
+    
     public boolean getTile(Element group, TileContext context) {
 
         if (!context.getColor().equals(Color.WHITE)) {
@@ -128,4 +113,35 @@ public class SimpleSVGTile implements SVGTile {
 
     }
 
+    public void setDarkOpacity(double darkOpacity) {
+        helper.set("darkOpacity", darkOpacity);
+    }
+
+    public double getDarkOpacity() {
+        return darkOpacity;
+    }
+
+    public void setInset(double inset) {
+        helper.set("inset", inset);
+    }
+
+    public double getInset() {
+        return inset;
+    }
+
+    public void setLightOpacity(double lightOpacity) {
+        helper.set("lightOpacity", lightOpacity);
+    }
+
+    public double getLightOpacity() {
+        return lightOpacity;
+    }
+
+    public void setStrokeWidth(double strokeWidth) {
+        helper.set("lightOpacity", lightOpacity);
+    }
+
+    public double getStrokeWidth() {
+        return strokeWidth;
+    }
 }

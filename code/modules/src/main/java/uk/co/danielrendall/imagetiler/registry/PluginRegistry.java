@@ -59,4 +59,11 @@ public class PluginRegistry {
         accept(vistor);
         return vistor.getClassDescriptions();
     }
+
+    // ignore duplicates problem for now
+    public Class getPluginClass(String pluginType, String name) {
+        GetClassVisitor visitor = new GetClassVisitor(pluginType, name);
+        accept(visitor);
+        return visitor.getClazz();
+    }
 }

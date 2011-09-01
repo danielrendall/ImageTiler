@@ -50,16 +50,16 @@ public class SVGTiler {
 
     public final static Logger log = Logger.getLogger(SVGTiler.class);
 
-    private final SVGTileFactory tileFactory;
-    private final ScannerStrategyFactory strategyFactory;
+    private final SVGTile tile;
+    private final ScannerStrategy strategy;
 
     // reasonable hard-coded value, could be made configurable, but user
     // could scale the resulting image manually anyway.
     private static double SCALE = 10.0;
 
-    public SVGTiler(String type, String strategy, ConfigStore store) {
-        tileFactory = new SVGTileFactory(type, store);
-        strategyFactory = new ScannerStrategyFactory(strategy);
+    public SVGTiler(SVGTile tile, ScannerStrategy strategy) {
+        this.tile = tile;
+        this.strategy = strategy;
     }
 
     public void process(File inputFile, File outputFile) {
@@ -105,51 +105,50 @@ public class SVGTiler {
             SVGDOMImplementation domImpl = (SVGDOMImplementation) SVGDOMImplementation.getDOMImplementation();
             Document document = domImpl.createDocument(SVGDOMImplementation.SVG_NAMESPACE_URI, "svg", null);
 
-            SVGTile svgTile = tileFactory.getTile();
 
-                int width = input.getWidth();
-                int height = input.getHeight();
+            int width = input.getWidth();
+            int height = input.getHeight();
 
-                double svgWidth = ((double) width) * SCALE;
-                double svgHeight = ((double) height) * SCALE;
+            double svgWidth = ((double) width) * SCALE;
+            double svgHeight = ((double) height) * SCALE;
 
 
-                Element root = document.getDocumentElement();
-                root.setAttributeNS(null, "width", "" + svgWidth);
-                root.setAttributeNS(null, "height", "" + svgHeight);
+            Element root = document.getDocumentElement();
+            root.setAttributeNS(null, "width", "" + svgWidth);
+            root.setAttributeNS(null, "height", "" + svgHeight);
 
-                Element outerGroup = createElement(document, "g");
+            Element outerGroup = createElement(document, "g");
 
-                final Raster raster = input.getRaster();
-                log.debug("There are " + raster.getNumBands() + " bands");
-                ScannerStrategy scannerStrategy = strategyFactory.createStrategy(0, width, 0, height, new RasterPixelFilter(raster));
-                while (scannerStrategy.hasNext()) {
-                    Pixel p = scannerStrategy.next();
-                    int x = p.getX();
-                    int y = p.getY();
-                    int pixel[] = new int[4];
-                    log.debug("Getting x=" + x + " y=" + y);
-                    raster.getPixel(x, y, pixel);
-                    Color color = new Color(pixel[0], pixel[1], pixel[2]);
+            final Raster raster = input.getRaster();
+            log.debug("There are " + raster.getNumBands() + " bands");
+            strategy.initialise(0, width, 0, height, new RasterPixelFilter(raster));
+            while (strategy.hasNext()) {
+                Pixel p = strategy.next();
+                int x = p.getX();
+                int y = p.getY();
+                int pixel[] = new int[4];
+                log.debug("Getting x=" + x + " y=" + y);
+                raster.getPixel(x, y, pixel);
+                Color color = new Color(pixel[0], pixel[1], pixel[2]);
 
-                    double left = SCALE * ((double) x - (width / (double) 2.0));
-                    double top = SCALE * ((double) y - (height / (double) 2.0));
-                    double right = left + SCALE;
-                    double bottom = top + SCALE;
+                double left = SCALE * ((double) x - (width / (double) 2.0));
+                double top = SCALE * ((double) y - (height / (double) 2.0));
+                double right = left + SCALE;
+                double bottom = top + SCALE;
 
-                    Element group = createElement(document, "g");
-                    //group.setAttributeNS(null, "transform","translate(100,100)");
-                    if (svgTile.getTile(group, new TileContext(left, right, top, bottom, color, document, this))) {
-                        outerGroup.appendChild(group);
-                    } else {
-                        log.debug("Skipping tile at x=" + x + " y=" + y);
-                    }
-
+                Element group = createElement(document, "g");
+                //group.setAttributeNS(null, "transform","translate(100,100)");
+                if (tile.getTile(group, new TileContext(left, right, top, bottom, color, document, this))) {
+                    outerGroup.appendChild(group);
+                } else {
+                    log.debug("Skipping tile at x=" + x + " y=" + y);
                 }
-                outerGroup.setAttributeNS(null, "transform", "translate(" + (svgWidth / (double) 2.0) + "," + (svgHeight / (double) 2.0) + ")");
-                root.appendChild(outerGroup);
 
-                return document;
+            }
+            outerGroup.setAttributeNS(null, "transform", "translate(" + (svgWidth / (double) 2.0) + "," + (svgHeight / (double) 2.0) + ")");
+            root.appendChild(outerGroup);
+
+            return document;
 
 
         } catch (Exception e) {
@@ -166,7 +165,4 @@ public class SVGTiler {
         return (int) SCALE;
     }
 
-    public String describeOptions() {
-        return tileFactory.describeOptions();
-    }
 }

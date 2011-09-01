@@ -18,7 +18,9 @@
 
 package uk.co.danielrendall.imagetiler;
 
+import uk.co.danielrendall.imagetiler.registry.PluginRegistry;
 import uk.co.danielrendall.imagetiler.shared.ConfigStore;
+import uk.co.danielrendall.imagetiler.shared.ScannerStrategy;
 import uk.co.danielrendall.imagetiler.svg.*;
 import org.kohsuke.args4j.Option;
 import org.kohsuke.args4j.CmdLineParser;
@@ -61,16 +63,28 @@ public class App {
         parser.setUsageWidth(80);
 
         try {
+            PluginRegistry pluginRegistry = ImageTilerApplication.createPluginRegistry();
             // parse the arguments.
             parser.parseArgument(args);
             ConfigStore store = new ConfigStore(config);
-            SVGTiler tiler = new SVGTiler(type, strategy, store);
             if (help) {
                 System.out.println("For tile type '" + type + "'");
-                System.out.println(tiler.describeOptions());
+//                System.out.println(tiler.describeOptions());
             } else {
                 if (inputFile == null || outputFile == null) {
                     throw new CmdLineException("Input and output files must be supplied");
+                }
+                SVGTile tile = (SVGTile) pluginRegistry.getPluginClass(ImageTilerApplication.PLUGIN_TYPE_TILE, type).newInstance();
+                ScannerStrategy scannerStrategy = (ScannerStrategy) pluginRegistry.getPluginClass(ImageTilerApplication.PLUGIN_TYPE_STRATEGY, strategy).newInstance();
+                SVGTiler tiler = new SVGTiler(tile, scannerStrategy);
+                if (help) {
+                    System.out.println("For tile type '" + type + "'");
+//                    System.out.println(tiler.describeOptions());
+                } else {
+                    if (inputFile == null || outputFile == null) {
+                        throw new CmdLineException("Input and output files must be supplied");
+                    }
+                    tiler.process(inputFile, outputFile);
                 }
                 tiler.process(inputFile, outputFile);
             }
@@ -84,6 +98,10 @@ public class App {
             // print the list of available options
             parser.printUsage(System.err);
             System.err.println();
+        } catch (InstantiationException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
     }
 

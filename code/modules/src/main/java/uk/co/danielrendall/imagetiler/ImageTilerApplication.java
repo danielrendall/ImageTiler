@@ -64,7 +64,11 @@ public class ImageTilerApplication extends SingleFrameApplication {
     }
 
     public ImageTilerApplication() {
-        pluginRegistry = PluginRegistry
+        pluginRegistry = createPluginRegistry();
+    }
+
+    public static PluginRegistry createPluginRegistry() {
+        return PluginRegistry
                 .builder()
                 .withPropertiesAndClass(PLUGIN_TYPE_TILE, "tiles.properties", SVGTile.class)
                 .withPropertiesAndClass(PLUGIN_TYPE_STRATEGY, "strategies.properties", ScannerStrategy.class)
