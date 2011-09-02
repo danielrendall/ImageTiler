@@ -19,6 +19,7 @@
 package uk.co.danielrendall.imagetiler.annotations;
 
 import uk.co.danielrendall.imagetiler.logging.Log;
+import uk.co.danielrendall.imagetiler.shared.ConfigStore;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -32,7 +33,7 @@ public class AnnotationHelper {
 
     private final Class clazz;
     private final Object object;
-    private final List fieldNames;
+    private final List<String> fieldNames;
     private final Map<String, AnnotatedField> annotatedFields;
 
     public static AnnotationHelper create(Object obj) {
@@ -125,6 +126,12 @@ public class AnnotationHelper {
         }
     }
 
+    public void setFromStore(ConfigStore store) {
+        for(String fieldName: fieldNames) {
+            annotatedFields.get(fieldName).setFromStore(store);
+        }
+    }
+
     public boolean check(String fieldName, boolean value) {
         verifyField(fieldName);
         return (Boolean) annotatedFields.get(fieldName).check((Boolean) value);
@@ -172,7 +179,7 @@ public class AnnotationHelper {
     }
 
     private abstract class AnnotatedField {
-        private final String name;
+        protected final String name;
         protected final Method method;
 
         protected AnnotatedField(String name, Method method) {
@@ -204,9 +211,17 @@ public class AnnotationHelper {
             }
         }
 
+        final void setFromStore(ConfigStore store) {
+            set(doGetFromStore(store));
+        }
+
+
+
         abstract void doSet(Object value) throws InvocationTargetException, IllegalAccessException;
 
         abstract Object doCheck(Object value) throws InvocationTargetException, IllegalAccessException;
+
+        abstract Object doGetFromStore(ConfigStore store);
     }
 
     private class BooleanField extends AnnotatedField {
@@ -226,6 +241,11 @@ public class AnnotationHelper {
         Object doCheck(Object value) {
             // nothing to check...
             return value;
+        }
+
+        @Override
+        Object doGetFromStore(ConfigStore store) {
+            return store.getBoolean(name, param.defaultValue());
         }
     }
 
@@ -251,6 +271,11 @@ public class AnnotationHelper {
             }
             return dValue;
         }
+
+        @Override
+        Object doGetFromStore(ConfigStore store) {
+            return store.getDouble(name, param.defaultValue());
+        }
     }
 
     private class IntegerField extends AnnotatedField {
@@ -275,6 +300,11 @@ public class AnnotationHelper {
             }
             return iValue;
         }
+
+        @Override
+        Object doGetFromStore(ConfigStore store) {
+            return store.getInt(name, param.defaultValue());
+        }
     }
     
     private class StringField extends AnnotatedField {
@@ -293,6 +323,11 @@ public class AnnotationHelper {
         Object doCheck(Object value) {
             // nothing to check...
             return value;
+        }
+
+        @Override
+        Object doGetFromStore(ConfigStore store) {
+            throw new RuntimeException("Strings not supported!");
         }
     }
 }

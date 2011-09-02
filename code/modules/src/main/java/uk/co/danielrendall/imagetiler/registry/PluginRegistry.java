@@ -18,6 +18,9 @@
 
 package uk.co.danielrendall.imagetiler.registry;
 
+import uk.co.danielrendall.imagetiler.annotations.AnnotationHelper;
+import uk.co.danielrendall.imagetiler.shared.ConfigStore;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -61,9 +64,22 @@ public class PluginRegistry {
     }
 
     // ignore duplicates problem for now
-    public Class getPluginClass(String pluginType, String name) {
+    private Class getPluginClass(String pluginType, String name) {
         GetClassVisitor visitor = new GetClassVisitor(pluginType, name);
         accept(visitor);
         return visitor.getClazz();
     }
+
+    public Object getNewInstance(String pluginType, String name) throws IllegalAccessException, InstantiationException {
+        Class clazz = getPluginClass(pluginType, name);
+        return clazz != null ? clazz.newInstance() : null;
+    }
+
+    public Object getConfiguredInstance(String pluginType, String name, ConfigStore store) throws IllegalAccessException, InstantiationException {
+        Object newInstance = getNewInstance(pluginType, name);
+        if (newInstance == null) return null;
+        AnnotationHelper.create(newInstance).setFromStore(store);
+        return newInstance;
+    }
+
 }

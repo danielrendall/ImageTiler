@@ -32,11 +32,11 @@ import static junit.framework.Assert.assertNull;
 public class PluginRegistryTest {
 
     @Test
-    public void testPluginRegistry() {
+    public void testPluginRegistry() throws InstantiationException, IllegalAccessException {
         PluginRegistry registry = ImageTilerApplication.createPluginRegistry();
-        assertEquals(GemSVGTile.class, registry.getPluginClass(ImageTilerApplication.PLUGIN_TYPE_TILE, "Gem"));
-        assertEquals(CircleStrategy.class, registry.getPluginClass(ImageTilerApplication.PLUGIN_TYPE_STRATEGY, "Circle"));
-        assertNull(registry.getPluginClass(ImageTilerApplication.PLUGIN_TYPE_STRATEGY, "Oval"));
-        assertNull(registry.getPluginClass("NoSuchType", "Thing"));
+        assertEquals(GemSVGTile.class, registry.getNewInstance(ImageTilerApplication.PLUGIN_TYPE_TILE, "Gem").getClass());
+        assertEquals(CircleStrategy.class, registry.getNewInstance(ImageTilerApplication.PLUGIN_TYPE_STRATEGY, "Circle").getClass());
+        assertNull(registry.getNewInstance(ImageTilerApplication.PLUGIN_TYPE_STRATEGY, "Oval"));
+        assertNull(registry.getNewInstance("NoSuchType", "Thing"));
     }
 }

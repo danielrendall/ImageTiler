@@ -20,6 +20,7 @@ package uk.co.danielrendall.imagetiler.svg;
 
 import org.w3c.dom.Element;
 import uk.co.danielrendall.imagetiler.annotations.AnnotationHelper;
+import uk.co.danielrendall.imagetiler.shared.ConfigStore;
 
 /**
  * Created by IntelliJ IDEA.
@@ -34,6 +35,10 @@ public abstract class SVGTile {
 
     protected SVGTile() {
         this.helper = AnnotationHelper.create(this);
+    }
+
+    public void setFromStore(ConfigStore store) {
+        helper.setFromStore(store);
     }
 
     /**

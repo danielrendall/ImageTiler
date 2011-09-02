@@ -33,7 +33,7 @@ public class ConfigStoreTest {
 
     @Test
     public void testStore() {
-        ConfigStore store = new ConfigStore("alpha=2.3, beta = 67, GAMMA = 9.7,dElTa=2");
+        ConfigStore store = new FileConfigStore("alpha=2.3, beta = 67, GAMMA = 9.7,dElTa=2");
         assertEquals(2.3d, store.getDouble("alpha"), 0.0001d);
         assertEquals(2.3d, store.getDouble("ALPHA"), 0.0001d);
         assertEquals(9.7d, store.getDouble("gamma"), 0.0001d);

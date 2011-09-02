@@ -20,6 +20,7 @@ package uk.co.danielrendall.imagetiler;
 
 import uk.co.danielrendall.imagetiler.registry.PluginRegistry;
 import uk.co.danielrendall.imagetiler.shared.ConfigStore;
+import uk.co.danielrendall.imagetiler.shared.FileConfigStore;
 import uk.co.danielrendall.imagetiler.shared.ScannerStrategy;
 import uk.co.danielrendall.imagetiler.svg.*;
 import org.kohsuke.args4j.Option;
@@ -66,7 +67,7 @@ public class App {
             PluginRegistry pluginRegistry = ImageTilerApplication.createPluginRegistry();
             // parse the arguments.
             parser.parseArgument(args);
-            ConfigStore store = new ConfigStore(config);
+            ConfigStore store = new FileConfigStore(config);
             if (help) {
                 System.out.println("For tile type '" + type + "'");
 //                System.out.println(tiler.describeOptions());
@@ -74,8 +75,8 @@ public class App {
                 if (inputFile == null || outputFile == null) {
                     throw new CmdLineException("Input and output files must be supplied");
                 }
-                SVGTile tile = (SVGTile) pluginRegistry.getPluginClass(ImageTilerApplication.PLUGIN_TYPE_TILE, type).newInstance();
-                ScannerStrategy scannerStrategy = (ScannerStrategy) pluginRegistry.getPluginClass(ImageTilerApplication.PLUGIN_TYPE_STRATEGY, strategy).newInstance();
+                SVGTile tile = (SVGTile) pluginRegistry.getConfiguredInstance(ImageTilerApplication.PLUGIN_TYPE_TILE, type, store);
+                ScannerStrategy scannerStrategy = (ScannerStrategy) pluginRegistry.getConfiguredInstance(ImageTilerApplication.PLUGIN_TYPE_STRATEGY, strategy, store);
                 SVGTiler tiler = new SVGTiler(tile, scannerStrategy);
                 if (help) {
                     System.out.println("For tile type '" + type + "'");
