@@ -21,6 +21,7 @@ package uk.co.danielrendall.imagetiler.annotations;
 import org.junit.Test;
 import uk.co.danielrendall.imagetiler.svg.tiles.GemSVGTile;
 import uk.co.danielrendall.imagetiler.svg.tiles.SimpleSVGTile;
+import uk.co.danielrendall.imagetiler.svg.tiles.StarSVGTile;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -29,27 +30,45 @@ import static junit.framework.Assert.assertEquals;
  */
 public class AnnotationTest {
 
+    private final double Delta = 0.0000001d;
+
     @Test
     public void testSettingWithAnnotations() {
         SimpleSVGTile tile = new SimpleSVGTile();
-//        assertEquals(0.8d, tile.getDarkOpacity(), 0.001d);
         tile.setDarkOpacity(0.4d);
-        assertEquals(0.4d, tile.getDarkOpacity(), 0.001d);
+        assertEquals(0.4d, tile.getDarkOpacity(), Delta);
         tile.setDarkOpacity(2.0d);
-        assertEquals(1.0d, tile.getDarkOpacity(), 0.001d);
+        assertEquals(1.0d, tile.getDarkOpacity(), Delta);
         tile.setDarkOpacity(-1.0d);
-        assertEquals(0.0d, tile.getDarkOpacity(), 0.001d);
+        assertEquals(0.0d, tile.getDarkOpacity(), Delta);
     }
 
     @Test
-    public void testSettingOfChildClassWithAnnotations() {
+    public void testSettingOfChildClassWithInheritedFields() {
         GemSVGTile tile = new GemSVGTile();
-//        assertEquals(0.8d, tile.getDarkOpacity(), 0.001d);
         tile.setDarkOpacity(0.4d);
-        assertEquals(0.4d, tile.getDarkOpacity(), 0.001d);
+        assertEquals(0.4d, tile.getDarkOpacity(), Delta);
         tile.setDarkOpacity(2.0d);
-        assertEquals(1.0d, tile.getDarkOpacity(), 0.001d);
+        assertEquals(1.0d, tile.getDarkOpacity(), Delta);
         tile.setDarkOpacity(-1.0d);
-        assertEquals(0.0d, tile.getDarkOpacity(), 0.001d);
+        assertEquals(0.0d, tile.getDarkOpacity(), Delta);
+    }
+
+    @Test
+    public void testSettingOfChildClassWithInheritedAndNewFields() {
+        StarSVGTile tile = new StarSVGTile();
+        tile.setDarkOpacity(0.4d);
+        assertEquals(0.4d, tile.getDarkOpacity(), Delta);
+        tile.setDarkOpacity(2.0d);
+        assertEquals(1.0d, tile.getDarkOpacity(), Delta);
+        tile.setDarkOpacity(-1.0d);
+        assertEquals(0.0d, tile.getDarkOpacity(), Delta);
+
+        tile.setInnerRadius(7.5d);
+        assertEquals(7.5d, tile.getInnerRadius(), Delta);
+        tile.setInnerRadius(20.0d);
+        assertEquals(10.0d, tile.getInnerRadius(), Delta);
+        tile.setInnerRadius(0.0d);
+        assertEquals(0.001d, tile.getInnerRadius(), Delta);
     }
 }

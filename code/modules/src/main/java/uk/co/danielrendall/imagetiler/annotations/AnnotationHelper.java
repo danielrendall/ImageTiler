@@ -48,47 +48,50 @@ public class AnnotationHelper {
         Map<String, Method> setMethods = new HashMap<String, Method>();
         Map<String, FieldType> fieldTypes = new HashMap<String, FieldType>();
         Map<String, Object> parameters = new HashMap<String, Object>();
-        for(Field field : clazz.getDeclaredFields()) {
-            String fieldName = field.getName();
-            String setMethod = "set" + fieldName.toLowerCase();
-            Log.app.debug("Found field " + fieldName + " and looking for setter " + setMethod);
-            if (methodMap.containsKey(setMethod)) {
-                BooleanParameter bp = field.getAnnotation(BooleanParameter.class);
-                if (bp != null) {
-                    fieldNames.add(fieldName);
-                    setMethods.put(fieldName, methodMap.get(setMethod));
-                    fieldTypes.put(fieldName, FieldType.Boolean);
-                    parameters.put(fieldName, bp);
-                    continue;
+        while (clazz != Object.class) {
+            for(Field field : clazz.getDeclaredFields()) {
+                String fieldName = field.getName();
+                String setMethod = "set" + fieldName.toLowerCase();
+                Log.app.debug("Found field " + fieldName + " and looking for setter " + setMethod);
+                if (methodMap.containsKey(setMethod)) {
+                    BooleanParameter bp = field.getAnnotation(BooleanParameter.class);
+                    if (bp != null) {
+                        fieldNames.add(fieldName);
+                        setMethods.put(fieldName, methodMap.get(setMethod));
+                        fieldTypes.put(fieldName, FieldType.Boolean);
+                        parameters.put(fieldName, bp);
+                        continue;
+                    }
+                    DoubleParameter dp = field.getAnnotation(DoubleParameter.class);
+                    if (dp != null) {
+                        fieldNames.add(fieldName);
+                        setMethods.put(fieldName, methodMap.get(setMethod));
+                        fieldTypes.put(fieldName, FieldType.Double);
+                        parameters.put(fieldName, dp);
+                        continue;
+                    }
+                    IntegerParameter ip = field.getAnnotation(IntegerParameter.class);
+                    if (ip != null) {
+                        fieldNames.add(fieldName);
+                        setMethods.put(fieldName, methodMap.get(setMethod));
+                        fieldTypes.put(fieldName, FieldType.Integer);
+                        parameters.put(fieldName, ip);
+                        continue;
+                    }
+                    StringParameter sp = field.getAnnotation(StringParameter.class);
+                    if (sp != null) {
+                        fieldNames.add(fieldName);
+                        setMethods.put(fieldName, methodMap.get(setMethod));
+                        fieldTypes.put(fieldName, FieldType.String);
+                        parameters.put(fieldName, sp);
+                        continue;
+                    }
+                    Log.app.debug("Found set method " + setMethod + " but no corresponding annotated field");
+                } else {
+                    Log.app.debug("Couldn't find set method for property " + fieldName);
                 }
-                DoubleParameter dp = field.getAnnotation(DoubleParameter.class);
-                if (dp != null) {
-                    fieldNames.add(fieldName);
-                    setMethods.put(fieldName, methodMap.get(setMethod));
-                    fieldTypes.put(fieldName, FieldType.Double);
-                    parameters.put(fieldName, dp);
-                    continue;
-                }
-                IntegerParameter ip = field.getAnnotation(IntegerParameter.class);
-                if (ip != null) {
-                    fieldNames.add(fieldName);
-                    setMethods.put(fieldName, methodMap.get(setMethod));
-                    fieldTypes.put(fieldName, FieldType.Integer);
-                    parameters.put(fieldName, ip);
-                    continue;
-                }
-                StringParameter sp = field.getAnnotation(StringParameter.class);
-                if (sp != null) {
-                    fieldNames.add(fieldName);
-                    setMethods.put(fieldName, methodMap.get(setMethod));
-                    fieldTypes.put(fieldName, FieldType.String);
-                    parameters.put(fieldName, sp);
-                    continue;
-                }
-                Log.app.debug("Found set method " + setMethod + " but no corresponding annotated field");
-            } else {
-                Log.app.debug("Couldn't find set method for property " + fieldName);
             }
+            clazz = clazz.getSuperclass();
         }
         return new AnnotationHelper(clazz, obj, fieldNames, setMethods, fieldTypes, parameters);
     }

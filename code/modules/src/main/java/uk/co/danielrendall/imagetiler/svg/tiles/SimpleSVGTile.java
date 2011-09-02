@@ -113,35 +113,36 @@ public class SimpleSVGTile extends SVGTile {
 
     }
 
-    public void setDarkOpacity(double darkOpacity) {
-        this.darkOpacity = helper.check("darkOpacity", darkOpacity);
-    }
-
     public double getDarkOpacity() {
         return darkOpacity;
     }
 
-    public void setInset(double inset) {
-        this.inset = helper.check("inset", inset);
+    public void setDarkOpacity(double darkOpacity) {
+        this.darkOpacity = helper.check("darkOpacity", darkOpacity);
     }
 
     public double getInset() {
         return inset;
     }
 
-    public void setLightOpacity(double lightOpacity) {
-        this.lightOpacity = helper.check("lightOpacity", lightOpacity);
+    public void setInset(double inset) {
+        this.inset = helper.check("inset", inset);
     }
 
     public double getLightOpacity() {
         return lightOpacity;
     }
 
-    public void setStrokeWidth(double strokeWidth) {
-        this.strokeWidth = helper.check("strokeWidth", strokeWidth);
+    public void setLightOpacity(double lightOpacity) {
+        this.lightOpacity = helper.check("lightOpacity", lightOpacity);
     }
 
     public double getStrokeWidth() {
         return strokeWidth;
     }
+
+    public void setStrokeWidth(double strokeWidth) {
+        this.strokeWidth = helper.check("strokeWidth", strokeWidth);
+    }
+
 }
