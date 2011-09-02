@@ -105,25 +105,41 @@ public class AnnotationHelper {
                 case Boolean:
                     BooleanParameter bParam = (BooleanParameter) parameters.get(fieldName);
                     this.annotatedFields.put(fieldName, new BooleanField(fieldName, method, bParam));
-                    set(fieldName, bParam.defaultValue());
                     break;
                 case Double:
                     DoubleParameter dParam = (DoubleParameter) parameters.get(fieldName);
                     this.annotatedFields.put(fieldName, new DoubleField(fieldName, method, dParam));
-                    set(fieldName, dParam.defaultValue());
                     break;
                 case Integer:
                     IntegerParameter iParam = (IntegerParameter) parameters.get(fieldName);
                     this.annotatedFields.put(fieldName, new IntegerField(fieldName, method, iParam));
-                    set(fieldName, iParam.defaultValue());
                     break;
                 case String:
                     StringParameter sParam = (StringParameter) parameters.get(fieldName);
                     this.annotatedFields.put(fieldName, new StringField(fieldName, method, sParam));
-                    set(fieldName, sParam.defaultValue());
                     break;
             }
         }
+    }
+
+    public boolean check(String fieldName, boolean value) {
+        verifyField(fieldName);
+        return (Boolean) annotatedFields.get(fieldName).check((Boolean) value);
+    }
+
+    public double check(String fieldName, double value) {
+        verifyField(fieldName);
+        return (Double) annotatedFields.get(fieldName).check((Double) value);
+    }
+
+    public int check(String fieldName, int value) {
+        verifyField(fieldName);
+        return (Integer) annotatedFields.get(fieldName).check((Integer) value);
+    }
+
+    public String check(String fieldName, String value) {
+        verifyField(fieldName);
+        return (String) annotatedFields.get(fieldName).check(value);
     }
 
     public void set(String fieldName, boolean value) {
@@ -165,13 +181,29 @@ public class AnnotationHelper {
             try {
                 doSet(value);
             } catch (InvocationTargetException e) {
+                Log.app.warn(e.getMessage());
                 throw new RuntimeException(e);
             } catch (IllegalAccessException e) {
+                Log.app.warn(e.getMessage());
+                throw new RuntimeException(e);
+            }
+        }
+
+        final Object check(Object value) {
+            try {
+                return doCheck(value);
+            } catch (InvocationTargetException e) {
+                Log.app.warn(e.getMessage());
+                throw new RuntimeException(e.getTargetException());
+            } catch (IllegalAccessException e) {
+                Log.app.warn(e.getMessage());
                 throw new RuntimeException(e);
             }
         }
 
         abstract void doSet(Object value) throws InvocationTargetException, IllegalAccessException;
+
+        abstract Object doCheck(Object value) throws InvocationTargetException, IllegalAccessException;
     }
 
     private class BooleanField extends AnnotatedField {
@@ -184,8 +216,13 @@ public class AnnotationHelper {
         }
 
         void doSet(Object value) throws InvocationTargetException, IllegalAccessException {
-            Boolean bValue = (Boolean) value;
+            Boolean bValue = (Boolean) doCheck(value);
             method.invoke(object, bValue);
+        }
+
+        Object doCheck(Object value) {
+            // nothing to check...
+            return value;
         }
     }
 
@@ -198,13 +235,18 @@ public class AnnotationHelper {
         }
 
         void doSet(Object value) throws InvocationTargetException, IllegalAccessException {
+            Double dValue = (Double) doCheck(value);
+            method.invoke(object, dValue);
+        }
+
+        Object doCheck(Object value) {
             Double dValue = (Double) value;
             if (dValue < param.minValue()) {
                 dValue = param.minValue();
             } else if (dValue > param.maxValue()) {
                 dValue = param.maxValue();
             }
-            method.invoke(object, dValue);
+            return dValue;
         }
     }
 
@@ -217,13 +259,18 @@ public class AnnotationHelper {
         }
 
         void doSet(Object value) throws InvocationTargetException, IllegalAccessException {
+            Integer iValue = (Integer) doCheck(value);
+            method.invoke(object, iValue);
+        }
+
+        Object doCheck(Object value) {
             Integer iValue = (Integer) value;
             if (iValue < param.minValue()) {
                 iValue = param.minValue();
             } else if (iValue > param.maxValue()) {
                 iValue = param.maxValue();
             }
-            method.invoke(object, iValue);
+            return iValue;
         }
     }
     
@@ -236,8 +283,13 @@ public class AnnotationHelper {
         }
 
         void doSet(Object value) throws InvocationTargetException, IllegalAccessException {
-            String sValue = (String) value;
+            String sValue = (String) doCheck(value);
             method.invoke(object, sValue);
+        }
+
+        Object doCheck(Object value) {
+            // nothing to check...
+            return value;
         }
     }
 }

@@ -114,7 +114,7 @@ public class SimpleSVGTile extends SVGTile {
     }
 
     public void setDarkOpacity(double darkOpacity) {
-        helper.set("darkOpacity", darkOpacity);
+        this.darkOpacity = helper.check("darkOpacity", darkOpacity);
     }
 
     public double getDarkOpacity() {
@@ -122,7 +122,7 @@ public class SimpleSVGTile extends SVGTile {
     }
 
     public void setInset(double inset) {
-        helper.set("inset", inset);
+        this.inset = helper.check("inset", inset);
     }
 
     public double getInset() {
@@ -130,7 +130,7 @@ public class SimpleSVGTile extends SVGTile {
     }
 
     public void setLightOpacity(double lightOpacity) {
-        helper.set("lightOpacity", lightOpacity);
+        this.lightOpacity = helper.check("lightOpacity", lightOpacity);
     }
 
     public double getLightOpacity() {
@@ -138,7 +138,7 @@ public class SimpleSVGTile extends SVGTile {
     }
 
     public void setStrokeWidth(double strokeWidth) {
-        helper.set("lightOpacity", lightOpacity);
+        this.strokeWidth = helper.check("strokeWidth", strokeWidth);
     }
 
     public double getStrokeWidth() {

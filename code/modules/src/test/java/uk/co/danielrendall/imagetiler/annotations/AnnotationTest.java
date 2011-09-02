@@ -19,6 +19,7 @@
 package uk.co.danielrendall.imagetiler.annotations;
 
 import org.junit.Test;
+import uk.co.danielrendall.imagetiler.svg.tiles.GemSVGTile;
 import uk.co.danielrendall.imagetiler.svg.tiles.SimpleSVGTile;
 
 import static junit.framework.Assert.assertEquals;
@@ -31,6 +32,18 @@ public class AnnotationTest {
     @Test
     public void testSettingWithAnnotations() {
         SimpleSVGTile tile = new SimpleSVGTile();
+//        assertEquals(0.8d, tile.getDarkOpacity(), 0.001d);
+        tile.setDarkOpacity(0.4d);
+        assertEquals(0.4d, tile.getDarkOpacity(), 0.001d);
+        tile.setDarkOpacity(2.0d);
+        assertEquals(1.0d, tile.getDarkOpacity(), 0.001d);
+        tile.setDarkOpacity(-1.0d);
+        assertEquals(0.0d, tile.getDarkOpacity(), 0.001d);
+    }
+
+    @Test
+    public void testSettingOfChildClassWithAnnotations() {
+        GemSVGTile tile = new GemSVGTile();
 //        assertEquals(0.8d, tile.getDarkOpacity(), 0.001d);
         tile.setDarkOpacity(0.4d);
         assertEquals(0.4d, tile.getDarkOpacity(), 0.001d);
