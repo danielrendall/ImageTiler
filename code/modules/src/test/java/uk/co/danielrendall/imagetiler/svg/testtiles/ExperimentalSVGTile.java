@@ -32,7 +32,7 @@ import java.awt.*;
  * Test class to test finding of classes
  */
 @ClassDescriptor(name="Test", description="Test tile")
-public class TestSVGTile extends SVGTile {
+public class ExperimentalSVGTile extends SVGTile {
 
     @DoubleParameter(name = "inset", description = "Fractional inset", defaultValue=0.15d, minValue = 0.0d, maxValue = 0.5d)
     protected double inset;
