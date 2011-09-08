@@ -19,4 +19,4 @@ exit 1
 fi
 
 
-java -jar ../code/modules/target/ImageTiler.jar  -f svg  -i $1 -t $2 -s $3 -o $1.svg -c "$4"
+java -jar ../code/modules/target/ImageTiler.jar   -i $1 -t $2 -s $3 -o $1.svg -c "$4"
