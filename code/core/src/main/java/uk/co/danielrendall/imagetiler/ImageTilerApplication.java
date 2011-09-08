@@ -30,8 +30,6 @@ import uk.co.danielrendall.imagetiler.registry.PluginRegistry;
 import uk.co.danielrendall.imagetiler.shared.ScannerStrategy;
 import uk.co.danielrendall.imagetiler.svg.SVGTile;
 import uk.co.danielrendall.imagetiler.tasks.LoadFileTask;
-import uk.co.danielrendall.imagetiler.utils.ClassInfo;
-import uk.co.danielrendall.imagetiler.utils.PackageFinder;
 
 import javax.swing.*;
 import javax.swing.border.Border;

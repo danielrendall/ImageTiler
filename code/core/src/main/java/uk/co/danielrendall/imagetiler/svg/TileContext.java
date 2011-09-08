@@ -21,7 +21,6 @@ package uk.co.danielrendall.imagetiler.svg;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import uk.co.danielrendall.imagetiler.shared.ConfigStore;
 import uk.co.danielrendall.mathlib.geom2d.Compass;
 import uk.co.danielrendall.mathlib.geom2d.Point;
 import uk.co.danielrendall.mathlib.geom2d.Vec;

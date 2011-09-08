@@ -18,8 +18,6 @@
 
 package uk.co.danielrendall.imagetiler.shared;
 
-import uk.co.danielrendall.imagetiler.shared.Pixel;
-
 import java.util.Iterator;
 
 /**

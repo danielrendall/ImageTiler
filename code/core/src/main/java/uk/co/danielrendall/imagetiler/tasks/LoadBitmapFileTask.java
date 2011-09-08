@@ -19,7 +19,6 @@
 package uk.co.danielrendall.imagetiler.tasks;
 
 import org.jdesktop.application.Application;
-import org.jdesktop.application.Task;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
