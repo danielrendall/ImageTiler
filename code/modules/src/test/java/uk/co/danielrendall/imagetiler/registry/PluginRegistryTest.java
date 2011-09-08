@@ -20,8 +20,8 @@ package uk.co.danielrendall.imagetiler.registry;
 
 import org.junit.Test;
 import uk.co.danielrendall.imagetiler.ImageTilerApplication;
-//import uk.co.danielrendall.imagetiler.strategies.CircleStrategy;
-//import uk.co.danielrendall.imagetiler.svg.tiles.GemSVGTile;
+import uk.co.danielrendall.imagetiler.strategies.*;
+import uk.co.danielrendall.imagetiler.tiles.*;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
@@ -31,12 +31,12 @@ import static junit.framework.Assert.assertNull;
  */
 public class PluginRegistryTest {
 
-//    @Test
-//    public void testPluginRegistry() throws InstantiationException, IllegalAccessException {
-//        PluginRegistry registry = ImageTilerApplication.createPluginRegistry();
-//        assertEquals(GemSVGTile.class, registry.getNewInstance(ImageTilerApplication.PLUGIN_TYPE_TILE, "Gem").getClass());
-//        assertEquals(CircleStrategy.class, registry.getNewInstance(ImageTilerApplication.PLUGIN_TYPE_STRATEGY, "Circle").getClass());
-//        assertNull(registry.getNewInstance(ImageTilerApplication.PLUGIN_TYPE_STRATEGY, "Oval"));
-//        assertNull(registry.getNewInstance("NoSuchType", "Thing"));
-//    }
+    @Test
+    public void testPluginRegistry() throws InstantiationException, IllegalAccessException {
+        PluginRegistry registry = ImageTilerApplication.createPluginRegistry();
+        assertEquals(GemSVGTile.class, registry.getNewInstance(ImageTilerApplication.PLUGIN_TYPE_TILE, "Gem").getClass());
+        assertEquals(CircleStrategy.class, registry.getNewInstance(ImageTilerApplication.PLUGIN_TYPE_STRATEGY, "Circle").getClass());
+        assertNull(registry.getNewInstance(ImageTilerApplication.PLUGIN_TYPE_STRATEGY, "Oval"));
+        assertNull(registry.getNewInstance("NoSuchType", "Thing"));
+    }
 }
