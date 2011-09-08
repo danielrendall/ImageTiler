@@ -16,7 +16,7 @@
  * along with ImageTiler.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package uk.co.danielrendall.imagetiler.svg.tiles;
+package uk.co.danielrendall.imagetiler.tiles;
 
 import org.apache.log4j.Logger;
 import org.w3c.dom.Element;

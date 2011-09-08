@@ -16,36 +16,37 @@
  * along with ImageTiler.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package uk.co.danielrendall.imagetiler.svg.tiles;
+package uk.co.danielrendall.imagetiler.tiles;
 
 import org.apache.log4j.Logger;
 import org.w3c.dom.Element;
 import uk.co.danielrendall.imagetiler.annotations.BooleanParameter;
 import uk.co.danielrendall.imagetiler.annotations.ClassDescriptor;
-import uk.co.danielrendall.imagetiler.annotations.DoubleParameter;
 import uk.co.danielrendall.imagetiler.svg.TileContext;
 import uk.co.danielrendall.imagetiler.svg.shapes.*;
-import uk.co.danielrendall.mathlib.geom2d.Point;
-import uk.co.danielrendall.mathlib.geom2d.Vec;
+import uk.co.danielrendall.mathlib.geom2d.*;
 
 import java.awt.Color;
 
 /**
  * Created by IntelliJ IDEA.
  * User: daniel
- * Date: 27-Mar-2010
- * Time: 16:05:34
+ * Date: 02-Apr-2010
+ * Time: 10:17:46
  * To change this template use File | Settings | File Templates.
  */
-@ClassDescriptor(name="TrianglePoint", description="Triangle with apex at center of image")
-public class TrianglePointSVGTile extends SimpleSVGTile {
-    public final static Logger log = Logger.getLogger(TrianglePointSVGTile.class);
+@ClassDescriptor(name="RotatedSquare", description="Square on its point")
+public class RotatedSquareSVGTile extends SimpleSVGTile {
 
+    public final static Logger log = Logger.getLogger(StarSVGTile.class);
 
-    @DoubleParameter(name = "weight", description = "How big to make the line", defaultValue = 1.0d, minValue = 0.01d, maxValue = 10d)
-    private double weight;
-    @BooleanParameter(name = "contextWeighting", description = "Whether to weight by distance from center", defaultValue = true)
-    private boolean contextWeighting;
+    private final double diamondAngle = Math.PI / 4.0d;
+
+    @BooleanParameter(name = "invert", description = "Invert the sense of rotation (TODO - find name)", defaultValue = false)
+    private boolean invert;
+    @BooleanParameter(name = "diamond", description = "Base the tile on a diamond rather than a square", defaultValue = false)
+    private boolean diamond;
+
 
     public boolean getTile(Element group, TileContext context) {
 
@@ -53,32 +54,37 @@ public class TrianglePointSVGTile extends SimpleSVGTile {
             double width = context.getWidth();
             double height = context.getHeight();
 
-            Point center = context.getCenter();
-            double distance = context.getDistance();
-
-            double myWeight = contextWeighting? (weight *  distance) : weight;
-
-            double radius = ((width + height) / 4.0d) * distance / myWeight;
-
             Polygon p = new Polygon();
+
             p.setFill(hexValue(context.getColor()));
             p.setStroke("black");
             p.setStrokeWidth(strokeWidth);
             p.setFillOpacity(1.0d);
 
-            Vec v1 = new Vec(radius, 0.0d).rotate(context.getAngle() + (Math.PI / 2.0));
-            Vec v2 = new Vec(radius, 0.0d).rotate(context.getAngle() - (Math.PI / 2.0));
+            double effectiveLeft = context.getLeft() + (width * inset);
+            double effectiveTop = context.getTop() + (height * inset);
+            double effectiveBottom = context.getBottom() - (height * inset);
+            double effectiveRight = context.getRight() - (width * inset);
 
-            p.addPoint(Point.ORIGIN);
-            p.addPoint(center.displace(v1));
-            p.addPoint(center.displace(v2));
+            Point tl = new Point(effectiveLeft, effectiveTop);
+            Point bl = new Point(effectiveLeft, effectiveBottom);
+            Point tr = new Point(effectiveRight, effectiveTop);
+            Point br = new Point(effectiveRight, effectiveBottom);
 
-//            log.info(p);
+            Point center = context.getCenter();
+
+            p.addPoint(tl);
+            p.addPoint(bl);
+            p.addPoint(br);
+            p.addPoint(tr);
+
+            p.rotate(context.getCenter(), (invert ? -context.getAngle() : context.getAngle()) + (diamond ? diamondAngle : 0.0d));
+
             group.appendChild(p.getElement(context));
 
             return true;
         }
         return false;
     }
-
+    
 }
