@@ -1,0 +1,15 @@
+Firstly, you need to download and install JavaMathLib.
+
+Next, you need to build and install the core, without running the tests - these will
+fail because they depend on the tiles project, but that depends on core. The magic
+command is:
+
+mvn -Dmaven.test.skip=true install
+
+Having done that, you should be able to install the tiles project, and then build the
+core with tests enabled.
+
+Originally the tiles were part of the core, but they were moved out because it seemed
+better to have them on the same footing as tiles from other people. At some point, 
+the annotation / plugin stuff will be factored out as well, which will probably make
+things a bit nicer.
