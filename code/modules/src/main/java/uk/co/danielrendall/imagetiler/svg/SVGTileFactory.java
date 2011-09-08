@@ -23,11 +23,9 @@ import uk.co.danielrendall.imagetiler.annotations.BooleanParameter;
 import uk.co.danielrendall.imagetiler.annotations.DoubleParameter;
 import uk.co.danielrendall.imagetiler.annotations.IntegerParameter;
 import uk.co.danielrendall.imagetiler.shared.ConfigStore;
-import uk.co.danielrendall.imagetiler.svg.tiles.SimpleSVGTile;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -48,41 +46,30 @@ public class SVGTileFactory {
         this.store = store;
     }
 
-    public SVGTile getTile() throws ClassNotFoundException {
-        try {
-            ParamsAndAnnotations paramsAndAnnotations = new ParamsAndAnnotations().invoke();
+    public SVGTile getTile() throws Exception {
+        ParamsAndAnnotations paramsAndAnnotations = new ParamsAndAnnotations().invoke();
 
-            Class[] paramTypes = paramsAndAnnotations.getParamTypes();
-            Annotation[] annotations = paramsAndAnnotations.getAnnotations();
+        Class[] paramTypes = paramsAndAnnotations.getParamTypes();
+        Annotation[] annotations = paramsAndAnnotations.getAnnotations();
 
-            Constructor con = paramsAndAnnotations.getCon();
+        Constructor con = paramsAndAnnotations.getCon();
 
-            Object[] params = new Object[paramTypes.length];
-            for(int i=0; i<paramTypes.length; i++) {
-                Class type = paramTypes[i];
-                Annotation annotation = annotations[i];
-                if (double.class == type) {
-                    params[i] = getDouble(store, annotation);
-                } else if (int.class == type) {
-                    params[i] = getInt(store, annotation);
-                } else if (boolean.class == type) {
-                    params[i] = getBoolean(store, annotation);
-                } else {
-                    throw new InstantiationException("Unknown parameter type - " + type.getName());
-                }
-
+        Object[] params = new Object[paramTypes.length];
+        for(int i=0; i<paramTypes.length; i++) {
+            Class type = paramTypes[i];
+            Annotation annotation = annotations[i];
+            if (double.class == type) {
+                params[i] = getDouble(store, annotation);
+            } else if (int.class == type) {
+                params[i] = getInt(store, annotation);
+            } else if (boolean.class == type) {
+                params[i] = getBoolean(store, annotation);
+            } else {
+                throw new InstantiationException("Unknown parameter type - " + type.getName());
             }
-            return (SVGTile)con.newInstance(params);
-        } catch (InstantiationException e) {
-            log.warn("Couldn't create tile - " + e.getMessage(), e);
-        } catch (IllegalAccessException e) {
-            log.warn("Couldn't create tile - " + e.getMessage(), e);
-        } catch (ClassNotFoundException e) {
-            log.warn("Couldn't create tile - " + e.getMessage(), e);
-        } catch (InvocationTargetException e) {
-            log.warn("Couldn't create tile - " + e.getMessage(), e);
+
         }
-        return new SimpleSVGTile();
+        return (SVGTile)con.newInstance(params);
     }
 
     private Object getDouble(ConfigStore store, Annotation annotation) throws InstantiationException {
