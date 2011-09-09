@@ -249,6 +249,14 @@ public class ImageTilerApplication extends SingleFrameApplication {
         }
     }
 
+    public void selectedTileChanged(ClassDescription cd) {
+        Log.gui.debug("Tile changed to " + cd.getName());
+    }
+
+    public void selectedStrategyChanged(ClassDescription cd) {
+        Log.gui.debug("Strategy changed to " + cd.getName());
+    }
+
     private JDialog createAboutBox() {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setBorder(new EmptyBorder(0, 28, 16, 28)); // top, left, bottom, right

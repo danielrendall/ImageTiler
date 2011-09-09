@@ -40,7 +40,7 @@ public class SettingsPanel extends JPanel {
     private final JPanel tilesSettings;
     private final JPanel strategiesSettings;
 
-    public SettingsPanel(ImageTilerApplication app) {
+    public SettingsPanel(final ImageTilerApplication app) {
         top = new JPanel();
         tilesSettings = new JPanel();
         strategiesSettings = new JPanel();
@@ -54,7 +54,7 @@ public class SettingsPanel extends JPanel {
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
                     ClassDescription cd = (ClassDescription) e.getItem();
-                    selectedTileChanged(cd);
+                    app.selectedTileChanged(cd);
                 }
             }
         });
@@ -64,7 +64,7 @@ public class SettingsPanel extends JPanel {
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
                     ClassDescription cd = (ClassDescription) e.getItem();
-                    selectedStrategyChanged(cd);
+                    app.selectedStrategyChanged(cd);
                 }
             }
         });
@@ -83,12 +83,5 @@ public class SettingsPanel extends JPanel {
 
     }
 
-    void selectedTileChanged(ClassDescription cd) {
-        Log.gui.debug("Tile changed to " + cd.getName());
-    }
-
-    void selectedStrategyChanged(ClassDescription cd) {
-        Log.gui.debug("Strategy changed to " + cd.getName());
-    }
 
 }
