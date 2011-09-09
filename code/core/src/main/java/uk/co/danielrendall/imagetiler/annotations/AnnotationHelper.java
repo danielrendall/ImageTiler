@@ -22,7 +22,6 @@ import uk.co.danielrendall.imagetiler.logging.Log;
 import uk.co.danielrendall.imagetiler.shared.ConfigStore;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 
@@ -32,7 +31,6 @@ import java.util.*;
 public class AnnotationHelper {
 
     private final Class clazz;
-    private final Object object;
     private final List<String> fieldNames;
     private final Map<String, AnnotatedField> annotatedFields;
 
@@ -99,7 +97,6 @@ public class AnnotationHelper {
 
     private AnnotationHelper(Class clazz, Object object, List<String> fieldNames, Map<String, Method> setMethods, Map<String, FieldType> fieldTypes, Map<String, Object> parameters) {
         this.clazz = clazz;
-        this.object = object;
         this.fieldNames = Collections.unmodifiableList(fieldNames);
         this.annotatedFields = new HashMap<String, AnnotatedField>();
         for (String fieldName : fieldNames) {
@@ -108,19 +105,19 @@ public class AnnotationHelper {
             switch (type) {
                 case Boolean:
                     BooleanParameter bParam = (BooleanParameter) parameters.get(fieldName);
-                    this.annotatedFields.put(fieldName, new BooleanField(fieldName, method, bParam));
+                    this.annotatedFields.put(fieldName, new BooleanField(object, fieldName, method, bParam));
                     break;
                 case Double:
                     DoubleParameter dParam = (DoubleParameter) parameters.get(fieldName);
-                    this.annotatedFields.put(fieldName, new DoubleField(fieldName, method, dParam));
+                    this.annotatedFields.put(fieldName, new DoubleField(object, fieldName, method, dParam));
                     break;
                 case Integer:
                     IntegerParameter iParam = (IntegerParameter) parameters.get(fieldName);
-                    this.annotatedFields.put(fieldName, new IntegerField(fieldName, method, iParam));
+                    this.annotatedFields.put(fieldName, new IntegerField(object, fieldName, method, iParam));
                     break;
                 case String:
                     StringParameter sParam = (StringParameter) parameters.get(fieldName);
-                    this.annotatedFields.put(fieldName, new StringField(fieldName, method, sParam));
+                    this.annotatedFields.put(fieldName, new StringField(object, fieldName, method, sParam));
                     break;
             }
         }
@@ -178,156 +175,4 @@ public class AnnotationHelper {
         }
     }
 
-    private abstract class AnnotatedField {
-        protected final String name;
-        protected final Method method;
-
-        protected AnnotatedField(String name, Method method) {
-            this.name = name;
-            this.method = method;
-        }
-
-        final void set(Object value) {
-            try {
-                doSet(value);
-            } catch (InvocationTargetException e) {
-                Log.app.warn(e.getMessage());
-                throw new RuntimeException(e);
-            } catch (IllegalAccessException e) {
-                Log.app.warn(e.getMessage());
-                throw new RuntimeException(e);
-            }
-        }
-
-        final Object check(Object value) {
-            try {
-                return doCheck(value);
-            } catch (InvocationTargetException e) {
-                Log.app.warn(e.getMessage());
-                throw new RuntimeException(e.getTargetException());
-            } catch (IllegalAccessException e) {
-                Log.app.warn(e.getMessage());
-                throw new RuntimeException(e);
-            }
-        }
-
-        final void setFromStore(ConfigStore store) {
-            set(doGetFromStore(store));
-        }
-
-
-
-        abstract void doSet(Object value) throws InvocationTargetException, IllegalAccessException;
-
-        abstract Object doCheck(Object value) throws InvocationTargetException, IllegalAccessException;
-
-        abstract Object doGetFromStore(ConfigStore store);
-    }
-
-    private class BooleanField extends AnnotatedField {
-
-        private final BooleanParameter param;
-
-        private BooleanField(String name, Method method, BooleanParameter param) {
-            super(name, method);
-            this.param = param;
-        }
-
-        void doSet(Object value) throws InvocationTargetException, IllegalAccessException {
-            Boolean bValue = (Boolean) doCheck(value);
-            method.invoke(object, bValue);
-        }
-
-        Object doCheck(Object value) {
-            // nothing to check...
-            return value;
-        }
-
-        @Override
-        Object doGetFromStore(ConfigStore store) {
-            return store.getBoolean(name, param.defaultValue());
-        }
-    }
-
-    private class DoubleField extends AnnotatedField {
-
-        private final DoubleParameter param;
-        private DoubleField(String name, Method method, DoubleParameter param) {
-            super(name, method);
-            this.param = param;
-        }
-
-        void doSet(Object value) throws InvocationTargetException, IllegalAccessException {
-            Double dValue = (Double) doCheck(value);
-            method.invoke(object, dValue);
-        }
-
-        Object doCheck(Object value) {
-            Double dValue = (Double) value;
-            if (dValue < param.minValue()) {
-                dValue = param.minValue();
-            } else if (dValue > param.maxValue()) {
-                dValue = param.maxValue();
-            }
-            return dValue;
-        }
-
-        @Override
-        Object doGetFromStore(ConfigStore store) {
-            return store.getDouble(name, param.defaultValue());
-        }
-    }
-
-    private class IntegerField extends AnnotatedField {
-
-        private final IntegerParameter param;
-        private IntegerField(String name, Method method, IntegerParameter param) {
-            super(name, method);
-            this.param = param;
-        }
-
-        void doSet(Object value) throws InvocationTargetException, IllegalAccessException {
-            Integer iValue = (Integer) doCheck(value);
-            method.invoke(object, iValue);
-        }
-
-        Object doCheck(Object value) {
-            Integer iValue = (Integer) value;
-            if (iValue < param.minValue()) {
-                iValue = param.minValue();
-            } else if (iValue > param.maxValue()) {
-                iValue = param.maxValue();
-            }
-            return iValue;
-        }
-
-        @Override
-        Object doGetFromStore(ConfigStore store) {
-            return store.getInt(name, param.defaultValue());
-        }
-    }
-    
-    private class StringField extends AnnotatedField {
-
-        private final StringParameter param;
-        private StringField(String name, Method method, StringParameter param) {
-            super(name, method);
-            this.param = param;
-        }
-
-        void doSet(Object value) throws InvocationTargetException, IllegalAccessException {
-            String sValue = (String) doCheck(value);
-            method.invoke(object, sValue);
-        }
-
-        Object doCheck(Object value) {
-            // nothing to check...
-            return value;
-        }
-
-        @Override
-        Object doGetFromStore(ConfigStore store) {
-            throw new RuntimeException("Strings not supported!");
-        }
-    }
 }

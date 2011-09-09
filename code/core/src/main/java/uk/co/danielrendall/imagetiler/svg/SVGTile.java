@@ -20,6 +20,7 @@ package uk.co.danielrendall.imagetiler.svg;
 
 import org.w3c.dom.Element;
 import uk.co.danielrendall.imagetiler.annotations.AnnotationHelper;
+import uk.co.danielrendall.imagetiler.annotations.BaseAnnotatable;
 import uk.co.danielrendall.imagetiler.shared.ConfigStore;
 
 /**
@@ -29,17 +30,7 @@ import uk.co.danielrendall.imagetiler.shared.ConfigStore;
  * Time: 9:36:01 PM
  * To change this template use File | Settings | File Templates.
  */
-public abstract class SVGTile {
-
-    protected final AnnotationHelper helper;
-
-    protected SVGTile() {
-        this.helper = AnnotationHelper.create(this);
-    }
-
-    public void setFromStore(ConfigStore store) {
-        helper.setFromStore(store);
-    }
+public abstract class SVGTile extends BaseAnnotatable {
 
     /**
      *
@@ -49,4 +40,10 @@ public abstract class SVGTile {
 
     public abstract boolean getTile(Element group, TileContext context);
 
+    public static class NullImplementation extends SVGTile {
+        @Override
+        public boolean getTile(Element group, TileContext context) {
+            return false;
+        }
+    }
 }
