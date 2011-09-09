@@ -65,6 +65,12 @@ public class App {
 
         try {
             PluginRegistry pluginRegistry = ImageTilerApplication.createPluginRegistry();
+            if (!pluginRegistry.hasPlugins(ImageTilerApplication.PLUGIN_TYPE_TILE)) {
+                throw new CmdLineException("No image tiles available");
+            }
+            if (!pluginRegistry.hasPlugins(ImageTilerApplication.PLUGIN_TYPE_STRATEGY)) {
+                throw new CmdLineException("No strategies available");
+            }
             // parse the arguments.
             parser.parseArgument(args);
             ConfigStore store = new FileConfigStore(config);

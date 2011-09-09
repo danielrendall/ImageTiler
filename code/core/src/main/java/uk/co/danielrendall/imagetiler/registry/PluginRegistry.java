@@ -82,4 +82,8 @@ public class PluginRegistry {
         return newInstance;
     }
 
+    public boolean hasPlugins(String pluginType) {
+        return getClassDescriptions(pluginType).size() > 0;
+    }
+
 }
