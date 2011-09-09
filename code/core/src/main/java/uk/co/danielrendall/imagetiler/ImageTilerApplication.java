@@ -57,12 +57,17 @@ public class ImageTilerApplication extends SingleFrameApplication {
     private  BufferedImage bitmap = null;
     private final PluginRegistry pluginRegistry;
 
+    private SVGTile svgTile;
+    private ScannerStrategy scannerStrategy;
+
     public static void main(String[] args) {
         Application.launch(ImageTilerApplication.class, args);
     }
 
     public ImageTilerApplication() {
         pluginRegistry = createPluginRegistry();
+        svgTile = new SVGTile.NullImplementation();
+        scannerStrategy = new ScannerStrategy.NullImplementation();
     }
 
     public static PluginRegistry createPluginRegistry() {
@@ -251,10 +256,25 @@ public class ImageTilerApplication extends SingleFrameApplication {
 
     public void selectedTileChanged(ClassDescription cd) {
         Log.gui.debug("Tile changed to " + cd.getName());
+        try {
+            SVGTile newInstance = (SVGTile) pluginRegistry.getNewInstance(PLUGIN_TYPE_TILE, cd.getName());
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (InstantiationException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
     }
 
     public void selectedStrategyChanged(ClassDescription cd) {
         Log.gui.debug("Strategy changed to " + cd.getName());
+        try {
+            ScannerStrategy newInstance = (ScannerStrategy) pluginRegistry.getNewInstance(PLUGIN_TYPE_STRATEGY, cd.getName());
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (InstantiationException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
     }
 
     private JDialog createAboutBox() {
