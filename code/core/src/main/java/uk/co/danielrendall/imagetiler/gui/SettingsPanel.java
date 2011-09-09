@@ -19,9 +19,14 @@
 package uk.co.danielrendall.imagetiler.gui;
 
 import uk.co.danielrendall.imagetiler.ImageTilerApplication;
+import uk.co.danielrendall.imagetiler.logging.Log;
+import uk.co.danielrendall.imagetiler.registry.ClassDescription;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 /**
  * @author Daniel Rendall
@@ -31,13 +36,59 @@ public class SettingsPanel extends JPanel {
     private final JComboBox tilesDropDown;
     private final JComboBox strategiesDropDown;
 
+    private final JPanel top;
+    private final JPanel tilesSettings;
+    private final JPanel strategiesSettings;
+
     public SettingsPanel(ImageTilerApplication app) {
+        top = new JPanel();
+        tilesSettings = new JPanel();
+        strategiesSettings = new JPanel();
+
+
         this.setLayout(new GridBagLayout());
-        this.add(new JLabel("SettingsPanel"));
+        top.setLayout(new BoxLayout(top, BoxLayout.Y_AXIS));
+        top.add(new JLabel("SettingsPanel"));
         tilesDropDown = new JComboBox(app.getTileClassesList());
-        this.add(tilesDropDown);
+        tilesDropDown.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    ClassDescription cd = (ClassDescription) e.getItem();
+                    selectedTileChanged(cd);
+                }
+            }
+        });
+        top.add(tilesDropDown);
         strategiesDropDown = new JComboBox(app.getStrategyClassesList());
-        this.add(strategiesDropDown);
+        strategiesDropDown.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    ClassDescription cd = (ClassDescription) e.getItem();
+                    selectedStrategyChanged(cd);
+                }
+            }
+        });
+
+        top.add(strategiesDropDown);
+        GridBagConstraints constraints = new GridBagConstraints(0, 0, 1, 3, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0);
+        this.add(top, constraints);
+
+        tilesSettings.setLayout(new BorderLayout());
+        constraints.gridy = 1;
+        this.add(tilesSettings, constraints);
+
+        strategiesSettings.setLayout(new BorderLayout());
+        constraints.gridy = 2;
+        this.add(strategiesSettings, constraints);
 
     }
+
+    void selectedTileChanged(ClassDescription cd) {
+        Log.gui.debug("Tile changed to " + cd.getName());
+    }
+
+    void selectedStrategyChanged(ClassDescription cd) {
+        Log.gui.debug("Strategy changed to " + cd.getName());
+    }
+
 }
