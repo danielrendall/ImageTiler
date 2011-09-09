@@ -78,14 +78,8 @@ public class App {
                 SVGTile tile = (SVGTile) pluginRegistry.getConfiguredInstance(ImageTilerApplication.PLUGIN_TYPE_TILE, type, store);
                 ScannerStrategy scannerStrategy = (ScannerStrategy) pluginRegistry.getConfiguredInstance(ImageTilerApplication.PLUGIN_TYPE_STRATEGY, strategy, store);
                 SVGTiler tiler = new SVGTiler(tile, scannerStrategy);
-                if (help) {
-                    System.out.println("For tile type '" + type + "'");
-//                    System.out.println(tiler.describeOptions());
-                } else {
-                    if (inputFile == null || outputFile == null) {
-                        throw new CmdLineException("Input and output files must be supplied");
-                    }
-                    tiler.process(inputFile, outputFile);
+                if (inputFile == null || outputFile == null) {
+                    throw new CmdLineException("Input and output files must be supplied");
                 }
                 tiler.process(inputFile, outputFile);
             }
