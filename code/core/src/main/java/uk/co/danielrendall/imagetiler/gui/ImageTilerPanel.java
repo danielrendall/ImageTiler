@@ -24,6 +24,7 @@ import org.apache.batik.swing.svg.AbstractJSVGComponent;
 import org.jdesktop.swingx.JXMultiSplitPane;
 import org.jdesktop.swingx.MultiSplitLayout;
 import uk.co.danielrendall.imagetiler.ImageTilerApplication;
+import uk.co.danielrendall.imagetiler.svg.SVGTile;
 
 import javax.swing.*;
 import java.awt.*;
@@ -97,5 +98,9 @@ public class ImageTilerPanel extends JLayeredPane {
 
         this.add(splitPane, DEFAULT_LAYER);
 
+    }
+
+    public void addTileEditors(SVGTile tile) {
+        settings.addTileEditors(tile);
     }
 }

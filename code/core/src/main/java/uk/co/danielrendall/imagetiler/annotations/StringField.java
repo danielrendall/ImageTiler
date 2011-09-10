@@ -18,6 +18,7 @@
 
 package uk.co.danielrendall.imagetiler.annotations;
 
+import uk.co.danielrendall.imagetiler.logging.Log;
 import uk.co.danielrendall.imagetiler.shared.ConfigStore;
 
 import java.lang.reflect.InvocationTargetException;
@@ -26,18 +27,18 @@ import java.lang.reflect.Method;
 /**
 * @author Daniel Rendall
 */
-class StringField extends AnnotatedField {
+public class StringField extends AnnotatedField {
 
     private final StringParameter param;
 
-    StringField(Object object, String name, Method method, StringParameter param) {
-        super(object, name, method);
+    StringField(Object object, String name, Method setMethod, Method getMethod, StringParameter param) {
+        super(object, name, setMethod, getMethod);
         this.param = param;
     }
 
     void doSet(Object value) throws InvocationTargetException, IllegalAccessException {
         String sValue = (String) doCheck(value);
-        method.invoke(object, sValue);
+        setMethod.invoke(object, sValue);
     }
 
     Object doCheck(Object value) {
@@ -50,6 +51,30 @@ class StringField extends AnnotatedField {
         throw new RuntimeException("Strings not supported!");
     }
 
+    public void set(String aString) {
+        try {
+            setMethod.invoke(object, aString);
+        } catch (IllegalAccessException e) {
+            Log.app.warn(e.getMessage());
+            throw new RuntimeException(e);
+        } catch (InvocationTargetException e) {
+            Log.app.warn(e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    public String get() {
+        try {
+            return (String) getMethod.invoke(object);
+        } catch (IllegalAccessException e) {
+            Log.app.warn(e.getMessage());
+            throw new RuntimeException(e);
+        } catch (InvocationTargetException e) {
+            Log.app.warn(e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     void accept(FieldVisitor visitor) {
         visitor.visit(this);
@@ -59,10 +84,12 @@ class StringField extends AnnotatedField {
         return param.defaultValue();
     }
 
+    @Override
     public String description() {
         return param.description();
     }
 
+    @Override
     public String name() {
         return param.name();
     }

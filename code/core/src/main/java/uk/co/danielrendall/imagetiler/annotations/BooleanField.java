@@ -18,6 +18,7 @@
 
 package uk.co.danielrendall.imagetiler.annotations;
 
+import uk.co.danielrendall.imagetiler.logging.Log;
 import uk.co.danielrendall.imagetiler.shared.ConfigStore;
 
 import java.lang.reflect.InvocationTargetException;
@@ -26,18 +27,18 @@ import java.lang.reflect.Method;
 /**
 * @author Daniel Rendall
 */
-class BooleanField extends AnnotatedField {
+public class BooleanField extends AnnotatedField {
 
     private final BooleanParameter param;
 
-    BooleanField(Object object, String name, Method method, BooleanParameter param) {
-        super(object, name, method);
+    BooleanField(Object object, String name, Method setMethod, Method getMethod, BooleanParameter param) {
+        super(object, name, setMethod, getMethod);
         this.param = param;
     }
 
     void doSet(Object value) throws InvocationTargetException, IllegalAccessException {
         Boolean bValue = (Boolean) doCheck(value);
-        method.invoke(object, bValue);
+        setMethod.invoke(object, bValue);
     }
 
     Object doCheck(Object value) {
@@ -53,6 +54,30 @@ class BooleanField extends AnnotatedField {
     @Override
     Object doGetFromStore(ConfigStore store) {
         return store.getBoolean(name, param.defaultValue());
+    }
+
+    public void set(boolean aBoolean) {
+        try {
+            setMethod.invoke(object, aBoolean);
+        } catch (IllegalAccessException e) {
+            Log.app.warn(e.getMessage());
+            throw new RuntimeException(e);
+        } catch (InvocationTargetException e) {
+            Log.app.warn(e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    public boolean get() {
+        try {
+            return (Boolean) getMethod.invoke(object);
+        } catch (IllegalAccessException e) {
+            Log.app.warn(e.getMessage());
+            throw new RuntimeException(e);
+        } catch (InvocationTargetException e) {
+            Log.app.warn(e.getMessage());
+            throw new RuntimeException(e);
+        }
     }
 
     public boolean defaultValue() {

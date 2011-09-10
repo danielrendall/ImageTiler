@@ -27,15 +27,17 @@ import java.lang.reflect.Method;
 /**
 * @author Daniel Rendall
 */
-abstract class AnnotatedField {
+public abstract class AnnotatedField {
     protected final Object object;
     protected final String name;
-    protected final Method method;
+    protected final Method setMethod;
+    protected final Method getMethod;
 
-    AnnotatedField(Object object, String name, Method method) {
+    AnnotatedField(Object object, String name, Method setMethod, Method getMethod) {
         this.object = object;
         this.name = name;
-        this.method = method;
+        this.setMethod = setMethod;
+        this.getMethod = getMethod;
     }
 
     final void set(Object value) {
@@ -73,4 +75,8 @@ abstract class AnnotatedField {
     abstract Object doCheck(Object value) throws InvocationTargetException, IllegalAccessException;
 
     abstract Object doGetFromStore(ConfigStore store);
+
+    public abstract String description();
+
+    public abstract String name();
 }

@@ -21,12 +21,15 @@ package uk.co.danielrendall.imagetiler.gui;
 import uk.co.danielrendall.imagetiler.ImageTilerApplication;
 import uk.co.danielrendall.imagetiler.logging.Log;
 import uk.co.danielrendall.imagetiler.registry.ClassDescription;
+import uk.co.danielrendall.imagetiler.svg.SVGTile;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Daniel Rendall
@@ -40,13 +43,16 @@ public class SettingsPanel extends JPanel {
     private final JPanel tilesSettings;
     private final JPanel strategiesSettings;
 
+    private final Map<SVGTile, JPanel> individualTilePanels;
+
     public SettingsPanel(final ImageTilerApplication app) {
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         top = new JPanel();
         tilesSettings = new JPanel();
         strategiesSettings = new JPanel();
 
+        individualTilePanels = new HashMap<SVGTile, JPanel>();
 
-        this.setLayout(new GridBagLayout());
         top.setLayout(new BoxLayout(top, BoxLayout.Y_AXIS));
         top.add(new JLabel("SettingsPanel"));
         tilesDropDown = new JComboBox(app.getTileClassesList());
@@ -70,18 +76,33 @@ public class SettingsPanel extends JPanel {
         });
 
         top.add(strategiesDropDown);
-        GridBagConstraints constraints = new GridBagConstraints(0, 0, 1, 3, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0);
-        this.add(top, constraints);
+        this.add(top);
 
         tilesSettings.setLayout(new BorderLayout());
-        constraints.gridy = 1;
-        this.add(tilesSettings, constraints);
+        this.add(tilesSettings);
 
         strategiesSettings.setLayout(new BorderLayout());
-        constraints.gridy = 2;
-        this.add(strategiesSettings, constraints);
+        this.add(strategiesSettings);
 
     }
 
+    public void addTileEditors(SVGTile tile) {
+        JPanel panel;
+        if (individualTilePanels.containsKey(tile)) {
+            panel = individualTilePanels.get(tile);
+        } else {
+            panel = new JPanel();
+            panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+            CreateEditableComponentsVisitor visitor = new CreateEditableComponentsVisitor();
+            tile.getHelper().accept(visitor);
+            for (JComponent component : visitor.getComponents()) {
+                panel.add(component);
+            }
+            individualTilePanels.put(tile, panel);
+        }
+        tilesSettings.removeAll();
+        tilesSettings.add(panel, BorderLayout.CENTER);
+        this.revalidate();
+    }
 
 }

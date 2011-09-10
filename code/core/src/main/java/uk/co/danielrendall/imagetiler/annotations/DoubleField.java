@@ -18,6 +18,7 @@
 
 package uk.co.danielrendall.imagetiler.annotations;
 
+import uk.co.danielrendall.imagetiler.logging.Log;
 import uk.co.danielrendall.imagetiler.shared.ConfigStore;
 
 import java.lang.reflect.InvocationTargetException;
@@ -26,18 +27,20 @@ import java.lang.reflect.Method;
 /**
 * @author Daniel Rendall
 */
-class DoubleField extends AnnotatedField {
+public class DoubleField extends AnnotatedField {
 
     private final DoubleParameter param;
+    private final double range;
 
-    DoubleField(Object object, String name, Method method, DoubleParameter param) {
-        super(object, name, method);
+    DoubleField(Object object, String name, Method setMethod, Method getMethod, DoubleParameter param) {
+        super(object, name, setMethod, getMethod);
         this.param = param;
+        this.range = param.maxValue() - param.minValue();
     }
 
     void doSet(Object value) throws InvocationTargetException, IllegalAccessException {
         Double dValue = (Double) doCheck(value);
-        method.invoke(object, dValue);
+        setMethod.invoke(object, dValue);
     }
 
     Object doCheck(Object value) {
@@ -53,6 +56,30 @@ class DoubleField extends AnnotatedField {
     @Override
     Object doGetFromStore(ConfigStore store) {
         return store.getDouble(name, param.defaultValue());
+    }
+
+    public void set(double aDouble) {
+        try {
+            setMethod.invoke(object, aDouble);
+        } catch (IllegalAccessException e) {
+            Log.app.warn(e.getMessage());
+            throw new RuntimeException(e);
+        } catch (InvocationTargetException e) {
+            Log.app.warn(e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    public double get() {
+        try {
+            return (Double) getMethod.invoke(object);
+        } catch (IllegalAccessException e) {
+            Log.app.warn(e.getMessage());
+            throw new RuntimeException(e);
+        } catch (InvocationTargetException e) {
+            Log.app.warn(e.getMessage());
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -78,5 +105,9 @@ class DoubleField extends AnnotatedField {
 
     public String name() {
         return param.name();
+    }
+
+    public double getRange() {
+        return range;
     }
 }

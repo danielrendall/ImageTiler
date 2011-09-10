@@ -56,9 +56,14 @@ public class ImageTilerApplication extends SingleFrameApplication {
     private JDialog aboutBox = null;
     private  BufferedImage bitmap = null;
     private final PluginRegistry pluginRegistry;
+    private final Map<String, SVGTile> pluginTiles;
+    private final Map<String, ScannerStrategy> pluginStrategies;
 
     private SVGTile svgTile;
     private ScannerStrategy scannerStrategy;
+
+    private final SVGTile nullSVGTile = new SVGTile.NullImplementation();
+    private final ScannerStrategy nullScannerStrategy = new ScannerStrategy.NullImplementation();
 
     public static void main(String[] args) {
         Application.launch(ImageTilerApplication.class, args);
@@ -66,8 +71,10 @@ public class ImageTilerApplication extends SingleFrameApplication {
 
     public ImageTilerApplication() {
         pluginRegistry = createPluginRegistry();
-        svgTile = new SVGTile.NullImplementation();
-        scannerStrategy = new ScannerStrategy.NullImplementation();
+        svgTile = nullSVGTile;
+        scannerStrategy = nullScannerStrategy;
+        pluginTiles = new HashMap<String, SVGTile>();
+        pluginStrategies = new HashMap<String, ScannerStrategy>();
     }
 
     public static PluginRegistry createPluginRegistry() {
@@ -256,24 +263,40 @@ public class ImageTilerApplication extends SingleFrameApplication {
 
     public void selectedTileChanged(ClassDescription cd) {
         Log.gui.debug("Tile changed to " + cd.getName());
-        try {
-            SVGTile newInstance = (SVGTile) pluginRegistry.getNewInstance(PLUGIN_TYPE_TILE, cd.getName());
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (InstantiationException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        svgTile = nullSVGTile;
+        if (pluginTiles.containsKey(cd.getName())) {
+            svgTile = pluginTiles.get(cd.getName());
+        } else {
+            try {
+                svgTile = (SVGTile) pluginRegistry.getNewInstance(PLUGIN_TYPE_TILE, cd.getName());
+                pluginTiles.put(cd.getName(), svgTile);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (InstantiationException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
         }
-
+        SwingUtilities.invokeLater( new Runnable() {
+            public void run() {
+                imageTilerPanel.addTileEditors(svgTile);
+            }
+        });
     }
 
     public void selectedStrategyChanged(ClassDescription cd) {
         Log.gui.debug("Strategy changed to " + cd.getName());
-        try {
-            ScannerStrategy newInstance = (ScannerStrategy) pluginRegistry.getNewInstance(PLUGIN_TYPE_STRATEGY, cd.getName());
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (InstantiationException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        scannerStrategy = nullScannerStrategy;
+        if (pluginStrategies.containsKey(cd.getName())) {
+            scannerStrategy = pluginStrategies.get(cd.getName());
+        } else {
+            try {
+                scannerStrategy = (ScannerStrategy) pluginRegistry.getNewInstance(PLUGIN_TYPE_STRATEGY, cd.getName());
+                pluginStrategies.put(cd.getName(), scannerStrategy);               
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (InstantiationException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
         }
     }
 

@@ -18,6 +18,7 @@
 
 package uk.co.danielrendall.imagetiler.annotations;
 
+import uk.co.danielrendall.imagetiler.logging.Log;
 import uk.co.danielrendall.imagetiler.shared.ConfigStore;
 
 import java.lang.reflect.InvocationTargetException;
@@ -26,18 +27,20 @@ import java.lang.reflect.Method;
 /**
 * @author Daniel Rendall
 */
-class IntegerField extends AnnotatedField {
+public class IntegerField extends AnnotatedField {
 
     private final IntegerParameter param;
+    private final int range;
 
-    IntegerField(Object object, String name, Method method, IntegerParameter param) {
-        super(object, name, method);
+    IntegerField(Object object, String name, Method setMethod, Method getMethod, IntegerParameter param) {
+        super(object, name, setMethod, getMethod);
         this.param = param;
+        range = param.maxValue() - param.minValue();
     }
 
     void doSet(Object value) throws InvocationTargetException, IllegalAccessException {
         Integer iValue = (Integer) doCheck(value);
-        method.invoke(object, iValue);
+        setMethod.invoke(object, iValue);
     }
 
     Object doCheck(Object value) {
@@ -53,6 +56,30 @@ class IntegerField extends AnnotatedField {
     @Override
     Object doGetFromStore(ConfigStore store) {
         return store.getInt(name, param.defaultValue());
+    }
+
+    public void set(int anInt) {
+        try {
+            setMethod.invoke(object, anInt);
+        } catch (IllegalAccessException e) {
+            Log.app.warn(e.getMessage());
+            throw new RuntimeException(e);
+        } catch (InvocationTargetException e) {
+            Log.app.warn(e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    public int get() {
+        try {
+            return (Integer) getMethod.invoke(object);
+        } catch (IllegalAccessException e) {
+            Log.app.warn(e.getMessage());
+            throw new RuntimeException(e);
+        } catch (InvocationTargetException e) {
+            Log.app.warn(e.getMessage());
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -78,5 +105,9 @@ class IntegerField extends AnnotatedField {
 
     public String name() {
         return param.name();
+    }
+
+    public int getRange() {
+        return range;
     }
 }
