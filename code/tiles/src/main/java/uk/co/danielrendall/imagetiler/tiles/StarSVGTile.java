@@ -97,7 +97,6 @@ public class StarSVGTile extends SimpleSVGTile {
 
     public void setInnerRadius(double innerRadius) {
         this.innerRadius = helper.check("innerRadius", innerRadius);
-;
     }
 
     public double getOuterRadius() {
@@ -105,6 +104,6 @@ public class StarSVGTile extends SimpleSVGTile {
     }
 
     public void setOuterRadius(double outerRadius) {
-        this.outerRadius = helper.check("outerRadius", outerRadius);;
+        this.outerRadius = helper.check("outerRadius", outerRadius);
     }
 }

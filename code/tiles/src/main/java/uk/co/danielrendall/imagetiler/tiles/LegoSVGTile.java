@@ -157,13 +157,32 @@ public class LegoSVGTile extends SimpleSVGTile {
                 group.appendChild(line.getElement(context));
 
             }
-
-
-
-
-
             return true;
         }
         return false;
+    }
+
+    public double getBlobHeight() {
+        return blobHeight;
+    }
+
+    public void setBlobHeight(double blobHeight) {
+        this.blobHeight = helper.check("blobHeight", blobHeight);;
+    }
+
+    public double getBlobRadius() {
+        return blobRadius;
+    }
+
+    public void setBlobRadius(double blobRadius) {
+        this.blobRadius = helper.check("blobRadius", blobRadius);;
+    }
+
+    public double getTileDepth() {
+        return tileDepth;
+    }
+
+    public void setTileDepth(double tileDepth) {
+        this.tileDepth = helper.check("tileDepth", tileDepth);;
     }
 }

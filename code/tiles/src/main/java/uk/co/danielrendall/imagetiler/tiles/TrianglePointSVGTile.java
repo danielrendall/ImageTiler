@@ -81,4 +81,19 @@ public class TrianglePointSVGTile extends SimpleSVGTile {
         return false;
     }
 
+    public boolean getContextWeighting() {
+        return contextWeighting;
+    }
+
+    public void setContextWeighting(boolean contextWeighting) {
+        this.contextWeighting = helper.check("contextWeighting", contextWeighting);
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = helper.check("weight", weight);
+    }
 }

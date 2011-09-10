@@ -153,4 +153,11 @@ public class SquareExtrudedSVGTile extends SimpleSVGTile {
         return false;
     }
 
+    public double getColumnStrokeWidth() {
+        return columnStrokeWidth;
+    }
+
+    public void setColumnStrokeWidth(double columnStrokeWidth) {
+        this.columnStrokeWidth = helper.check("columnStrokeWidth", columnStrokeWidth);
+    }
 }

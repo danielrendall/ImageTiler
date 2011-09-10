@@ -94,9 +94,6 @@ public class GemSVGTile extends SimpleSVGTile {
             p.addPoint(center);
             group.appendChild(p.getElement(context));
 
-
-
-
             return true;
         } else {
             return false;
