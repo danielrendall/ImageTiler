@@ -66,7 +66,7 @@ abstract class AnnotatedField {
         set(doGetFromStore(store));
     }
 
-
+    abstract void accept(FieldVisitor visitor);
 
     abstract void doSet(Object value) throws InvocationTargetException, IllegalAccessException;
 

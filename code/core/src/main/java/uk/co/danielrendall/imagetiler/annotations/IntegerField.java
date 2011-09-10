@@ -54,4 +54,29 @@ class IntegerField extends AnnotatedField {
     Object doGetFromStore(ConfigStore store) {
         return store.getInt(name, param.defaultValue());
     }
+
+    @Override
+    void accept(FieldVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    public int defaultValue() {
+        return param.defaultValue();
+    }
+
+    public String description() {
+        return param.description();
+    }
+
+    public int maxValue() {
+        return param.maxValue();
+    }
+
+    public int minValue() {
+        return param.minValue();
+    }
+
+    public String name() {
+        return param.name();
+    }
 }

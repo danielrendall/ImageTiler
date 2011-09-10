@@ -49,4 +49,21 @@ class StringField extends AnnotatedField {
     Object doGetFromStore(ConfigStore store) {
         throw new RuntimeException("Strings not supported!");
     }
+
+    @Override
+    void accept(FieldVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    public String defaultValue() {
+        return param.defaultValue();
+    }
+
+    public String description() {
+        return param.description();
+    }
+
+    public String name() {
+        return param.name();
+    }
 }

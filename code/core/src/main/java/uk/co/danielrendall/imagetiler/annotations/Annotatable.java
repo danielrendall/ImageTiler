@@ -26,6 +26,5 @@ import uk.co.danielrendall.imagetiler.shared.ConfigStore;
 public interface Annotatable {
 
     public AnnotationHelper getHelper();
-    void setFromStore(ConfigStore store);
     
 }

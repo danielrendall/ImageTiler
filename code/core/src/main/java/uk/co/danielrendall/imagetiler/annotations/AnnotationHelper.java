@@ -129,6 +129,12 @@ public class AnnotationHelper {
         }
     }
 
+    public void accept(FieldVisitor visitor) {
+        for(String fieldName: fieldNames) {
+            annotatedFields.get(fieldName).accept(visitor);
+        }
+    }
+
     public boolean check(String fieldName, boolean value) {
         verifyField(fieldName);
         return (Boolean) annotatedFields.get(fieldName).check((Boolean) value);

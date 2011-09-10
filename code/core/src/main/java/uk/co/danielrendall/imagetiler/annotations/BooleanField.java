@@ -46,7 +46,24 @@ class BooleanField extends AnnotatedField {
     }
 
     @Override
+    void accept(FieldVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    @Override
     Object doGetFromStore(ConfigStore store) {
         return store.getBoolean(name, param.defaultValue());
+    }
+
+    public boolean defaultValue() {
+        return param.defaultValue();
+    }
+
+    public String description() {
+        return param.description();
+    }
+
+    public String name() {
+        return param.name();
     }
 }

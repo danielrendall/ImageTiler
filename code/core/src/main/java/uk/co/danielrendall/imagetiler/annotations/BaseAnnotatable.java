@@ -35,7 +35,4 @@ public class BaseAnnotatable implements Annotatable {
         return helper;
     }
 
-    public void setFromStore(ConfigStore store) {
-        helper.setFromStore(store);
-    }
 }

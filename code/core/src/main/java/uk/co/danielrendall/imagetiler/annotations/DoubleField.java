@@ -54,4 +54,29 @@ class DoubleField extends AnnotatedField {
     Object doGetFromStore(ConfigStore store) {
         return store.getDouble(name, param.defaultValue());
     }
+
+    @Override
+    void accept(FieldVisitor visitor) {
+        visitor.visit(this);
+    }
+    
+    public double defaultValue() {
+        return param.defaultValue();
+    }
+
+    public String description() {
+        return param.description();
+    }
+
+    public double maxValue() {
+        return param.maxValue();
+    }
+
+    public double minValue() {
+        return param.minValue();
+    }
+
+    public String name() {
+        return param.name();
+    }
 }
