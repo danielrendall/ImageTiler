@@ -54,6 +54,11 @@ public class DoubleField extends AnnotatedField {
     }
 
     @Override
+    Object doGetDefault() {
+        return param.defaultValue();
+    }
+
+    @Override
     Object doGetFromStore(ConfigStore store) {
         return store.getDouble(name, param.defaultValue());
     }

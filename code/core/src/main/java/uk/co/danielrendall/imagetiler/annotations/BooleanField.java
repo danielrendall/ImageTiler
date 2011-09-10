@@ -47,6 +47,11 @@ public class BooleanField extends AnnotatedField {
     }
 
     @Override
+    Object doGetDefault() {
+        return param.defaultValue();
+    }
+
+    @Override
     void accept(FieldVisitor visitor) {
         visitor.visit(this);
     }

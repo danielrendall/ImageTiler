@@ -51,6 +51,11 @@ public class StringField extends AnnotatedField {
         throw new RuntimeException("Strings not supported!");
     }
 
+    @Override
+    Object doGetDefault() {
+        return param.defaultValue();
+    }
+
     public void set(String aString) {
         try {
             setMethod.invoke(object, aString);

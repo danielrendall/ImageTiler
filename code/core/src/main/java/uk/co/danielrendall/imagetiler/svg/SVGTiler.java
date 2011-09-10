@@ -27,6 +27,7 @@ import org.apache.log4j.Logger;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.svg.SVGDocument;
 import uk.co.danielrendall.imagetiler.shared.*;
 
 import javax.imageio.ImageIO;
@@ -55,7 +56,7 @@ public class SVGTiler {
 
     // reasonable hard-coded value, could be made configurable, but user
     // could scale the resulting image manually anyway.
-    private static double SCALE = 10.0;
+    private static double SCALE = 25.0;
 
     public SVGTiler(SVGTile tile, ScannerStrategy strategy) {
         this.tile = tile;
@@ -86,7 +87,7 @@ public class SVGTiler {
         }
     }
 
-    public Document process(BufferedImage input) {
+    public SVGDocument process(BufferedImage input) {
         try {
 
             // Can't simply create a ScannerStrategy now, because we need to configure it with the
@@ -103,7 +104,7 @@ public class SVGTiler {
 //            svgTile.initialize(args);
 
             SVGDOMImplementation domImpl = (SVGDOMImplementation) SVGDOMImplementation.getDOMImplementation();
-            Document document = domImpl.createDocument(SVGDOMImplementation.SVG_NAMESPACE_URI, "svg", null);
+            SVGDocument document = (SVGDocument) domImpl.createDocument(SVGDOMImplementation.SVG_NAMESPACE_URI, "svg", null);
 
 
             int width = input.getWidth();
@@ -120,7 +121,6 @@ public class SVGTiler {
             Element outerGroup = createElement(document, "g");
 
             final Raster raster = input.getRaster();
-            log.debug("There are " + raster.getNumBands() + " bands");
             strategy.initialise(0, width, 0, height, new RasterPixelFilter(raster));
             while (strategy.hasNext()) {
                 Pixel p = strategy.next();
@@ -137,7 +137,6 @@ public class SVGTiler {
                 double bottom = top + SCALE;
 
                 Element group = createElement(document, "g");
-                //group.setAttributeNS(null, "transform","translate(100,100)");
                 if (tile.getTile(group, new TileContext(left, right, top, bottom, color, document, this))) {
                     outerGroup.appendChild(group);
                 } else {

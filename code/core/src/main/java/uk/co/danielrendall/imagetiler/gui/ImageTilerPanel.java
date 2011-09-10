@@ -23,7 +23,10 @@ import org.apache.batik.swing.JSVGScrollPane;
 import org.apache.batik.swing.svg.AbstractJSVGComponent;
 import org.jdesktop.swingx.JXMultiSplitPane;
 import org.jdesktop.swingx.MultiSplitLayout;
+import org.w3c.dom.Document;
+import org.w3c.dom.svg.SVGDocument;
 import uk.co.danielrendall.imagetiler.ImageTilerApplication;
+import uk.co.danielrendall.imagetiler.logging.Log;
 import uk.co.danielrendall.imagetiler.svg.SVGTile;
 
 import javax.swing.*;
@@ -44,7 +47,7 @@ public class ImageTilerPanel extends JLayeredPane {
 
 
     public ImageTilerPanel(ImageTilerApplication app) {
-
+        getActionMap().setParent(app.getContext().getActionMap());
         canvas = new JSVGCanvas();
         canvas.setDocumentState(AbstractJSVGComponent.ALWAYS_DYNAMIC);
         canvas.getActionMap().setParent(getActionMap());
@@ -67,8 +70,6 @@ public class ImageTilerPanel extends JLayeredPane {
         JXMultiSplitPane leftSplitPane = new JXMultiSplitPane(mslLeft);
         leftSplitPane.add(settings, "settings");
         leftSplitPane.add(bitmap, "bitmap");
-
-
 
         MultiSplitLayout.Split modelRoot = new MultiSplitLayout.Split();
 
@@ -102,5 +103,11 @@ public class ImageTilerPanel extends JLayeredPane {
 
     public void addTileEditors(SVGTile tile) {
         settings.addTileEditors(tile);
+    }
+
+    public void setDocument(final SVGDocument document) {
+        Log.gui.info("Setting document");
+        if (document == null) throw new RuntimeException("Null document");
+        canvas.setDocument(document);
     }
 }

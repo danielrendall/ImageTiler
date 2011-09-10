@@ -19,6 +19,7 @@
 package uk.co.danielrendall.imagetiler.svg.shapes;
 
 import org.w3c.dom.Element;
+import uk.co.danielrendall.imagetiler.logging.Log;
 import uk.co.danielrendall.imagetiler.svg.Shape;
 import uk.co.danielrendall.imagetiler.svg.TileContext;
 
@@ -54,7 +55,12 @@ public abstract class BaseShape implements Shape {
     }
 
     public void setStrokeWidth(double strokeWidth) {
-        this.strokeWidth = strokeWidth;
+        if (strokeWidth > 0.0d) {
+            this.strokeWidth = strokeWidth;
+        } else {
+            Log.app.warn("Strokewidth shouldn't be 0");
+            this.strokeWidth = 0.001;
+        }
     }
 
     public void setFillOpacity(double fillOpacity) {
@@ -67,8 +73,12 @@ public abstract class BaseShape implements Shape {
 
     public Element getElement(TileContext context) {
         Element e = _getElement(context);
-        e.setAttributeNS(null, "fill", fill);
-        e.setAttributeNS(null, "stroke", stroke);
+        if (!"".equals(fill)) {
+            e.setAttributeNS(null, "fill", fill);
+        }
+        if (!"".equals(stroke)) {
+            e.setAttributeNS(null, "stroke", stroke);
+        }
         e.setAttributeNS(null, "stroke-width", string(strokeWidth));
         e.setAttributeNS(null, "fill-opacity", string(fillOpacity));
         e.setAttributeNS(null, "transform", transform);

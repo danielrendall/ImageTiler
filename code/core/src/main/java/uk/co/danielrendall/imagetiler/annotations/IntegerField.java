@@ -54,6 +54,11 @@ public class IntegerField extends AnnotatedField {
     }
 
     @Override
+    Object doGetDefault() {
+        return param.defaultValue();
+    }
+
+    @Override
     Object doGetFromStore(ConfigStore store) {
         return store.getInt(name, param.defaultValue());
     }

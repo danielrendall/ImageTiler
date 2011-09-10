@@ -18,10 +18,17 @@
 
 package uk.co.danielrendall.imagetiler;
 
+import org.apache.batik.swing.JSVGCanvas;
+import org.apache.batik.transcoder.TranscoderException;
+import org.apache.batik.transcoder.TranscoderInput;
+import org.apache.batik.transcoder.TranscoderOutput;
+import org.apache.batik.transcoder.svg2svg.SVGTranscoder;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.io.filefilter.OrFileFilter;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.jdesktop.application.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.svg.SVGDocument;
 import uk.co.danielrendall.imagetiler.gui.ImageTilerPanel;
 import uk.co.danielrendall.imagetiler.gui.StatusBar;
 import uk.co.danielrendall.imagetiler.logging.Log;
@@ -29,6 +36,7 @@ import uk.co.danielrendall.imagetiler.registry.ClassDescription;
 import uk.co.danielrendall.imagetiler.registry.PluginRegistry;
 import uk.co.danielrendall.imagetiler.shared.ScannerStrategy;
 import uk.co.danielrendall.imagetiler.svg.SVGTile;
+import uk.co.danielrendall.imagetiler.tasks.GenerateTask;
 import uk.co.danielrendall.imagetiler.tasks.LoadFileTask;
 
 import javax.swing.*;
@@ -38,6 +46,9 @@ import javax.swing.filechooser.FileFilter;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.*;
 
 
@@ -89,6 +100,31 @@ public class ImageTilerApplication extends SingleFrameApplication {
         return bitmap;
     }
 
+    public SVGTile getSvgTile() {
+        return svgTile;
+    }
+
+    public ScannerStrategy getScannerStrategy() {
+        return scannerStrategy;
+    }
+
+    public void setDocument(final SVGDocument document) {
+//        try {
+//            SVGTranscoder t = new SVGTranscoder();
+//            TranscoderInput transInput = new TranscoderInput(document);
+//            Writer writer = new FileWriter("/tmp/output.svg");
+//            TranscoderOutput transOutput = new TranscoderOutput(writer);
+//            t.transcode(transInput, transOutput);
+//            writer.flush();
+//            writer.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+//        } catch (TranscoderException e) {
+//            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+//        }
+        imageTilerPanel.setDocument(document);
+    }
+
     private JFileChooser createFileChooser(String name, FileFilter filter) {
         JFileChooser fc = new JFileChooser();
         fc.setName(name);
@@ -127,6 +163,11 @@ public class ImageTilerApplication extends SingleFrameApplication {
             task = new LoadFileTask(this, fc.getSelectedFile());
         }
         return task;
+    }
+
+    @org.jdesktop.application.Action
+    public Task generate() {
+        return new GenerateTask(this);
     }
 
     @Override
@@ -202,14 +243,19 @@ public class ImageTilerApplication extends SingleFrameApplication {
         String[] fileMenuActionNames = {
                 "open",
                 "save",
-                "saveAs",
+                "generate",
                 "---",
                 "quit"
+        };
+        String[] displayMenuActionnames = {
+                JSVGCanvas.ZOOM_IN_ACTION,
+                JSVGCanvas.ZOOM_OUT_ACTION
         };
         String[] helpMenuActionNames = {
                 "showAboutBox"
         };
         menuBar.add(createMenu("fileMenu", fileMenuActionNames));
+        menuBar.add(createMenu("displayMenu", displayMenuActionnames));
         menuBar.add(createMenu("helpMenu", helpMenuActionNames));
         return menuBar;
     }
@@ -221,6 +267,9 @@ public class ImageTilerApplication extends SingleFrameApplication {
         String[] toolbarActionNames = {
                 "open",
                 "save",
+                "generate",
+                JSVGCanvas.ZOOM_IN_ACTION,
+                JSVGCanvas.ZOOM_OUT_ACTION
         };
         JToolBar toolBar = new JToolBar();
         toolBar.setFloatable(false);

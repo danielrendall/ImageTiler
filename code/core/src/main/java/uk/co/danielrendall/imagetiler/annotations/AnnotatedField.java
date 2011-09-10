@@ -68,6 +68,10 @@ public abstract class AnnotatedField {
         set(doGetFromStore(store));
     }
 
+    final void setDefault() {
+        set(doGetDefault());
+    }
+
     abstract void accept(FieldVisitor visitor);
 
     abstract void doSet(Object value) throws InvocationTargetException, IllegalAccessException;
@@ -75,6 +79,8 @@ public abstract class AnnotatedField {
     abstract Object doCheck(Object value) throws InvocationTargetException, IllegalAccessException;
 
     abstract Object doGetFromStore(ConfigStore store);
+
+    abstract Object doGetDefault();
 
     public abstract String description();
 

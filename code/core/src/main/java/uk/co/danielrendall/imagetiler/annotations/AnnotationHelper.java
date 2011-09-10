@@ -136,6 +136,12 @@ public class AnnotationHelper {
         }
     }
 
+    public void setDefaults() {
+        for(String fieldName: fieldNames) {
+            annotatedFields.get(fieldName).setDefault();
+        }
+    }
+
     public void accept(FieldVisitor visitor) {
         for(String fieldName: fieldNames) {
             annotatedFields.get(fieldName).accept(visitor);

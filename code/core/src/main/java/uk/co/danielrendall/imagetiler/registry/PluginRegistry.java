@@ -72,7 +72,10 @@ public class PluginRegistry {
 
     public Object getNewInstance(String pluginType, String name) throws IllegalAccessException, InstantiationException {
         Class clazz = getPluginClass(pluginType, name);
-        return clazz != null ? clazz.newInstance() : null;
+        if (clazz == null) return null;
+        Object newInstance = clazz.newInstance();
+        AnnotationHelper.create(newInstance).setDefaults();
+        return newInstance;
     }
 
     public Object getConfiguredInstance(String pluginType, String name, ConfigStore store) throws IllegalAccessException, InstantiationException {
