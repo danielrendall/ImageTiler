@@ -86,21 +86,4 @@ public class RotatedSquareSVGTile extends SimpleSVGTile {
         }
         return false;
     }
-
-    public boolean getDiamond() {
-        return diamond;
-    }
-
-    public void setDiamond(boolean diamond) {
-        this.diamond = helper.check("diamond", diamond);
-;
-    }
-
-    public boolean getInvert() {
-        return invert;
-    }
-
-    public void setInvert(boolean invert) {
-        this.invert = helper.check("invert", invert);
-    }
 }

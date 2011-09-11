@@ -90,20 +90,4 @@ public class StarSVGTile extends SimpleSVGTile {
     private Vec getVec(double radius, double angle) {
         return new Vec(radius, 0).rotate(angle);
     }
-
-    public double getInnerRadius() {
-        return innerRadius;
-    }
-
-    public void setInnerRadius(double innerRadius) {
-        this.innerRadius = helper.check("innerRadius", innerRadius);
-    }
-
-    public double getOuterRadius() {
-        return outerRadius;
-    }
-
-    public void setOuterRadius(double outerRadius) {
-        this.outerRadius = helper.check("outerRadius", outerRadius);
-    }
 }

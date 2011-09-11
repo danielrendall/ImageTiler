@@ -96,7 +96,5 @@ public class PyramidSVGTile extends SimpleSVGTile {
         } else {
             return false;
         }
-
     }
-
 }

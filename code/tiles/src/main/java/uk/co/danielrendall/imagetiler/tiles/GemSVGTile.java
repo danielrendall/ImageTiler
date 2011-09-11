@@ -98,7 +98,5 @@ public class GemSVGTile extends SimpleSVGTile {
         } else {
             return false;
         }
-
     }
-
 }
