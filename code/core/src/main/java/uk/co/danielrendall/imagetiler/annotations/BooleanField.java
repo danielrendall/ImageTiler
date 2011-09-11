@@ -21,6 +21,7 @@ package uk.co.danielrendall.imagetiler.annotations;
 import uk.co.danielrendall.imagetiler.logging.Log;
 import uk.co.danielrendall.imagetiler.shared.ConfigStore;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -31,14 +32,14 @@ public class BooleanField extends AnnotatedField {
 
     private final BooleanParameter param;
 
-    BooleanField(Object object, String name, Method setMethod, Method getMethod, BooleanParameter param) {
-        super(object, name, setMethod, getMethod);
+    BooleanField(Object object, String name, Field field, BooleanParameter param) {
+        super(object, name, field);
         this.param = param;
     }
 
     void doSet(Object value) throws InvocationTargetException, IllegalAccessException {
         Boolean bValue = (Boolean) doCheck(value);
-        setMethod.invoke(object, bValue);
+        set((boolean)bValue);
     }
 
     Object doCheck(Object value) {
@@ -63,11 +64,8 @@ public class BooleanField extends AnnotatedField {
 
     public void set(boolean aBoolean) {
         try {
-            setMethod.invoke(object, aBoolean);
+            field.set(object, aBoolean);
         } catch (IllegalAccessException e) {
-            Log.app.warn(e.getMessage());
-            throw new RuntimeException(e);
-        } catch (InvocationTargetException e) {
             Log.app.warn(e.getMessage());
             throw new RuntimeException(e);
         }
@@ -75,11 +73,8 @@ public class BooleanField extends AnnotatedField {
 
     public boolean get() {
         try {
-            return (Boolean) getMethod.invoke(object);
+            return (Boolean) field.get(object);
         } catch (IllegalAccessException e) {
-            Log.app.warn(e.getMessage());
-            throw new RuntimeException(e);
-        } catch (InvocationTargetException e) {
             Log.app.warn(e.getMessage());
             throw new RuntimeException(e);
         }

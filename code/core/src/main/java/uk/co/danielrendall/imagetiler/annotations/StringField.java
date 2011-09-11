@@ -21,6 +21,7 @@ package uk.co.danielrendall.imagetiler.annotations;
 import uk.co.danielrendall.imagetiler.logging.Log;
 import uk.co.danielrendall.imagetiler.shared.ConfigStore;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -31,14 +32,14 @@ public class StringField extends AnnotatedField {
 
     private final StringParameter param;
 
-    StringField(Object object, String name, Method setMethod, Method getMethod, StringParameter param) {
-        super(object, name, setMethod, getMethod);
+    StringField(Object object, String name, Field field, StringParameter param) {
+        super(object, name, field);
         this.param = param;
     }
 
     void doSet(Object value) throws InvocationTargetException, IllegalAccessException {
         String sValue = (String) doCheck(value);
-        setMethod.invoke(object, sValue);
+        set(sValue);
     }
 
     Object doCheck(Object value) {
@@ -58,11 +59,8 @@ public class StringField extends AnnotatedField {
 
     public void set(String aString) {
         try {
-            setMethod.invoke(object, aString);
+            field.set(object, aString);
         } catch (IllegalAccessException e) {
-            Log.app.warn(e.getMessage());
-            throw new RuntimeException(e);
-        } catch (InvocationTargetException e) {
             Log.app.warn(e.getMessage());
             throw new RuntimeException(e);
         }
@@ -70,11 +68,8 @@ public class StringField extends AnnotatedField {
 
     public String get() {
         try {
-            return (String) getMethod.invoke(object);
+            return (String) field.get(object);
         } catch (IllegalAccessException e) {
-            Log.app.warn(e.getMessage());
-            throw new RuntimeException(e);
-        } catch (InvocationTargetException e) {
             Log.app.warn(e.getMessage());
             throw new RuntimeException(e);
         }

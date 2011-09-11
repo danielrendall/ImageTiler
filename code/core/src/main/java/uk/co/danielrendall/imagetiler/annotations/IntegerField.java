@@ -21,6 +21,7 @@ package uk.co.danielrendall.imagetiler.annotations;
 import uk.co.danielrendall.imagetiler.logging.Log;
 import uk.co.danielrendall.imagetiler.shared.ConfigStore;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -32,15 +33,15 @@ public class IntegerField extends AnnotatedField {
     private final IntegerParameter param;
     private final int range;
 
-    IntegerField(Object object, String name, Method setMethod, Method getMethod, IntegerParameter param) {
-        super(object, name, setMethod, getMethod);
+    IntegerField(Object object, String name, Field field, IntegerParameter param) {
+        super(object, name, field);
         this.param = param;
         range = param.maxValue() - param.minValue();
     }
 
     void doSet(Object value) throws InvocationTargetException, IllegalAccessException {
         Integer iValue = (Integer) doCheck(value);
-        setMethod.invoke(object, iValue);
+        set((int)iValue);
     }
 
     Object doCheck(Object value) {
@@ -65,11 +66,8 @@ public class IntegerField extends AnnotatedField {
 
     public void set(int anInt) {
         try {
-            setMethod.invoke(object, anInt);
+            field.set(object, anInt);
         } catch (IllegalAccessException e) {
-            Log.app.warn(e.getMessage());
-            throw new RuntimeException(e);
-        } catch (InvocationTargetException e) {
             Log.app.warn(e.getMessage());
             throw new RuntimeException(e);
         }
@@ -77,11 +75,8 @@ public class IntegerField extends AnnotatedField {
 
     public int get() {
         try {
-            return (Integer) getMethod.invoke(object);
+            return (Integer) field.get(object);
         } catch (IllegalAccessException e) {
-            Log.app.warn(e.getMessage());
-            throw new RuntimeException(e);
-        } catch (InvocationTargetException e) {
             Log.app.warn(e.getMessage());
             throw new RuntimeException(e);
         }

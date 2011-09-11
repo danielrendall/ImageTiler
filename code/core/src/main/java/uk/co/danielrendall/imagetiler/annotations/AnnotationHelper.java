@@ -44,87 +44,74 @@ public class AnnotationHelper {
             methodMap.put(methodName, method);
         }
         List<String> fieldNames = new ArrayList<String>();
-        Map<String, Method> setMethods = new HashMap<String, Method>();
-        Map<String, Method> getMethods = new HashMap<String, Method>();
+        Map<String, Field> fields = new HashMap<String, Field>();
         Map<String, FieldType> fieldTypes = new HashMap<String, FieldType>();
         Map<String, Object> parameters = new HashMap<String, Object>();
         while (clazz != Object.class) {
             for(Field field : clazz.getDeclaredFields()) {
                 String fieldName = field.getName();
-                String setMethodName = "set" + fieldName.toLowerCase();
-                String getMethodName = "get" + fieldName.toLowerCase();
-                Log.app.debug("Found field " + fieldName + " (" + setMethodName + ", " + getMethodName + ")");
-                if (methodMap.containsKey(setMethodName) && methodMap.containsKey(getMethodName)) {
-                    BooleanParameter bp = field.getAnnotation(BooleanParameter.class);
-                    if (bp != null) {
-                        fieldNames.add(fieldName);
-                        setMethods.put(fieldName, methodMap.get(setMethodName));
-                        getMethods.put(fieldName, methodMap.get(getMethodName));
-                        fieldTypes.put(fieldName, FieldType.Boolean);
-                        parameters.put(fieldName, bp);
-                        continue;
-                    }
-                    DoubleParameter dp = field.getAnnotation(DoubleParameter.class);
-                    if (dp != null) {
-                        fieldNames.add(fieldName);
-                        setMethods.put(fieldName, methodMap.get(setMethodName));
-                        getMethods.put(fieldName, methodMap.get(getMethodName));
-                        fieldTypes.put(fieldName, FieldType.Double);
-                        parameters.put(fieldName, dp);
-                        continue;
-                    }
-                    IntegerParameter ip = field.getAnnotation(IntegerParameter.class);
-                    if (ip != null) {
-                        fieldNames.add(fieldName);
-                        setMethods.put(fieldName, methodMap.get(setMethodName));
-                        getMethods.put(fieldName, methodMap.get(getMethodName));
-                        fieldTypes.put(fieldName, FieldType.Integer);
-                        parameters.put(fieldName, ip);
-                        continue;
-                    }
-                    StringParameter sp = field.getAnnotation(StringParameter.class);
-                    if (sp != null) {
-                        fieldNames.add(fieldName);
-                        setMethods.put(fieldName, methodMap.get(setMethodName));
-                        getMethods.put(fieldName, methodMap.get(getMethodName));
-                        fieldTypes.put(fieldName, FieldType.String);
-                        parameters.put(fieldName, sp);
-                        continue;
-                    }
-                    Log.app.debug("Found set method " + setMethodName + " but no corresponding annotated field");
-                } else {
-                    Log.app.debug("Couldn't find set method for property " + fieldName);
+                Log.app.debug("Found field " + fieldName);
+                BooleanParameter bp = field.getAnnotation(BooleanParameter.class);
+                if (bp != null) {
+                    fieldNames.add(fieldName);
+                    fields.put(fieldName, field);
+                    fieldTypes.put(fieldName, FieldType.Boolean);
+                    parameters.put(fieldName, bp);
+                    continue;
+                }
+                DoubleParameter dp = field.getAnnotation(DoubleParameter.class);
+                if (dp != null) {
+                    fieldNames.add(fieldName);
+                    fields.put(fieldName, field);
+                    fieldTypes.put(fieldName, FieldType.Double);
+                    parameters.put(fieldName, dp);
+                    continue;
+                }
+                IntegerParameter ip = field.getAnnotation(IntegerParameter.class);
+                if (ip != null) {
+                    fieldNames.add(fieldName);
+                    fields.put(fieldName, field);
+                    fieldTypes.put(fieldName, FieldType.Integer);
+                    parameters.put(fieldName, ip);
+                    continue;
+                }
+                StringParameter sp = field.getAnnotation(StringParameter.class);
+                if (sp != null) {
+                    fieldNames.add(fieldName);
+                    fields.put(fieldName, field);
+                    fieldTypes.put(fieldName, FieldType.String);
+                    parameters.put(fieldName, sp);
+                    continue;
                 }
             }
             clazz = clazz.getSuperclass();
         }
-        return new AnnotationHelper(clazz, obj, fieldNames, setMethods, getMethods, fieldTypes, parameters);
+        return new AnnotationHelper(clazz, obj, fieldNames, fields, fieldTypes, parameters);
     }
 
-    private AnnotationHelper(Class clazz, Object object, List<String> fieldNames, Map<String, Method> setMethods, Map<String, Method> getMethods, Map<String, FieldType> fieldTypes, Map<String, Object> parameters) {
+    private AnnotationHelper(Class clazz, Object object, List<String> fieldNames, Map<String, Field> fields, Map<String, FieldType> fieldTypes, Map<String, Object> parameters) {
         this.clazz = clazz;
         this.fieldNames = Collections.unmodifiableList(fieldNames);
         this.annotatedFields = new HashMap<String, AnnotatedField>();
         for (String fieldName : fieldNames) {
             FieldType type = fieldTypes.get(fieldName);
-            Method setMethod = setMethods.get(fieldName);
-            Method getMethod = getMethods.get(fieldName);
+            Field field = fields.get(fieldName);
             switch (type) {
                 case Boolean:
                     BooleanParameter bParam = (BooleanParameter) parameters.get(fieldName);
-                    this.annotatedFields.put(fieldName, new BooleanField(object, fieldName, setMethod, getMethod, bParam));
+                    this.annotatedFields.put(fieldName, new BooleanField(object, fieldName, field, bParam));
                     break;
                 case Double:
                     DoubleParameter dParam = (DoubleParameter) parameters.get(fieldName);
-                    this.annotatedFields.put(fieldName, new DoubleField(object, fieldName, setMethod, getMethod, dParam));
+                    this.annotatedFields.put(fieldName, new DoubleField(object, fieldName, field, dParam));
                     break;
                 case Integer:
                     IntegerParameter iParam = (IntegerParameter) parameters.get(fieldName);
-                    this.annotatedFields.put(fieldName, new IntegerField(object, fieldName, setMethod, getMethod, iParam));
+                    this.annotatedFields.put(fieldName, new IntegerField(object, fieldName, field, iParam));
                     break;
                 case String:
                     StringParameter sParam = (StringParameter) parameters.get(fieldName);
-                    this.annotatedFields.put(fieldName, new StringField(object, fieldName, setMethod, getMethod, sParam));
+                    this.annotatedFields.put(fieldName, new StringField(object, fieldName, field, sParam));
                     break;
             }
         }

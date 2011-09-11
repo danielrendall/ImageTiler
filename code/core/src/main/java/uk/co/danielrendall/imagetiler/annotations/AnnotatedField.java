@@ -21,6 +21,7 @@ package uk.co.danielrendall.imagetiler.annotations;
 import uk.co.danielrendall.imagetiler.logging.Log;
 import uk.co.danielrendall.imagetiler.shared.ConfigStore;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -30,14 +31,13 @@ import java.lang.reflect.Method;
 public abstract class AnnotatedField {
     protected final Object object;
     protected final String name;
-    protected final Method setMethod;
-    protected final Method getMethod;
+    protected final Field field;
 
-    AnnotatedField(Object object, String name, Method setMethod, Method getMethod) {
+    AnnotatedField(Object object, String name, Field field) {
         this.object = object;
         this.name = name;
-        this.setMethod = setMethod;
-        this.getMethod = getMethod;
+        this.field = field;
+        this.field.setAccessible(true);
     }
 
     final void set(Object value) {

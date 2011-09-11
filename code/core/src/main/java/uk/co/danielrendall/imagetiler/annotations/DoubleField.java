@@ -21,6 +21,7 @@ package uk.co.danielrendall.imagetiler.annotations;
 import uk.co.danielrendall.imagetiler.logging.Log;
 import uk.co.danielrendall.imagetiler.shared.ConfigStore;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -32,15 +33,15 @@ public class DoubleField extends AnnotatedField {
     private final DoubleParameter param;
     private final double range;
 
-    DoubleField(Object object, String name, Method setMethod, Method getMethod, DoubleParameter param) {
-        super(object, name, setMethod, getMethod);
+    DoubleField(Object object, String name, Field field, DoubleParameter param) {
+        super(object, name, field);
         this.param = param;
         this.range = param.maxValue() - param.minValue();
     }
 
     void doSet(Object value) throws InvocationTargetException, IllegalAccessException {
         Double dValue = (Double) doCheck(value);
-        setMethod.invoke(object, dValue);
+        set((double)dValue);
     }
 
     Object doCheck(Object value) {
@@ -65,11 +66,8 @@ public class DoubleField extends AnnotatedField {
 
     public void set(double aDouble) {
         try {
-            setMethod.invoke(object, aDouble);
+            field.set(object, aDouble);
         } catch (IllegalAccessException e) {
-            Log.app.warn(e.getMessage());
-            throw new RuntimeException(e);
-        } catch (InvocationTargetException e) {
             Log.app.warn(e.getMessage());
             throw new RuntimeException(e);
         }
@@ -77,11 +75,8 @@ public class DoubleField extends AnnotatedField {
 
     public double get() {
         try {
-            return (Double) getMethod.invoke(object);
+            return (Double) field.get(object);
         } catch (IllegalAccessException e) {
-            Log.app.warn(e.getMessage());
-            throw new RuntimeException(e);
-        } catch (InvocationTargetException e) {
             Log.app.warn(e.getMessage());
             throw new RuntimeException(e);
         }
