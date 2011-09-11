@@ -170,6 +170,18 @@ public class ImageTilerApplication extends SingleFrameApplication {
         return new GenerateTask(this);
     }
 
+    @Override protected void initialize(String[] args) {
+        appResourceMap = getContext().getResourceMap();
+        Log.gui.info("Initializing");
+
+        for(ClassDescription info : pluginRegistry.getClassDescriptions(PLUGIN_TYPE_TILE)) {
+            Log.gui.debug("Tile " + info.getName() + " has class " + info.getClazz().getName());
+        }
+        for(ClassDescription info : pluginRegistry.getClassDescriptions(PLUGIN_TYPE_STRATEGY)) {
+            Log.gui.debug("Tile " + info.getName() + " has class " + info.getClazz().getName());
+        }
+    }
+
     @Override
     protected void startup() {
         StatusBar statusBar = new StatusBar(this, getContext().getTaskMonitor());
@@ -182,16 +194,9 @@ public class ImageTilerApplication extends SingleFrameApplication {
         show(view);
     }
 
-    @Override protected void initialize(String[] args) {
-        appResourceMap = getContext().getResourceMap();
-        Log.gui.info("Initializing");
-
-        for(ClassDescription info : pluginRegistry.getClassDescriptions(PLUGIN_TYPE_TILE)) {
-            Log.gui.debug("Tile " + info.getName() + " has class " + info.getClazz().getName());
-        }
-        for(ClassDescription info : pluginRegistry.getClassDescriptions(PLUGIN_TYPE_STRATEGY)) {
-            Log.gui.debug("Tile " + info.getName() + " has class " + info.getClazz().getName());
-        }
+    @Override
+    protected void ready() {
+        Log.gui.info("Ready!");
     }
 
     private JComponent createMainPanel() {
