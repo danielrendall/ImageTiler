@@ -18,7 +18,9 @@
 
 package uk.co.danielrendall.imagetiler.strategies;
 
+import org.apache.commons.collections.comparators.ReverseComparator;
 import org.apache.log4j.Logger;
+import uk.co.danielrendall.imagetiler.annotations.BooleanParameter;
 import uk.co.danielrendall.imagetiler.annotations.ClassDescriptor;
 import uk.co.danielrendall.imagetiler.shared.Pixel;
 import uk.co.danielrendall.imagetiler.shared.PixelFilter;
@@ -37,6 +39,9 @@ import java.util.*;
 @ClassDescriptor(name="Circle", description="Concentric circles running out from the center")
 public class CircleStrategy extends ScannerStrategy {
     public final static Logger log = Logger.getLogger(CircleStrategy.class);
+
+    @BooleanParameter(name = "invert", description = "Make circles run from the outside into the center", defaultValue = false)
+    private boolean invert;
 
     private Iterator<Pixel> pixelIterator;
 
@@ -62,7 +67,8 @@ public class CircleStrategy extends ScannerStrategy {
     }
 
     protected Comparator<Pixel> getRadiusComparator(Point center) {
-        return new RadiusComparator(center);
+        RadiusComparator radiusComparator = new RadiusComparator(center);
+        return invert ? new ReverseComparator(radiusComparator) : radiusComparator;
     }
 
     protected static class RadiusComparator implements Comparator<Pixel> {
