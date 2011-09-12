@@ -22,6 +22,7 @@ import uk.co.danielrendall.imagetiler.ImageTilerApplication;
 import uk.co.danielrendall.imagetiler.annotations.AnnotationHelper;
 import uk.co.danielrendall.imagetiler.logging.Log;
 import uk.co.danielrendall.imagetiler.registry.ClassDescription;
+import uk.co.danielrendall.imagetiler.shared.ScannerStrategy;
 import uk.co.danielrendall.imagetiler.svg.SVGTile;
 
 import javax.swing.*;
@@ -45,6 +46,7 @@ public class SettingsPanel extends JPanel {
     private final JPanel strategiesSettings;
 
     private final Map<SVGTile, JPanel> individualTilePanels;
+    private final Map<ScannerStrategy, JPanel> individualStrategyPanels;
 
     public SettingsPanel(final ImageTilerApplication app) {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -53,6 +55,7 @@ public class SettingsPanel extends JPanel {
         strategiesSettings = new JPanel();
 
         individualTilePanels = new HashMap<SVGTile, JPanel>();
+        individualStrategyPanels = new HashMap<ScannerStrategy, JPanel>();
 
         top.setLayout(new BoxLayout(top, BoxLayout.Y_AXIS));
         top.add(new JLabel("SettingsPanel"));
@@ -106,6 +109,25 @@ public class SettingsPanel extends JPanel {
         }
         tilesSettings.removeAll();
         tilesSettings.add(panel, BorderLayout.CENTER);
+        this.revalidate();
+    }
+
+    public void addStrategyEditors(ScannerStrategy strategy) {
+        JPanel panel;
+        if (individualStrategyPanels.containsKey(strategy)) {
+            panel = individualStrategyPanels.get(strategy);
+        } else {
+            panel = new JPanel();
+            panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+            CreateEditableComponentsVisitor visitor = new CreateEditableComponentsVisitor();
+            AnnotationHelper.create(strategy).accept(visitor);
+            for (JComponent component : visitor.getComponents()) {
+                panel.add(component);
+            }
+            individualStrategyPanels.put(strategy, panel);
+        }
+        strategiesSettings.removeAll();
+        strategiesSettings.add(panel, BorderLayout.CENTER);
         this.revalidate();
     }
 

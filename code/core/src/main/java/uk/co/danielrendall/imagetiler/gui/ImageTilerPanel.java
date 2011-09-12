@@ -27,6 +27,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.svg.SVGDocument;
 import uk.co.danielrendall.imagetiler.ImageTilerApplication;
 import uk.co.danielrendall.imagetiler.logging.Log;
+import uk.co.danielrendall.imagetiler.shared.ScannerStrategy;
 import uk.co.danielrendall.imagetiler.svg.SVGTile;
 
 import javax.swing.*;
@@ -103,6 +104,10 @@ public class ImageTilerPanel extends JLayeredPane {
 
     public void addTileEditors(SVGTile tile) {
         settings.addTileEditors(tile);
+    }
+
+    public void addStrategyEditors(ScannerStrategy strategy) {
+        settings.addStrategyEditors(strategy);
     }
 
     public void setDocument(final SVGDocument document) {

@@ -352,6 +352,11 @@ public class ImageTilerApplication extends SingleFrameApplication {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
         }
+        SwingUtilities.invokeLater( new Runnable() {
+            public void run() {
+                imageTilerPanel.addStrategyEditors(scannerStrategy);
+            }
+        });
     }
 
     private JDialog createAboutBox() {
