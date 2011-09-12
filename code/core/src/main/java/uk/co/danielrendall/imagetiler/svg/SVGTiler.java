@@ -56,7 +56,7 @@ public class SVGTiler {
 
     // reasonable hard-coded value, could be made configurable, but user
     // could scale the resulting image manually anyway.
-    private static double SCALE = 25.0;
+    private static double SCALE = 40.0;
 
     public SVGTiler(SVGTile tile, ScannerStrategy strategy) {
         this.tile = tile;
