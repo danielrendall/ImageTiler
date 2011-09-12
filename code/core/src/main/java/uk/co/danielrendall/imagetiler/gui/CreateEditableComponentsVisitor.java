@@ -109,8 +109,8 @@ public class CreateEditableComponentsVisitor implements FieldVisitor {
         s.setPaintLabels(true);
         s.setPaintTicks(true);
         Hashtable<Integer, JLabel> ht = new Hashtable<Integer, JLabel>();
-        ht.put(new Integer(SliderMinimum), new JLabel(Double.toString(iField.minValue())));
-        ht.put(new Integer(SliderMaximum), new JLabel(Double.toString(iField.maxValue())));
+        ht.put(new Integer(iField.minValue()), new JLabel(Integer.toString(iField.minValue())));
+        ht.put(new Integer(iField.maxValue()), new JLabel(Integer.toString(iField.maxValue())));
         s.setLabelTable(ht);
         s.addChangeListener(new ChangeListener(){
             public void stateChanged(ChangeEvent e) {
