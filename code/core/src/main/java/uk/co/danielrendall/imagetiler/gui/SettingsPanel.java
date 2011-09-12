@@ -19,6 +19,7 @@
 package uk.co.danielrendall.imagetiler.gui;
 
 import uk.co.danielrendall.imagetiler.ImageTilerApplication;
+import uk.co.danielrendall.imagetiler.annotations.AnnotationHelper;
 import uk.co.danielrendall.imagetiler.logging.Log;
 import uk.co.danielrendall.imagetiler.registry.ClassDescription;
 import uk.co.danielrendall.imagetiler.svg.SVGTile;
@@ -84,6 +85,9 @@ public class SettingsPanel extends JPanel {
         strategiesSettings.setLayout(new BorderLayout());
         this.add(strategiesSettings);
 
+        app.selectedTileChanged((ClassDescription) tilesDropDown.getItemAt(0));
+        app.selectedStrategyChanged((ClassDescription) strategiesDropDown.getItemAt(0));
+
     }
 
     public void addTileEditors(SVGTile tile) {
@@ -94,7 +98,7 @@ public class SettingsPanel extends JPanel {
             panel = new JPanel();
             panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
             CreateEditableComponentsVisitor visitor = new CreateEditableComponentsVisitor();
-            tile.getHelper().accept(visitor);
+            AnnotationHelper.create(tile).accept(visitor);
             for (JComponent component : visitor.getComponents()) {
                 panel.add(component);
             }

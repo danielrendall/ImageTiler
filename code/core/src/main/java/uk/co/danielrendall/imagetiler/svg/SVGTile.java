@@ -19,9 +19,6 @@
 package uk.co.danielrendall.imagetiler.svg;
 
 import org.w3c.dom.Element;
-import uk.co.danielrendall.imagetiler.annotations.AnnotationHelper;
-import uk.co.danielrendall.imagetiler.annotations.BaseAnnotatable;
-import uk.co.danielrendall.imagetiler.shared.ConfigStore;
 
 /**
  * Created by IntelliJ IDEA.
@@ -30,7 +27,7 @@ import uk.co.danielrendall.imagetiler.shared.ConfigStore;
  * Time: 9:36:01 PM
  * To change this template use File | Settings | File Templates.
  */
-public abstract class SVGTile extends BaseAnnotatable {
+public abstract class SVGTile {
 
     /**
      *

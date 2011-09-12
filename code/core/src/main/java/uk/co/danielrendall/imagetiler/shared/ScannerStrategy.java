@@ -18,8 +18,6 @@
 
 package uk.co.danielrendall.imagetiler.shared;
 
-import uk.co.danielrendall.imagetiler.annotations.BaseAnnotatable;
-
 import java.util.Iterator;
 
 /**
@@ -29,7 +27,7 @@ import java.util.Iterator;
  * Time: 10:27:21
  * To change this template use File | Settings | File Templates.
  */
-public abstract class ScannerStrategy extends BaseAnnotatable implements Iterator<Pixel> {
+public abstract class ScannerStrategy implements Iterator<Pixel> {
 
     protected int xMin;
     protected int width;
