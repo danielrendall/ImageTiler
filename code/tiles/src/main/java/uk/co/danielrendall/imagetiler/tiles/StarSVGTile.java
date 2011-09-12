@@ -22,6 +22,7 @@ import org.apache.log4j.Logger;
 import org.w3c.dom.Element;
 import uk.co.danielrendall.imagetiler.annotations.ClassDescriptor;
 import uk.co.danielrendall.imagetiler.annotations.DoubleParameter;
+import uk.co.danielrendall.imagetiler.annotations.IntegerParameter;
 import uk.co.danielrendall.imagetiler.svg.TileContext;
 import uk.co.danielrendall.imagetiler.svg.shapes.*;
 import uk.co.danielrendall.mathlib.geom2d.Point;
@@ -40,16 +41,18 @@ import java.awt.Color;
 public class StarSVGTile extends SimpleSVGTile {
     public final static Logger log = Logger.getLogger(StarSVGTile.class);
 
-    // TODO - make this configurable, also the initial angle
-    private final double increment = Math.PI / 5.0d;
+    // TODO - rotation angle offset? Some kind of skew angle to rotate inner points relative to outer?
 
     @DoubleParameter(name = "innerRadius", description = "Fractional inner radius of star", defaultValue = 0.5d, minValue = 0.001d, maxValue = 10d)
     private double innerRadius;
     @DoubleParameter(name = "outerRadius", description = "Fractional outer radius of star", defaultValue = 1.0d, minValue = 0.001d, maxValue = 10d)
     private double outerRadius;
-
+    @IntegerParameter(name = "numberOfPoints", description = "Number of points", defaultValue = 5, minValue = 3, maxValue = 24)
+    private int numberOfPoints;
 
     public boolean getTile(Element group, TileContext context) {
+        double increment = Math.PI / (double) numberOfPoints;
+
 
         if (!context.getColor().equals(Color.WHITE)) {
             double width = context.getWidth();
@@ -67,16 +70,10 @@ public class StarSVGTile extends SimpleSVGTile {
 
             Point center = context.getCenter();
 
-            p.addPoint(center.displace(getVec(inner, -Math.PI)));
-            p.addPoint(center.displace(getVec(outer, -Math.PI + increment)));
-            p.addPoint(center.displace(getVec(inner, -Math.PI + 2.0d * increment)));
-            p.addPoint(center.displace(getVec(outer, -Math.PI + 3.0d * increment)));
-            p.addPoint(center.displace(getVec(inner, -Math.PI + 4.0d * increment)));
-            p.addPoint(center.displace(getVec(outer, -Math.PI + 5.0d * increment)));
-            p.addPoint(center.displace(getVec(inner, -Math.PI + 6.0d * increment)));
-            p.addPoint(center.displace(getVec(outer, -Math.PI + 7.0d * increment)));
-            p.addPoint(center.displace(getVec(inner, -Math.PI + 8.0d * increment)));
-            p.addPoint(center.displace(getVec(outer, -Math.PI + 9.0d * increment)));
+            for (int i=0; i<numberOfPoints; i++) {
+                p.addPoint(center.displace(getVec(inner, -Math.PI + increment * (double) (2.0d * i))));
+                p.addPoint(center.displace(getVec(outer, -Math.PI + increment * (double) (2.0d * i + 1.0d))));
+            }
 
             p.rotate(context.getCenter(), context.getAngle());
 
