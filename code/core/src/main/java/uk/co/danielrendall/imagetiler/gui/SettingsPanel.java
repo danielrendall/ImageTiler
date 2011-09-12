@@ -26,6 +26,7 @@ import uk.co.danielrendall.imagetiler.shared.ScannerStrategy;
 import uk.co.danielrendall.imagetiler.svg.SVGTile;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -82,9 +83,11 @@ public class SettingsPanel extends JPanel {
         top.add(strategiesDropDown);
         this.add(top);
 
+        tilesSettings.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Tile settings"));
         tilesSettings.setLayout(new BorderLayout());
         this.add(tilesSettings);
 
+        strategiesSettings.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Strategy settings"));
         strategiesSettings.setLayout(new BorderLayout());
         this.add(strategiesSettings);
 
