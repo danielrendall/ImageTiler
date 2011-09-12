@@ -1,0 +1,14 @@
+ImageTiler was originally a command-line application - the run.sh script in here will
+invoke it as such. Parameters are:
+
+./run,ah <BMP file> <Tile type> <Strategy type> <Configuration options>
+
+Example:
+./run.sh heart.bmp Star Random "innerRadius=3,outerRadius=5"
+
+There may be some documentation of configuration options when I have some time; it's
+basically a comma-separated (no spaces!) list of key-value pairs which should 
+correspond to annotated fields in the SVGTile or possibly ScannerStrategy in use.
+
+Tiles and Strategies are identified by the name which appears in their class
+annotation. Look at the code to find these.

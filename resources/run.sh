@@ -1,5 +1,7 @@
 #!/bin/bash
 
+VERSION=1.0
+
 if [ "X$1" == "X" ]
 then
 echo "No input file specified"
@@ -19,4 +21,4 @@ exit 1
 fi
 
 
-java -jar ../code/core/target/ImageTiler.jar   -i $1 -t $2 -s $3 -o $1.svg -c "$4"
+java -cp "../code/tiles/target/imagetiler-tiles-1.0.jar:../code/core/target/imagetiler-"$VERSION"-jar-with-dependencies.jar" uk.co.danielrendall.imagetiler.App -i $1 -t $2 -s $3 -o $1.svg -c "$4"

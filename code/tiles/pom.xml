@@ -22,14 +22,14 @@
   <groupId>uk.co.danielrendall</groupId>
   <artifactId>imagetiler-tiles</artifactId>
   <packaging>jar</packaging>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0</version>
   <name>Sample Tiles</name>
   <url>http://www.danielrendall.co.uk/imagetiler/</url>
   <dependencies>
       <dependency>
           <groupId>uk.co.danielrendall</groupId>
           <artifactId>imagetiler</artifactId>
-          <version>1.0-SNAPSHOT</version>
+          <version>1.0</version>
       </dependency>
       <dependency>
         <groupId>junit</groupId>
