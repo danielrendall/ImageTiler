@@ -23,6 +23,13 @@
   <artifactId>imagetiler-tiles</artifactId>
   <packaging>jar</packaging>
   <version>1.0</version>
+  <licenses>
+    <license>
+      <name>GPL v3</name>
+      <url>http://www.gnu.org/licenses/gpl-3.0.html</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
   <name>Sample Tiles</name>
   <url>http://www.danielrendall.co.uk/imagetiler/</url>
   <dependencies>
