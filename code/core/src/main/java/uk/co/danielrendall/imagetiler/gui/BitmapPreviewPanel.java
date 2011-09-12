@@ -46,6 +46,21 @@ public class BitmapPreviewPanel extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         Rectangle bounds = getBounds();
-        g.drawImage(image, 0, 0, bounds.width, bounds.height, null);
+        if (image != null) {
+            double boundsAspectRatio = (double)bounds.height / (double)bounds.width;
+            double imageAspectRatio = (double)image.getHeight() / (double)image.getWidth();
+            if (boundsAspectRatio > imageAspectRatio) {
+                int imageHeight = (int) (imageAspectRatio * bounds.width);
+                int y = (int) ((bounds.height - imageHeight) / 2.0d);
+                g.drawImage(image, 0, y, bounds.width, imageHeight, null);
+            } else if (boundsAspectRatio == imageAspectRatio) {
+                g.drawImage(image, 0, 0, bounds.width, bounds.height, null);
+            } else {
+                int imageWidth = (int) (bounds.height / imageAspectRatio);
+                int x = (int) ((bounds.width - imageWidth) / 2.0d);
+                g.drawImage(image, x, 0, imageWidth, bounds.height, null);
+            }
+        }
     }
+
 }
