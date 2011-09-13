@@ -62,6 +62,8 @@ public class TrianglePointSVGTile extends SimpleSVGTile {
 
             double radius = ((width + height) / 4.0d) * distance / myWeight;
 
+            if (Double.isNaN(radius)) return false;
+
             Polygon p = new Polygon();
             p.setFill(hexValue(context.getColor()));
             p.setStroke("black");
