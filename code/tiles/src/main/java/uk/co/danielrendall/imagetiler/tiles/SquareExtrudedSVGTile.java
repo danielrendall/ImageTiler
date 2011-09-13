@@ -37,6 +37,12 @@ import java.awt.Color;
 @ClassDescriptor(name="SquareExtruded", description="Square with lines from corners to center of image")
 public class SquareExtrudedSVGTile extends SimpleSVGTile {
 
+    @DoubleParameter(name = "inset", description = "Fractional inset", defaultValue=0.15d, minValue = 0.0d, maxValue = 0.5d)
+    private double inset;
+    @DoubleParameter(name = "strokeWidth", description = "Width of stroke as fraction of tile size", defaultValue=0.05d, minValue = 0.001d, maxValue = 0.5d)
+    private double strokeWidth;
+    @DoubleParameter(name = "opacity", description = "Opacity of dark areas", defaultValue=0.8d, minValue = 0.0d, maxValue = 1.0d)
+    private double opacity;
     @DoubleParameter(name = "columnStrokeWidth", description = "Width of stroke for column as fraction of tile size", defaultValue=0.01d, minValue = 0.001d, maxValue = 0.5d)
     protected double columnStrokeWidth;
 
@@ -50,7 +56,7 @@ public class SquareExtrudedSVGTile extends SimpleSVGTile {
             p.setFill(hexValue(context.getColor()));
             p.setStroke("black");
             p.setStrokeWidth(columnStrokeWidth);
-            p.setFillOpacity(darkOpacity);
+            p.setFillOpacity(opacity);
 
             double effectiveLeft = context.getLeft() + (width * inset);
             double effectiveTop = context.getTop() + (height * inset);
@@ -144,7 +150,7 @@ public class SquareExtrudedSVGTile extends SimpleSVGTile {
             r.setHeight(effectiveBottom - effectiveTop);
             r.setFill(hexValue(context.getColor()));
             r.setStroke("black");
-            r.setStrokeWidth(strokeWidth);
+            r.setStrokeWidth(width * strokeWidth);
             Element e = r.getElement(context);
             group.appendChild(e);
 

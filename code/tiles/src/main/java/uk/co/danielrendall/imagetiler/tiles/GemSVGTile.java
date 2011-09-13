@@ -36,6 +36,15 @@ import java.awt.Color;
  */
 @ClassDescriptor(name="Gem", description="A four-colour diamond")
 public class GemSVGTile extends SimpleSVGTile {
+
+    @DoubleParameter(name = "inset", description = "Fractional inset", defaultValue=0.15d, minValue = 0.0d, maxValue = 0.5d)
+    private double inset;
+    @DoubleParameter(name = "strokeWidth", description = "Width of stroke as fraction of tile size", defaultValue=0.05d, minValue = 0.001d, maxValue = 0.5d)
+    private double strokeWidth;
+    @DoubleParameter(name = "darkOpacity", description = "Opacity of dark areas", defaultValue=0.8d, minValue = 0.0d, maxValue = 1.0d)
+    private double darkOpacity;
+    @DoubleParameter(name = "lightOpacity", description = "Opacity of light areas", defaultValue=0.6d, minValue = 0.0d, maxValue = 1.0d)
+    private double lightOpacity;
     
     public boolean getTile(Element group, TileContext context) {
         if (!context.getColor().equals(Color.WHITE)) {
@@ -45,18 +54,19 @@ public class GemSVGTile extends SimpleSVGTile {
             final double top = context.getTop();
             final double bottom = context.getBottom();
 
+
             Polygon p;
             p = new Polygon();
             p.setFill("");
             p.setStroke("black");
-            p.setStrokeWidth(strokeWidth);
+            p.setStrokeWidth(context.getWidth() * strokeWidth);
 
             Point center = context.getCenter();
 
-            Point pLeft = new Point(left + inset, center.y());
-            Point pTop = new Point(center.x(), top+inset);
-            Point pRight = new Point(right - inset, center.y());
-            Point pBottom = new Point(center.x(), bottom - inset);
+            Point pLeft = new Point(left + context.getWidth() * inset, center.y());
+            Point pTop = new Point(center.x(), top + context.getHeight() * inset);
+            Point pRight = new Point(right - context.getWidth() * inset, center.y());
+            Point pBottom = new Point(center.x(), bottom - context.getHeight() * inset);
 
             p.addPoint(pLeft);
             p.addPoint(pTop);

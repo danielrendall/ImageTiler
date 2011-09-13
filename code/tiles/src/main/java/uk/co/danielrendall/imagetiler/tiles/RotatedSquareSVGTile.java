@@ -22,6 +22,7 @@ import org.apache.log4j.Logger;
 import org.w3c.dom.Element;
 import uk.co.danielrendall.imagetiler.annotations.BooleanParameter;
 import uk.co.danielrendall.imagetiler.annotations.ClassDescriptor;
+import uk.co.danielrendall.imagetiler.annotations.DoubleParameter;
 import uk.co.danielrendall.imagetiler.svg.TileContext;
 import uk.co.danielrendall.imagetiler.svg.shapes.*;
 import uk.co.danielrendall.mathlib.geom2d.*;
@@ -42,6 +43,10 @@ public class RotatedSquareSVGTile extends SimpleSVGTile {
 
     private final double diamondAngle = Math.PI / 4.0d;
 
+    @DoubleParameter(name = "inset", description = "Fractional inset", defaultValue=0.15d, minValue = 0.0d, maxValue = 0.5d)
+    private double inset;
+    @DoubleParameter(name = "strokeWidth", description = "Width of stroke as fraction of tile size", defaultValue=0.05d, minValue = 0.001d, maxValue = 0.5d)
+    private double strokeWidth;
     @BooleanParameter(name = "invert", description = "Invert the sense of rotation (TODO - find name)", defaultValue = false)
     private boolean invert;
     @BooleanParameter(name = "diamond", description = "Base the tile on a diamond rather than a square", defaultValue = false)
@@ -58,7 +63,7 @@ public class RotatedSquareSVGTile extends SimpleSVGTile {
 
             p.setFill(hexValue(context.getColor()));
             p.setStroke("black");
-            p.setStrokeWidth(strokeWidth);
+            p.setStrokeWidth(width * strokeWidth);
             p.setFillOpacity(1.0d);
 
             double effectiveLeft = context.getLeft() + (width * inset);

@@ -38,12 +38,20 @@ import java.util.List;
 @ClassDescriptor(name="Lego", description="Thin 2x2 lego block")
 public class LegoSVGTile extends SimpleSVGTile {
 
+    @DoubleParameter(name = "inset", description = "Fractional inset", defaultValue=0.15d, minValue = 0.0d, maxValue = 0.5d)
+    private double inset;
+    @DoubleParameter(name = "strokeWidth", description = "Width of stroke as fraction of tile size", defaultValue=0.05d, minValue = 0.001d, maxValue = 0.5d)
+    private double strokeWidth;
+    @DoubleParameter(name = "darkOpacity", description = "Opacity of dark areas", defaultValue=0.8d, minValue = 0.0d, maxValue = 1.0d)
+    private double darkOpacity;
+    @DoubleParameter(name = "lightOpacity", description = "Opacity of light areas", defaultValue=0.6d, minValue = 0.0d, maxValue = 1.0d)
+    private double lightOpacity;
     @DoubleParameter(name = "blobRadius", description = "Radius of blob", defaultValue=0.15d, minValue = 0.001d, maxValue = 0.25d)
-    protected double blobRadius;
+    private double blobRadius;
     @DoubleParameter(name = "blobHeight", description = "Height of the blob", defaultValue=0.1d, minValue = 0.001d, maxValue = 0.3d)
-    protected double blobHeight;
+    private double blobHeight;
     @DoubleParameter(name = "tileDepth", description = "Depth of the lego tile", defaultValue=0.2d, minValue = 0.001d, maxValue = 0.5d)
-    protected double tileDepth;
+    private double tileDepth;
 
     public boolean getTile(Element group, TileContext context) {
 
@@ -112,14 +120,14 @@ public class LegoSVGTile extends SimpleSVGTile {
             Circle c = new Circle();
             c.setFill(hexValue(context.getColor()));
             c.setStroke("black");
-            c.setStrokeWidth(strokeWidth);
+            c.setStrokeWidth(width * strokeWidth);
             c.setFillOpacity(1.0);
             c.setRadius(effectiveWidth * blobRadius);
 
             StraightLine line = new StraightLine();
             line.setFill(hexValue(context.getColor()));
             line.setStroke("black");
-            line.setStrokeWidth(strokeWidth);
+            line.setStrokeWidth(width * strokeWidth);
             line.setFillOpacity(1.0);
 
             p.setStrokeWidth(0.0d);

@@ -37,6 +37,15 @@ import java.awt.Color;
 @ClassDescriptor(name="Pyramid", description="Top view of a pyramid")
 public class PyramidSVGTile extends SimpleSVGTile {
 
+    @DoubleParameter(name = "inset", description = "Fractional inset", defaultValue=0.15d, minValue = 0.0d, maxValue = 0.5d)
+    private double inset;
+    @DoubleParameter(name = "strokeWidth", description = "Width of stroke as fraction of tile size", defaultValue=0.05d, minValue = 0.001d, maxValue = 0.5d)
+    private double strokeWidth;
+    @DoubleParameter(name = "darkOpacity", description = "Opacity of dark areas", defaultValue=0.8d, minValue = 0.0d, maxValue = 1.0d)
+    private double darkOpacity;
+    @DoubleParameter(name = "lightOpacity", description = "Opacity of light areas", defaultValue=0.6d, minValue = 0.0d, maxValue = 1.0d)
+    private double lightOpacity;
+
     public boolean getTile(Element group, TileContext context) {
         if (!context.getColor().equals(Color.WHITE)) {
 
@@ -46,15 +55,15 @@ public class PyramidSVGTile extends SimpleSVGTile {
             final double bottom = context.getBottom();
 
             Point center = context.getCenter();
-            Point tl = new Point(left + inset, top + inset);
-            Point bl = new Point(left + inset, bottom - inset);
-            Point tr = new Point(right - inset, top + inset);
-            Point br = new Point(right - inset, bottom - inset);
+            Point tl = new Point(left + context.getWidth() * inset, top + context.getHeight() * inset);
+            Point bl = new Point(left + context.getWidth() * inset, bottom - context.getHeight() * inset);
+            Point tr = new Point(right - context.getWidth() * inset, top + context.getHeight() * inset);
+            Point br = new Point(right - context.getWidth() * inset, bottom - context.getHeight() * inset);
             
             Polygon p = new Polygon();
             p.setFill("white");
             p.setStroke("black");
-            p.setStrokeWidth(strokeWidth);
+            p.setStrokeWidth(context.getWidth() * strokeWidth);
             
             p.addPoint(tl);
             p.addPoint(tr);

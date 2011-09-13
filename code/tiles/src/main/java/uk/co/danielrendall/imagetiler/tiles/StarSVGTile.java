@@ -42,7 +42,8 @@ public class StarSVGTile extends SimpleSVGTile {
     public final static Logger log = Logger.getLogger(StarSVGTile.class);
 
     // TODO - rotation angle offset? Some kind of skew angle to rotate inner points relative to outer?
-
+    @DoubleParameter(name = "strokeWidth", description = "Width of stroke as fraction of tile size", defaultValue=0.05d, minValue = 0.001d, maxValue = 0.5d)
+    private double strokeWidth;
     @DoubleParameter(name = "innerRadius", description = "Fractional inner radius of star", defaultValue = 0.5d, minValue = 0.001d, maxValue = 10d)
     private double innerRadius;
     @DoubleParameter(name = "outerRadius", description = "Fractional outer radius of star", defaultValue = 1.0d, minValue = 0.001d, maxValue = 10d)
@@ -65,7 +66,7 @@ public class StarSVGTile extends SimpleSVGTile {
 
             p.setFill(hexValue(context.getColor()));
             p.setStroke("black");
-            p.setStrokeWidth(strokeWidth);
+            p.setStrokeWidth(width * strokeWidth);
             p.setFillOpacity(1.0d);
 
             Point center = context.getCenter();

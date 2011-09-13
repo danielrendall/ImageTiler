@@ -42,6 +42,8 @@ public class TrianglePointSVGTile extends SimpleSVGTile {
     public final static Logger log = Logger.getLogger(TrianglePointSVGTile.class);
 
 
+    @DoubleParameter(name = "strokeWidth", description = "Width of stroke as fraction of tile size", defaultValue=0.05d, minValue = 0.001d, maxValue = 0.5d)
+    private double strokeWidth;
     @DoubleParameter(name = "weight", description = "How big to make the line", defaultValue = 1.0d, minValue = 0.01d, maxValue = 10d)
     private double weight;
     @BooleanParameter(name = "contextWeighting", description = "Whether to weight by distance from center", defaultValue = true)
@@ -63,7 +65,7 @@ public class TrianglePointSVGTile extends SimpleSVGTile {
             Polygon p = new Polygon();
             p.setFill(hexValue(context.getColor()));
             p.setStroke("black");
-            p.setStrokeWidth(strokeWidth);
+            p.setStrokeWidth(width * strokeWidth);
             p.setFillOpacity(1.0d);
 
             Vec v1 = new Vec(radius, 0.0d).rotate(context.getAngle() + (Math.PI / 2.0));
