@@ -23,6 +23,7 @@ import uk.co.danielrendall.imagetiler.shared.ConfigStore;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.*;
 
 /**
@@ -37,20 +38,20 @@ public class AnnotationHelper {
     public static AnnotationHelper create(Object obj) {
         Class clazz = obj.getClass();
         Log.app.debug("Creating helper for object with class " + clazz.getName());
-        Map<String, Method> methodMap = new HashMap<String, Method>();
-        for(Method method : clazz.getMethods()) {
-            String methodName = method.getName().toLowerCase();
-            Log.app.debug("Found method " + methodName);
-            methodMap.put(methodName, method);
-        }
         List<String> fieldNames = new ArrayList<String>();
         Map<String, Field> fields = new HashMap<String, Field>();
         Map<String, FieldType> fieldTypes = new HashMap<String, FieldType>();
         Map<String, Object> parameters = new HashMap<String, Object>();
+        boolean isInSuperclass = false;
         while (clazz != Object.class) {
             for(Field field : clazz.getDeclaredFields()) {
                 String fieldName = field.getName();
-                Log.app.debug("Found field " + fieldName);
+                Class<?> declaringClass = field.getDeclaringClass();
+                Log.app.debug("Found field " + fieldName + " declared in " + declaringClass.getName());
+                if (isInSuperclass && Modifier.isPrivate(field.getModifiers())) {
+                    Log.app.debug("Skipping because not visible here");
+                    continue;
+                }
                 BooleanParameter bp = field.getAnnotation(BooleanParameter.class);
                 if (bp != null) {
                     fieldNames.add(fieldName);
@@ -85,6 +86,7 @@ public class AnnotationHelper {
                 }
             }
             clazz = clazz.getSuperclass();
+            isInSuperclass = true;
         }
         return new AnnotationHelper(clazz, obj, fieldNames, fields, fieldTypes, parameters);
     }
