@@ -47,6 +47,7 @@ public class CreateEditableComponentsVisitor implements FieldVisitor {
 
     public void visit(final StringField sField) {
         final JTextField tf = new JTextField();
+        final JLabel label = getLabel(sField.name());
         tf.setText(sField.get());
         tf.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
@@ -58,11 +59,12 @@ public class CreateEditableComponentsVisitor implements FieldVisitor {
                 }
             }
         });
-        addComponent(sField, tf);
+        addComponent(sField, label, tf);
     }
 
     public void visit(final BooleanField bField) {
         final JCheckBox cb = new JCheckBox();
+        final JLabel label = getLabel(bField.name());
         cb.addItemListener(new ItemListener(){
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
@@ -79,11 +81,12 @@ public class CreateEditableComponentsVisitor implements FieldVisitor {
             }
         });
         cb.setSelected(bField.defaultValue());
-        addComponent(bField, cb);
+        addComponent(bField, label, cb);
     }
 
     public void visit(final DoubleField dField) {
         final JSlider s = new JSlider(JSlider.HORIZONTAL, SliderMinimum, SliderMaximum, getScaledValueForSlider(dField, dField.defaultValue()));
+        final JLabel label = getLabel(dField.name());
         s.setPaintLabels(true);
         Hashtable<Integer, JLabel> ht = new Hashtable<Integer, JLabel>();
         ht.put(new Integer(SliderMinimum), new JLabel(Double.toString(dField.minValue())));
@@ -91,22 +94,24 @@ public class CreateEditableComponentsVisitor implements FieldVisitor {
         s.setLabelTable(ht);
         s.addChangeListener(new ChangeListener(){
             public void stateChanged(ChangeEvent e) {
+                int value = s.getValue();
+                double fieldValue = getDescaledValueForModel(dField, value);
                 if (!s.getValueIsAdjusting()) {
-                    int value = s.getValue();
-                    double fieldValue = getDescaledValueForModel(dField, value);
                     dField.set(fieldValue);
                     double newValue = dField.get();
                     if (newValue != value) {
                         s.setValue(getScaledValueForSlider(dField, newValue));
                     }
                 }
+                label.setText(dField.name() + " " + fieldValue);
             }
         });
-        addComponent(dField, s);
+        addComponent(dField, label, s);
     }
 
     public void visit(final IntegerField iField) {
         final JSlider s = new JSlider(JSlider.HORIZONTAL, iField.minValue(), iField.maxValue(), iField.defaultValue());
+        final JLabel label = getLabel(iField.name());
         s.setPaintLabels(true);
         s.setPaintTicks(true);
         Hashtable<Integer, JLabel> ht = new Hashtable<Integer, JLabel>();
@@ -123,18 +128,23 @@ public class CreateEditableComponentsVisitor implements FieldVisitor {
                         s.setValue(newValue);
                     }
                 }
+                label.setText(iField.name() + " " + s.getValue());
             }
         });
-        addComponent(iField, s);
+        addComponent(iField, label, s);
     }
 
     public List<JComponent> getComponents() {
         return components;
     }
 
-    private void addComponent(AnnotatedField aField, JComponent comp) {
+    private JLabel getLabel(String name) {
+        return new JLabel(name);
+    }
+
+    private void addComponent(AnnotatedField aField, JLabel label, JComponent comp) {
         JPanel panel = new JPanel(new BorderLayout());
-        panel.add(new JLabel(aField.name()), BorderLayout.NORTH);
+        panel.add(label, BorderLayout.NORTH);
         comp.setToolTipText(aField.description());
         panel.add(comp, BorderLayout.CENTER);
         components.add(panel);
