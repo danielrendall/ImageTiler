@@ -18,22 +18,29 @@
 
 package uk.co.danielrendall.imagetiler.tasks;
 
+import org.apache.batik.transcoder.TranscoderException;
+import org.apache.batik.transcoder.TranscoderInput;
+import org.apache.batik.transcoder.TranscoderOutput;
+import org.apache.batik.transcoder.svg2svg.SVGTranscoder;
 import org.jdesktop.application.Application;
+import org.w3c.dom.svg.SVGDocument;
 import uk.co.danielrendall.imagetiler.logging.Log;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 
 /**
-* @author Daniel Rendall
-*/
-public class LoadBitmapFileTask extends BaseTask<BufferedImage, Void> {
+ * @author Daniel Rendall
+ */
+public class SaveSvgFileTask extends BaseTask<Boolean, Void> {
     private final File file;
 
-    public LoadBitmapFileTask(Application application, File file) {
+    public SaveSvgFileTask(Application application, File file) {
         super(application);
         this.file = file;
     }
@@ -42,8 +49,8 @@ public class LoadBitmapFileTask extends BaseTask<BufferedImage, Void> {
      * error and this Task isn't cancelled.  We update the
      * GUI as well as the file and modified properties here.
      */
-    @Override protected void succeeded(BufferedImage bitmap) {
-        application().setBitmap(bitmap);
+    @Override protected void succeeded(Boolean b) {
+        //nothing to do
     }
     /* Called on the EDT if doInBackground fails because
      * an uncaught exception is thrown.  We show an error
@@ -51,16 +58,30 @@ public class LoadBitmapFileTask extends BaseTask<BufferedImage, Void> {
      * loaded from this Tasks's ResourceMap.
      */
     @Override protected void failed(Throwable e) {
-        Log.gui.warn("couldn't load " + file, e);
-        String msg = getResourceMap().getString("loadFailedMessage", file);
-        String title = getResourceMap().getString("loadFailedTitle");
+        Log.gui.warn("couldn't save " + file, e);
+        String msg = getResourceMap().getString("saveFailedMessage", file);
+        String title = getResourceMap().getString("saveFailedTitle");
         int type = JOptionPane.ERROR_MESSAGE;
         JOptionPane.showMessageDialog(application().getMainFrame(), msg, title, type);
     }
 
     @Override
-    protected BufferedImage doInBackground() throws IOException {
-        setProgress(1.0f);
-        return ImageIO.read(file);
+    protected Boolean doInBackground() throws IOException {
+        SVGDocument document = application().getDocument();
+        try {
+            SVGTranscoder t = new SVGTranscoder();
+            TranscoderInput transInput = new TranscoderInput(document);
+            Writer writer = new FileWriter(file);
+            TranscoderOutput transOutput = new TranscoderOutput(writer);
+            t.transcode(transInput, transOutput);
+            writer.flush();
+            writer.close();
+            return true;
+        } catch (IOException e) {
+            Log.gui.warn("Couldn't save - " + e.getMessage());
+        } catch (TranscoderException e) {
+            Log.gui.warn("Couldn't transcode to SVG - " + e.getMessage());
+        }
+        return false;
     }
 }

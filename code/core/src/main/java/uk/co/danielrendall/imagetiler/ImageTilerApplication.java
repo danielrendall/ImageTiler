@@ -29,6 +29,7 @@ import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.jdesktop.application.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.svg.SVGDocument;
+import uk.co.danielrendall.imagetiler.gui.FileChoosers;
 import uk.co.danielrendall.imagetiler.gui.ImageTilerPanel;
 import uk.co.danielrendall.imagetiler.gui.StatusBar;
 import uk.co.danielrendall.imagetiler.logging.Log;
@@ -37,7 +38,8 @@ import uk.co.danielrendall.imagetiler.registry.PluginRegistry;
 import uk.co.danielrendall.imagetiler.shared.ScannerStrategy;
 import uk.co.danielrendall.imagetiler.svg.SVGTile;
 import uk.co.danielrendall.imagetiler.tasks.GenerateTask;
-import uk.co.danielrendall.imagetiler.tasks.LoadFileTask;
+import uk.co.danielrendall.imagetiler.tasks.LoadBitmapFileTask;
+import uk.co.danielrendall.imagetiler.tasks.SaveSvgFileTask;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -76,6 +78,10 @@ public class ImageTilerApplication extends SingleFrameApplication {
     private final SVGTile nullSVGTile = new SVGTile.NullImplementation();
     private final ScannerStrategy nullScannerStrategy = new ScannerStrategy.NullImplementation();
 
+    private FileChoosers fileChoosers;
+
+    private SVGDocument document;
+
     public static void main(String[] args) {
         Application.launch(ImageTilerApplication.class, args);
     }
@@ -109,20 +115,13 @@ public class ImageTilerApplication extends SingleFrameApplication {
     }
 
     public void setDocument(final SVGDocument document) {
-//        try {
-//            SVGTranscoder t = new SVGTranscoder();
-//            TranscoderInput transInput = new TranscoderInput(document);
-//            Writer writer = new FileWriter("/tmp/output.svg");
-//            TranscoderOutput transOutput = new TranscoderOutput(writer);
-//            t.transcode(transInput, transOutput);
-//            writer.flush();
-//            writer.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-//        } catch (TranscoderException e) {
-//            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-//        }
+        this.document = document;
+        // Should be notifying a listener, really
         imageTilerPanel.setDocument(document);
+    }
+
+    public SVGDocument getDocument() {
+        return document;
     }
 
     private JFileChooser createFileChooser(String name, FileFilter filter) {
@@ -145,22 +144,22 @@ public class ImageTilerApplication extends SingleFrameApplication {
 
     @org.jdesktop.application.Action
     public Task open() {
-        JFileChooser fc = createFileChooser("openFileChooser", bmpFileFilter);
+        JFileChooser fc = fileChoosers.getOpenFileChooser();
         int option = fc.showOpenDialog(getMainFrame());
         Task task = null;
         if (JFileChooser.APPROVE_OPTION == option) {
-            task = new LoadFileTask(this, fc.getSelectedFile());
+            task = new LoadBitmapFileTask(this, fc.getSelectedFile());
         }
         return task;
     }
 
     @org.jdesktop.application.Action
     public Task save() {
-        JFileChooser fc = createFileChooser("saveFileChooser", bmpFileFilter);
+        JFileChooser fc = fileChoosers.getSaveFileChooser();
         int option = fc.showOpenDialog(getMainFrame());
         Task task = null;
         if (JFileChooser.APPROVE_OPTION == option) {
-            task = new LoadFileTask(this, fc.getSelectedFile());
+            task = new SaveSvgFileTask(this, fc.getSelectedFile());
         }
         return task;
     }
@@ -185,6 +184,7 @@ public class ImageTilerApplication extends SingleFrameApplication {
     @Override
     protected void startup() {
         StatusBar statusBar = new StatusBar(this, getContext().getTaskMonitor());
+        fileChoosers = new FileChoosers(appResourceMap);
         addExitListener(new ConfirmExit());
         View view = getMainView();
         view.setComponent(createMainPanel());
@@ -431,35 +431,5 @@ public class ImageTilerApplication extends SingleFrameApplication {
         public void willExit(EventObject e) {
         }
     }
-
-    private final FileFilter bmpFileFilter = new FileFilter() {
-
-        private final java.io.FileFilter delegate = new OrFileFilter(new SuffixFileFilter("bmp"), DirectoryFileFilter.INSTANCE);
-
-        @Override
-        public boolean accept(File f) {
-            return delegate.accept(f);
-        }
-
-        @Override
-        public String getDescription() {
-            return "BMP Files";
-        }
-    };
-
-    private final FileFilter svgFileFilter = new FileFilter() {
-
-        private final java.io.FileFilter delegate = new SuffixFileFilter("svg");
-
-        @Override
-        public boolean accept(File f) {
-            return delegate.accept(f);
-        }
-
-        @Override
-        public String getDescription() {
-            return "SVG Files";
-        }
-    };
 
 }
