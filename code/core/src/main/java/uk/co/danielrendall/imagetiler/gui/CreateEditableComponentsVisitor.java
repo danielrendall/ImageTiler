@@ -78,6 +78,7 @@ public class CreateEditableComponentsVisitor implements FieldVisitor {
                 }
             }
         });
+        cb.setSelected(bField.defaultValue());
         addComponent(bField, cb);
     }
 
