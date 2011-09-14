@@ -46,8 +46,8 @@ public class TrianglePointSVGTile extends SimpleSVGTile {
     private double strokeWidth;
     @DoubleParameter(name = "weight", description = "How big to make the line", defaultValue = 1.0d, minValue = 0.01d, maxValue = 10d)
     private double weight;
-    @BooleanParameter(name = "contextWeighting", description = "Whether to weight by distance from center", defaultValue = true)
-    private boolean contextWeighting;
+    @DoubleParameter(name = "weightValue", description = "Affects dependence of line size on distance from center", defaultValue = 1.0d, minValue = 0.25d, maxValue = 1.25d)
+    private double weightValue;
 
     public boolean getTile(Element group, TileContext context) {
 
@@ -58,7 +58,7 @@ public class TrianglePointSVGTile extends SimpleSVGTile {
             Point center = context.getCenter();
             double distance = context.getDistance();
 
-            double myWeight = contextWeighting? (weight *  distance) : weight;
+            double myWeight =  weight * Math.pow(distance, weightValue);
 
             double radius = ((width + height) / 4.0d) * distance / myWeight;
 
