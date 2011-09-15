@@ -34,6 +34,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Arrays;
 import java.util.List;
 
@@ -100,14 +102,33 @@ public class ImageTilerPanel extends JLayeredPane {
 
         this.add(splitPane, DEFAULT_LAYER);
 
+        app.addPropertyChangeListener("svgTile", new PropertyChangeListener(){
+            public void propertyChange(PropertyChangeEvent evt) {
+                addTileEditors((SVGTile) evt.getNewValue());
+            }
+        });
+
+        app.addPropertyChangeListener("scannerStrategy", new PropertyChangeListener(){
+            public void propertyChange(PropertyChangeEvent evt) {
+                addStrategyEditors((ScannerStrategy) evt.getNewValue());
+            }
+        });
     }
 
-    public void addTileEditors(SVGTile tile) {
-        settings.addTileEditors(tile);
+    private void addTileEditors(final SVGTile tile) {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                settings.addTileEditors(tile);
+            }
+        });
     }
 
-    public void addStrategyEditors(ScannerStrategy strategy) {
-        settings.addStrategyEditors(strategy);
+    private void addStrategyEditors(final ScannerStrategy strategy) {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                settings.addStrategyEditors(strategy);
+            }
+        });
     }
 
     public void setDocument(final SVGDocument document) {

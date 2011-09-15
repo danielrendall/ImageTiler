@@ -35,9 +35,11 @@ public abstract class SVGTile {
      * @param context Information about the current location in the image
      */
 
+    public static SVGTile nullTile = new NullImplementation();
+
     public abstract boolean getTile(Element group, TileContext context);
 
-    public static class NullImplementation extends SVGTile {
+    private static class NullImplementation extends SVGTile {
         @Override
         public boolean getTile(Element group, TileContext context) {
             return false;

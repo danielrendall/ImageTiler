@@ -67,16 +67,10 @@ public class ImageTilerApplication extends SingleFrameApplication {
     private ResourceMap appResourceMap;
     ImageTilerPanel imageTilerPanel;
     private JDialog aboutBox = null;
-    private  BufferedImage bitmap = null;
     private final PluginRegistry pluginRegistry;
     private final Map<String, SVGTile> pluginTiles;
     private final Map<String, ScannerStrategy> pluginStrategies;
 
-    private SVGTile svgTile;
-    private ScannerStrategy scannerStrategy;
-
-    private final SVGTile nullSVGTile = new SVGTile.NullImplementation();
-    private final ScannerStrategy nullScannerStrategy = new ScannerStrategy.NullImplementation();
 
     private FileChoosers fileChoosers;
 
@@ -88,85 +82,10 @@ public class ImageTilerApplication extends SingleFrameApplication {
 
     public ImageTilerApplication() {
         pluginRegistry = createPluginRegistry();
-        svgTile = nullSVGTile;
-        scannerStrategy = nullScannerStrategy;
+        svgTile = SVGTile.nullTile;
+        scannerStrategy = ScannerStrategy.nullStrategy;
         pluginTiles = new HashMap<String, SVGTile>();
         pluginStrategies = new HashMap<String, ScannerStrategy>();
-    }
-
-    public static PluginRegistry createPluginRegistry() {
-        return PluginRegistry
-                .builder()
-                .withPropertiesAndClass(PLUGIN_TYPE_TILE, "tiles.properties", SVGTile.class)
-                .withPropertiesAndClass(PLUGIN_TYPE_STRATEGY, "strategies.properties", ScannerStrategy.class)
-                .build();
-    }
-
-    public BufferedImage getBitmap() {
-        return bitmap;
-    }
-
-    public SVGTile getSvgTile() {
-        return svgTile;
-    }
-
-    public ScannerStrategy getScannerStrategy() {
-        return scannerStrategy;
-    }
-
-    public void setDocument(final SVGDocument document) {
-        this.document = document;
-        // Should be notifying a listener, really
-        imageTilerPanel.setDocument(document);
-    }
-
-    public SVGDocument getDocument() {
-        return document;
-    }
-
-    private JFileChooser createFileChooser(String name, FileFilter filter) {
-        JFileChooser fc = new JFileChooser();
-        fc.setName(name);
-        fc.setFileFilter(filter);
-        appResourceMap.injectComponents(fc);
-        return fc;
-    }
-    
-    /* Set the bound file property and update the GUI.
-    */
-
-    public void setBitmap(BufferedImage bitmap) {
-        BufferedImage oldValue = this.bitmap;
-        this.bitmap = bitmap;
-        firePropertyChange("bitmap", oldValue, this.bitmap);
-    }
-
-
-    @org.jdesktop.application.Action
-    public Task open() {
-        JFileChooser fc = fileChoosers.getOpenFileChooser();
-        int option = fc.showOpenDialog(getMainFrame());
-        Task task = null;
-        if (JFileChooser.APPROVE_OPTION == option) {
-            task = new LoadBitmapFileTask(this, fc.getSelectedFile());
-        }
-        return task;
-    }
-
-    @org.jdesktop.application.Action
-    public Task save() {
-        JFileChooser fc = fileChoosers.getSaveFileChooser();
-        int option = fc.showOpenDialog(getMainFrame());
-        Task task = null;
-        if (JFileChooser.APPROVE_OPTION == option) {
-            task = new SaveSvgFileTask(this, fc.getSelectedFile());
-        }
-        return task;
-    }
-
-    @org.jdesktop.application.Action
-    public Task generate() {
-        return new GenerateTask(this);
     }
 
     @Override protected void initialize(String[] args) {
@@ -198,6 +117,100 @@ public class ImageTilerApplication extends SingleFrameApplication {
     protected void ready() {
         Log.gui.info("Ready!");
     }
+
+    public static PluginRegistry createPluginRegistry() {
+        return PluginRegistry
+                .builder()
+                .withPropertiesAndClass(PLUGIN_TYPE_TILE, "tiles.properties", SVGTile.class)
+                .withPropertiesAndClass(PLUGIN_TYPE_STRATEGY, "strategies.properties", ScannerStrategy.class)
+                .build();
+    }
+
+    // bitmap - the current image for processing
+    private  BufferedImage bitmap = null;
+
+    public void setBitmap(BufferedImage bitmap) {
+        BufferedImage oldValue = this.bitmap;
+        this.bitmap = bitmap;
+        firePropertyChange("bitmap", oldValue, this.bitmap);
+    }
+
+    public BufferedImage getBitmap() {
+        return bitmap;
+    }
+
+    // svgTile - the current generator of SVG shapes
+    private SVGTile svgTile;
+
+    private void setSvgTile(SVGTile svgTile) {
+        SVGTile oldValue = this.svgTile;
+        this.svgTile = svgTile;
+        firePropertyChange("svgTile", oldValue, this.svgTile);
+    }
+
+    public SVGTile getSvgTile() {
+        return svgTile;
+    }
+
+    private ScannerStrategy scannerStrategy;
+
+    private void setScannerStrategy(ScannerStrategy scannerStrategy) {
+        ScannerStrategy oldValue = this.scannerStrategy;
+        this.scannerStrategy = scannerStrategy;
+        firePropertyChange("scannerStrategy", oldValue, this.scannerStrategy);
+    }
+
+    public ScannerStrategy getScannerStrategy() {
+        return scannerStrategy;
+    }
+
+    public void setDocument(final SVGDocument document) {
+        this.document = document;
+        // Should be notifying a listener, really
+        imageTilerPanel.setDocument(document);
+    }
+
+    public SVGDocument getDocument() {
+        return document;
+    }
+
+    private JFileChooser createFileChooser(String name, FileFilter filter) {
+        JFileChooser fc = new JFileChooser();
+        fc.setName(name);
+        fc.setFileFilter(filter);
+        appResourceMap.injectComponents(fc);
+        return fc;
+    }
+    
+
+
+    @org.jdesktop.application.Action
+    public Task open() {
+        JFileChooser fc = fileChoosers.getOpenFileChooser();
+        int option = fc.showOpenDialog(getMainFrame());
+        Task task = null;
+        if (JFileChooser.APPROVE_OPTION == option) {
+            task = new LoadBitmapFileTask(this, fc.getSelectedFile());
+        }
+        return task;
+    }
+
+    @org.jdesktop.application.Action
+    public Task save() {
+        JFileChooser fc = fileChoosers.getSaveFileChooser();
+        int option = fc.showOpenDialog(getMainFrame());
+        Task task = null;
+        if (JFileChooser.APPROVE_OPTION == option) {
+            task = new SaveSvgFileTask(this, fc.getSelectedFile());
+        }
+        return task;
+    }
+
+    @org.jdesktop.application.Action
+    public Task generate() {
+        return new GenerateTask(this);
+    }
+
 
     private JComponent createMainPanel() {
         imageTilerPanel = new ImageTilerPanel(this);
@@ -317,46 +330,36 @@ public class ImageTilerApplication extends SingleFrameApplication {
 
     public void selectedTileChanged(ClassDescription cd) {
         Log.gui.debug("Tile changed to " + cd.getName());
-        svgTile = nullSVGTile;
         if (pluginTiles.containsKey(cd.getName())) {
-            svgTile = pluginTiles.get(cd.getName());
+            setSvgTile(pluginTiles.get(cd.getName()));
         } else {
             try {
-                svgTile = (SVGTile) pluginRegistry.getNewInstance(PLUGIN_TYPE_TILE, cd.getName());
-                pluginTiles.put(cd.getName(), svgTile);
+                SVGTile newSvgTile = (SVGTile) pluginRegistry.getNewInstance(PLUGIN_TYPE_TILE, cd.getName());
+                pluginTiles.put(cd.getName(), newSvgTile);
+                setSvgTile(newSvgTile);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             } catch (InstantiationException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
         }
-        SwingUtilities.invokeLater( new Runnable() {
-            public void run() {
-                imageTilerPanel.addTileEditors(svgTile);
-            }
-        });
     }
 
     public void selectedStrategyChanged(ClassDescription cd) {
         Log.gui.debug("Strategy changed to " + cd.getName());
-        scannerStrategy = nullScannerStrategy;
         if (pluginStrategies.containsKey(cd.getName())) {
-            scannerStrategy = pluginStrategies.get(cd.getName());
+            setScannerStrategy(pluginStrategies.get(cd.getName()));
         } else {
             try {
-                scannerStrategy = (ScannerStrategy) pluginRegistry.getNewInstance(PLUGIN_TYPE_STRATEGY, cd.getName());
-                pluginStrategies.put(cd.getName(), scannerStrategy);               
+                ScannerStrategy newScannerStrategy = (ScannerStrategy) pluginRegistry.getNewInstance(PLUGIN_TYPE_STRATEGY, cd.getName());
+                pluginStrategies.put(cd.getName(), newScannerStrategy);
+                setScannerStrategy(newScannerStrategy);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             } catch (InstantiationException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
         }
-        SwingUtilities.invokeLater( new Runnable() {
-            public void run() {
-                imageTilerPanel.addStrategyEditors(scannerStrategy);
-            }
-        });
     }
 
     private JDialog createAboutBox() {

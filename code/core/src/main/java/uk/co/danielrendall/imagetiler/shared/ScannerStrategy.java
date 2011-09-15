@@ -29,6 +29,8 @@ import java.util.Iterator;
  */
 public abstract class ScannerStrategy implements Iterator<Pixel> {
 
+    public static ScannerStrategy nullStrategy = new NullImplementation();
+
     protected int xMin;
     protected int width;
     protected int yMin;
@@ -60,7 +62,7 @@ public abstract class ScannerStrategy implements Iterator<Pixel> {
         throw new UnsupportedOperationException();
     }
 
-    public static class NullImplementation extends ScannerStrategy {
+    private static class NullImplementation extends ScannerStrategy {
         @Override
         public void doAfterInitialise() {
 
