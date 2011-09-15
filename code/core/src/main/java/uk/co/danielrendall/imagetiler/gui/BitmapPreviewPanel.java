@@ -19,6 +19,7 @@
 package uk.co.danielrendall.imagetiler.gui;
 
 import uk.co.danielrendall.imagetiler.ImageTilerApplication;
+import uk.co.danielrendall.imagetiler.utils.AsyncPropertyChangeListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,14 +35,17 @@ public class BitmapPreviewPanel extends JPanel {
     private BufferedImage image;
 
     public BitmapPreviewPanel(ImageTilerApplication app) {
-        app.addPropertyChangeListener("bitmap", new PropertyChangeListener(){
-            public void propertyChange(PropertyChangeEvent evt) {
-                BufferedImage newImage = (BufferedImage) evt.getNewValue();
-                BitmapPreviewPanel.this.image = newImage;
-                BitmapPreviewPanel.this.repaint();
-            }
-        });
+        app.addPropertyChangeListener("bitmap", bitmapChanged);
     }
+
+    private final PropertyChangeListener bitmapChanged = new AsyncPropertyChangeListener() {
+        @Override
+        public void handlePropertyChange(PropertyChangeEvent evt) {
+            BufferedImage newImage = (BufferedImage) evt.getNewValue();
+            BitmapPreviewPanel.this.image = newImage;
+            BitmapPreviewPanel.this.repaint();
+        }
+    };
 
     @Override
     public void paintComponent(Graphics g) {

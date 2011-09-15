@@ -29,6 +29,7 @@ import uk.co.danielrendall.imagetiler.ImageTilerApplication;
 import uk.co.danielrendall.imagetiler.logging.Log;
 import uk.co.danielrendall.imagetiler.shared.ScannerStrategy;
 import uk.co.danielrendall.imagetiler.svg.SVGTile;
+import uk.co.danielrendall.imagetiler.utils.AsyncPropertyChangeListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -102,34 +103,23 @@ public class ImageTilerPanel extends JLayeredPane {
 
         this.add(splitPane, DEFAULT_LAYER);
 
-        app.addPropertyChangeListener("svgTile", new PropertyChangeListener(){
-            public void propertyChange(PropertyChangeEvent evt) {
-                addTileEditors((SVGTile) evt.getNewValue());
-            }
-        });
-
-        app.addPropertyChangeListener("scannerStrategy", new PropertyChangeListener(){
-            public void propertyChange(PropertyChangeEvent evt) {
-                addStrategyEditors((ScannerStrategy) evt.getNewValue());
-            }
-        });
+        app.addPropertyChangeListener("svgTile", addTileEditors);
+        app.addPropertyChangeListener("scannerStrategy", addStrategyEditors);
     }
 
-    private void addTileEditors(final SVGTile tile) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                settings.addTileEditors(tile);
-            }
-        });
-    }
+    private final PropertyChangeListener addTileEditors = new AsyncPropertyChangeListener() {
+        @Override
+        public void handlePropertyChange(PropertyChangeEvent evt) {
+            settings.addTileEditors(((SVGTile) evt.getNewValue()));
+        }
+    };
 
-    private void addStrategyEditors(final ScannerStrategy strategy) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                settings.addStrategyEditors(strategy);
-            }
-        });
-    }
+    private final PropertyChangeListener addStrategyEditors = new AsyncPropertyChangeListener() {
+        @Override
+        public void handlePropertyChange(PropertyChangeEvent evt) {
+            settings.addStrategyEditors(((ScannerStrategy) evt.getNewValue()));
+        }
+    };
 
     public void setDocument(final SVGDocument document) {
         Log.gui.info("Setting document");
