@@ -105,6 +105,7 @@ public class ImageTilerPanel extends JLayeredPane {
 
         app.addPropertyChangeListener("svgTile", addTileEditors);
         app.addPropertyChangeListener("scannerStrategy", addStrategyEditors);
+        app.addPropertyChangeListener("document", updateDocument);
     }
 
     private final PropertyChangeListener addTileEditors = new AsyncPropertyChangeListener() {
@@ -121,9 +122,11 @@ public class ImageTilerPanel extends JLayeredPane {
         }
     };
 
-    public void setDocument(final SVGDocument document) {
-        Log.gui.info("Setting document");
-        if (document == null) throw new RuntimeException("Null document");
-        canvas.setDocument(document);
-    }
+    private final PropertyChangeListener updateDocument = new AsyncPropertyChangeListener() {
+        @Override
+        public void handlePropertyChange(PropertyChangeEvent evt) {
+            Log.gui.info("Setting document");
+            canvas.setDocument(((SVGDocument) evt.getNewValue()));
+        }
+    };
 }

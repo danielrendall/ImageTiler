@@ -74,7 +74,6 @@ public class ImageTilerApplication extends SingleFrameApplication {
 
     private FileChoosers fileChoosers;
 
-    private SVGDocument document;
 
     public static void main(String[] args) {
         Application.launch(ImageTilerApplication.class, args);
@@ -164,10 +163,12 @@ public class ImageTilerApplication extends SingleFrameApplication {
         return scannerStrategy;
     }
 
+    private SVGDocument document;
+
     public void setDocument(final SVGDocument document) {
+        SVGDocument oldValue = this.document;
         this.document = document;
-        // Should be notifying a listener, really
-        imageTilerPanel.setDocument(document);
+        firePropertyChange("document", oldValue, this.document);
     }
 
     public SVGDocument getDocument() {
