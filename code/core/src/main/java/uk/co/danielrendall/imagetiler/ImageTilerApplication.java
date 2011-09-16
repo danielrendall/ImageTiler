@@ -37,6 +37,7 @@ import uk.co.danielrendall.imagetiler.registry.ClassDescription;
 import uk.co.danielrendall.imagetiler.registry.PluginRegistry;
 import uk.co.danielrendall.imagetiler.shared.ScannerStrategy;
 import uk.co.danielrendall.imagetiler.svg.SVGTile;
+import uk.co.danielrendall.imagetiler.tasks.BaseTask;
 import uk.co.danielrendall.imagetiler.tasks.GenerateTask;
 import uk.co.danielrendall.imagetiler.tasks.LoadBitmapFileTask;
 import uk.co.danielrendall.imagetiler.tasks.SaveSvgFileTask;
@@ -46,6 +47,7 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileFilter;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileWriter;
@@ -212,6 +214,15 @@ public class ImageTilerApplication extends SingleFrameApplication {
         return new GenerateTask(this);
     }
 
+    @org.jdesktop.application.Action
+    public void zoomIn(ActionEvent evt) {
+        imageTilerPanel.zoomIn(evt);
+    }
+
+    @org.jdesktop.application.Action()
+    public void zoomOut(ActionEvent evt) {
+        imageTilerPanel.zoomOut(evt);
+    }
 
     private JComponent createMainPanel() {
         imageTilerPanel = new ImageTilerPanel(this);
@@ -267,8 +278,8 @@ public class ImageTilerApplication extends SingleFrameApplication {
                 "quit"
         };
         String[] displayMenuActionnames = {
-                JSVGCanvas.ZOOM_IN_ACTION,
-                JSVGCanvas.ZOOM_OUT_ACTION
+                "zoomIn",
+                "zoomOut"
         };
         String[] helpMenuActionNames = {
                 "showAboutBox"
@@ -287,8 +298,8 @@ public class ImageTilerApplication extends SingleFrameApplication {
                 "open",
                 "save",
                 "generate",
-                JSVGCanvas.ZOOM_IN_ACTION,
-                JSVGCanvas.ZOOM_OUT_ACTION
+                "zoomIn",
+                "zoomOut"
         };
         JToolBar toolBar = new JToolBar();
         toolBar.setFloatable(false);

@@ -33,6 +33,7 @@ import uk.co.danielrendall.imagetiler.utils.AsyncPropertyChangeListener;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.beans.PropertyChangeEvent;
@@ -129,4 +130,14 @@ public class ImageTilerPanel extends JLayeredPane {
             canvas.setDocument(((SVGDocument) evt.getNewValue()));
         }
     };
+
+    public void zoomIn(ActionEvent evt) {
+        Log.gui.info("Zoom in");
+        canvas.getActionMap().get(JSVGCanvas.ZOOM_IN_ACTION).actionPerformed(evt);
+    }
+
+    public void zoomOut(ActionEvent evt) {
+        Log.gui.info("Zoom out");
+        canvas.getActionMap().get(JSVGCanvas.ZOOM_OUT_ACTION).actionPerformed(evt);
+    }
 }
