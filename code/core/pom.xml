@@ -46,6 +46,18 @@
     </dependency>
       
       <dependency>
+          <groupId>com.google.inject</groupId>
+          <artifactId>guice</artifactId>
+          <version>3.0</version>
+      </dependency>
+
+      <dependency>
+          <groupId>javax.inject</groupId>
+          <artifactId>javax.inject</artifactId>
+          <version>1</version>
+      </dependency>
+
+      <dependency>
           <groupId>org.swinglabs</groupId>
           <artifactId>swingx</artifactId>
           <version>1.6</version>
@@ -72,7 +84,7 @@
       <dependency>
           <groupId>org.jdesktop.bsaf</groupId>
           <artifactId>bsaf</artifactId>
-          <version>1.9</version>
+          <version>1.9.2</version>
       </dependency>
 
     <dependency>

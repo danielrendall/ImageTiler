@@ -21,6 +21,8 @@ package uk.co.danielrendall.imagetiler.tasks;
 import org.jdesktop.application.Application;
 import org.w3c.dom.Document;
 import org.w3c.dom.svg.SVGDocument;
+import uk.co.danielrendall.imagetiler.ITContext;
+import uk.co.danielrendall.imagetiler.ITModel;
 import uk.co.danielrendall.imagetiler.ImageTilerApplication;
 import uk.co.danielrendall.imagetiler.logging.Log;
 import uk.co.danielrendall.imagetiler.svg.SVGTiler;
@@ -30,19 +32,19 @@ import uk.co.danielrendall.imagetiler.svg.SVGTiler;
  */
 public class GenerateTask extends BaseTask<SVGDocument, Void> {
 
-    public GenerateTask(ImageTilerApplication application) {
-        super(application);
+    public GenerateTask(ITContext context, ITModel model) {
+        super(context, model);
     }
 
     @Override
     protected SVGDocument doInBackground() throws Exception {
         Log.gui.info("Generating");
-        SVGTiler tiler = new SVGTiler(application().getSvgTile(), application().getScannerStrategy());
-        return tiler.process(application().getBitmap());
+        SVGTiler tiler = new SVGTiler(model.getSvgTile(), model.getScannerStrategy());
+        return tiler.process(model.getBitmap());
     }
 
     @Override
     protected void succeeded(SVGDocument result) {
-        application().setDocument(result);
+        model.setDocument(result);
     }
 }

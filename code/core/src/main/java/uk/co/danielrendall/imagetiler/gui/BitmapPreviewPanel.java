@@ -18,6 +18,8 @@
 
 package uk.co.danielrendall.imagetiler.gui;
 
+import uk.co.danielrendall.imagetiler.ITContext;
+import uk.co.danielrendall.imagetiler.ITModel;
 import uk.co.danielrendall.imagetiler.ImageTilerApplication;
 import uk.co.danielrendall.imagetiler.utils.AsyncPropertyChangeListener;
 
@@ -32,10 +34,15 @@ import java.beans.PropertyChangeListener;
  */
 public class BitmapPreviewPanel extends JPanel {
 
+    private final ITContext context;
     private BufferedImage image;
 
-    public BitmapPreviewPanel(ImageTilerApplication app) {
-        app.addPropertyChangeListener("bitmap", bitmapChanged);
+    public BitmapPreviewPanel(ITContext context) {
+        this.context = context;
+    }
+
+    public void init(ITModel model) {
+        model.addPropertyChangeListener("bitmap", bitmapChanged);
     }
 
     private final PropertyChangeListener bitmapChanged = new AsyncPropertyChangeListener() {

@@ -16,29 +16,25 @@
  * along with ImageTiler.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package uk.co.danielrendall.imagetiler.tasks;
+package uk.co.danielrendall.imagetiler;
 
-import org.jdesktop.application.Application;
-import org.jdesktop.application.Task;
-import uk.co.danielrendall.imagetiler.ITContext;
-import uk.co.danielrendall.imagetiler.ITModel;
-import uk.co.danielrendall.imagetiler.ImageTilerApplication;
+import javax.inject.Singleton;
+import javax.swing.*;
 
 /**
  * @author Daniel Rendall
  */
-public abstract class BaseTask<T, V> extends Task<T, V> {
+public interface ITController {
 
-    protected final ITContext context;
-    protected final ITModel model;
+    public final static String ACTION_OPEN = "open";
+    public final static String ACTION_SAVE = "save";
+    public final static String ACTION_GENERATE = "generate";
+    public final static String ACTION_QUIT = "quit";
+    public final static String ACTION_ZOOM_IN = "zoomIn";
+    public final static String ACTION_ZOOM_OUT = "zoomOut";
+    public final static String ACTION_SHOW_ABOUT_BOX = "showAboutBox";
 
-    public BaseTask(ITContext context, ITModel model) {
-        super(context.getAppContext().getApplication());
-        this.context = context;
-        this.model = model;
-    }
 
-    protected ImageTilerApplication application() {
-        return (ImageTilerApplication) getApplication();
-    }
+    ActionMap getActionMap ();
+
 }

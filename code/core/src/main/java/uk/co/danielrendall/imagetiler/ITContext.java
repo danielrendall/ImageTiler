@@ -16,29 +16,31 @@
  * along with ImageTiler.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package uk.co.danielrendall.imagetiler.tasks;
+package uk.co.danielrendall.imagetiler;
 
-import org.jdesktop.application.Application;
-import org.jdesktop.application.Task;
-import uk.co.danielrendall.imagetiler.ITContext;
-import uk.co.danielrendall.imagetiler.ITModel;
-import uk.co.danielrendall.imagetiler.ImageTilerApplication;
+import org.jdesktop.application.ApplicationContext;
+import uk.co.danielrendall.imagetiler.registry.ClassDescription;
+import uk.co.danielrendall.imagetiler.registry.PluginRegistry;
+import uk.co.danielrendall.imagetiler.shared.ScannerStrategy;
+import uk.co.danielrendall.imagetiler.svg.SVGTile;
+
+import java.util.Vector;
 
 /**
  * @author Daniel Rendall
  */
-public abstract class BaseTask<T, V> extends Task<T, V> {
+public interface ITContext {
 
-    protected final ITContext context;
-    protected final ITModel model;
+    public final static String PLUGIN_TYPE_TILE = "tile";
+    public final static String PLUGIN_TYPE_STRATEGY = "strategy";
 
-    public BaseTask(ITContext context, ITModel model) {
-        super(context.getAppContext().getApplication());
-        this.context = context;
-        this.model = model;
-    }
+    ApplicationContext getAppContext();
 
-    protected ImageTilerApplication application() {
-        return (ImageTilerApplication) getApplication();
-    }
+    SVGTile getTile(ClassDescription cd);
+
+    ScannerStrategy getStrategy(ClassDescription cd);
+
+    Vector<ClassDescription> getTileClassesList();
+
+    Vector<ClassDescription> getStrategyClassesList();
 }

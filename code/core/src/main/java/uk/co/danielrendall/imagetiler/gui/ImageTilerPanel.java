@@ -23,9 +23,9 @@ import org.apache.batik.swing.JSVGScrollPane;
 import org.apache.batik.swing.svg.AbstractJSVGComponent;
 import org.jdesktop.swingx.JXMultiSplitPane;
 import org.jdesktop.swingx.MultiSplitLayout;
-import org.w3c.dom.Document;
 import org.w3c.dom.svg.SVGDocument;
-import uk.co.danielrendall.imagetiler.ImageTilerApplication;
+import uk.co.danielrendall.imagetiler.ITContext;
+import uk.co.danielrendall.imagetiler.ITModel;
 import uk.co.danielrendall.imagetiler.logging.Log;
 import uk.co.danielrendall.imagetiler.shared.ScannerStrategy;
 import uk.co.danielrendall.imagetiler.svg.SVGTile;
@@ -51,8 +51,8 @@ public class ImageTilerPanel extends JLayeredPane {
     private final BitmapPreviewPanel bitmap;
 
 
-    public ImageTilerPanel(ImageTilerApplication app) {
-        getActionMap().setParent(app.getContext().getActionMap());
+    public ImageTilerPanel(ITContext context) {
+        getActionMap().setParent(context.getAppContext().getActionMap());
         canvas = new JSVGCanvas();
         canvas.setDocumentState(AbstractJSVGComponent.ALWAYS_DYNAMIC);
         canvas.getActionMap().setParent(getActionMap());
@@ -69,8 +69,8 @@ public class ImageTilerPanel extends JLayeredPane {
         MultiSplitLayout mslLeft = new MultiSplitLayout(leftSide);
         mslLeft.setFloatingDividers(true);
 
-        settings = new SettingsPanel(app);
-        bitmap = new BitmapPreviewPanel(app);
+        settings = new SettingsPanel(context);
+        bitmap = new BitmapPreviewPanel(context);
 
         JXMultiSplitPane leftSplitPane = new JXMultiSplitPane(mslLeft);
         leftSplitPane.add(settings, "settings");
@@ -104,9 +104,14 @@ public class ImageTilerPanel extends JLayeredPane {
 
         this.add(splitPane, DEFAULT_LAYER);
 
-        app.addPropertyChangeListener("svgTile", addTileEditors);
-        app.addPropertyChangeListener("scannerStrategy", addStrategyEditors);
-        app.addPropertyChangeListener("document", updateDocument);
+    }
+
+    public void init(ITModel model) {
+        model.addPropertyChangeListener("svgTile", addTileEditors);
+        model.addPropertyChangeListener("scannerStrategy", addStrategyEditors);
+        model.addPropertyChangeListener("document", updateDocument);
+        settings.init(model);
+        bitmap.init(model);
     }
 
     private final PropertyChangeListener addTileEditors = new AsyncPropertyChangeListener() {

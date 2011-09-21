@@ -19,6 +19,7 @@
 package uk.co.danielrendall.imagetiler.registry;
 
 import org.junit.Test;
+import uk.co.danielrendall.imagetiler.ITContext;
 import uk.co.danielrendall.imagetiler.ImageTilerApplication;
 
 import static junit.framework.Assert.assertEquals;
@@ -34,7 +35,7 @@ public class PluginRegistryTest {
         PluginRegistry registry = ImageTilerApplication.createPluginRegistry();
 //        assertEquals(GemSVGTile.class, registry.getNewInstance(ImageTilerApplication.PLUGIN_TYPE_TILE, "Gem").getClass());
 //        assertEquals(CircleStrategy.class, registry.getNewInstance(ImageTilerApplication.PLUGIN_TYPE_STRATEGY, "Circle").getClass());
-        assertNull(registry.getNewInstance(ImageTilerApplication.PLUGIN_TYPE_STRATEGY, "Oval"));
+        assertNull(registry.getNewInstance(ITContext.PLUGIN_TYPE_STRATEGY, "Oval"));
         assertNull(registry.getNewInstance("NoSuchType", "Thing"));
     }
 }

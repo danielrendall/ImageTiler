@@ -18,6 +18,8 @@
 
 package uk.co.danielrendall.imagetiler.gui;
 
+import uk.co.danielrendall.imagetiler.ITContext;
+import uk.co.danielrendall.imagetiler.ITModel;
 import uk.co.danielrendall.imagetiler.ImageTilerApplication;
 import uk.co.danielrendall.imagetiler.annotations.AnnotationHelper;
 import uk.co.danielrendall.imagetiler.logging.Log;
@@ -39,6 +41,8 @@ import java.util.Map;
  */
 public class SettingsPanel extends JPanel {
 
+    private final ITContext context;
+
     private final JComboBox tilesDropDown;
     private final JComboBox strategiesDropDown;
 
@@ -49,7 +53,8 @@ public class SettingsPanel extends JPanel {
     private final Map<SVGTile, JPanel> individualTilePanels;
     private final Map<ScannerStrategy, JPanel> individualStrategyPanels;
 
-    public SettingsPanel(final ImageTilerApplication app) {
+    public SettingsPanel(final ITContext context) {
+        this.context = context;
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         top = new JPanel();
         tilesSettings = new JPanel();
@@ -60,25 +65,9 @@ public class SettingsPanel extends JPanel {
 
         top.setLayout(new BoxLayout(top, BoxLayout.Y_AXIS));
         top.add(new JLabel("SettingsPanel"));
-        tilesDropDown = new JComboBox(app.getTileClassesList());
-        tilesDropDown.addItemListener(new ItemListener() {
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    ClassDescription cd = (ClassDescription) e.getItem();
-                    app.selectedTileChanged(cd);
-                }
-            }
-        });
+        tilesDropDown = new JComboBox(context.getTileClassesList());
         top.add(tilesDropDown);
-        strategiesDropDown = new JComboBox(app.getStrategyClassesList());
-        strategiesDropDown.addItemListener(new ItemListener() {
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    ClassDescription cd = (ClassDescription) e.getItem();
-                    app.selectedStrategyChanged(cd);
-                }
-            }
-        });
+        strategiesDropDown = new JComboBox(context.getStrategyClassesList());
 
         top.add(strategiesDropDown);
         this.add(top);
@@ -91,8 +80,28 @@ public class SettingsPanel extends JPanel {
         strategiesSettings.setLayout(new BorderLayout());
         this.add(strategiesSettings);
 
-        app.selectedTileChanged((ClassDescription) tilesDropDown.getItemAt(0));
-        app.selectedStrategyChanged((ClassDescription) strategiesDropDown.getItemAt(0));
+    }
+
+    public void init(final ITModel model) {
+        tilesDropDown.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    ClassDescription cd = (ClassDescription) e.getItem();
+                    model.selectedTileChanged(cd);
+                }
+            }
+        });
+
+        strategiesDropDown.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    ClassDescription cd = (ClassDescription) e.getItem();
+                    model.selectedStrategyChanged(cd);
+                }
+            }
+        });
+        model.selectedTileChanged((ClassDescription) tilesDropDown.getItemAt(0));
+        model.selectedStrategyChanged((ClassDescription) strategiesDropDown.getItemAt(0));
 
     }
 

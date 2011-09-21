@@ -19,6 +19,8 @@
 package uk.co.danielrendall.imagetiler.tasks;
 
 import org.jdesktop.application.Application;
+import uk.co.danielrendall.imagetiler.ITContext;
+import uk.co.danielrendall.imagetiler.ITModel;
 import uk.co.danielrendall.imagetiler.logging.Log;
 
 import javax.imageio.ImageIO;
@@ -33,8 +35,8 @@ import java.io.IOException;
 public class LoadBitmapFileTask extends BaseTask<BufferedImage, Void> {
     private final File file;
 
-    public LoadBitmapFileTask(Application application, File file) {
-        super(application);
+    public LoadBitmapFileTask(ITContext context, ITModel model, File file) {
+        super(context, model);
         this.file = file;
     }
 
@@ -43,7 +45,7 @@ public class LoadBitmapFileTask extends BaseTask<BufferedImage, Void> {
      * GUI as well as the file and modified properties here.
      */
     @Override protected void succeeded(BufferedImage bitmap) {
-        application().setBitmap(bitmap);
+        model.setBitmap(bitmap);
     }
     /* Called on the EDT if doInBackground fails because
      * an uncaught exception is thrown.  We show an error

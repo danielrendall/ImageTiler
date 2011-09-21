@@ -65,10 +65,10 @@ public class App {
 
         try {
             PluginRegistry pluginRegistry = ImageTilerApplication.createPluginRegistry();
-            if (!pluginRegistry.hasPlugins(ImageTilerApplication.PLUGIN_TYPE_TILE)) {
+            if (!pluginRegistry.hasPlugins(ITContext.PLUGIN_TYPE_TILE)) {
                 throw new CmdLineException("No image tiles available");
             }
-            if (!pluginRegistry.hasPlugins(ImageTilerApplication.PLUGIN_TYPE_STRATEGY)) {
+            if (!pluginRegistry.hasPlugins(ITContext.PLUGIN_TYPE_STRATEGY)) {
                 throw new CmdLineException("No strategies available");
             }
             // parse the arguments.
@@ -81,8 +81,8 @@ public class App {
                 if (inputFile == null || outputFile == null) {
                     throw new CmdLineException("Input and output files must be supplied");
                 }
-                SVGTile tile = (SVGTile) pluginRegistry.getConfiguredInstance(ImageTilerApplication.PLUGIN_TYPE_TILE, type, store);
-                ScannerStrategy scannerStrategy = (ScannerStrategy) pluginRegistry.getConfiguredInstance(ImageTilerApplication.PLUGIN_TYPE_STRATEGY, strategy, store);
+                SVGTile tile = (SVGTile) pluginRegistry.getConfiguredInstance(ITContext.PLUGIN_TYPE_TILE, type, store);
+                ScannerStrategy scannerStrategy = (ScannerStrategy) pluginRegistry.getConfiguredInstance(ITContext.PLUGIN_TYPE_STRATEGY, strategy, store);
                 SVGTiler tiler = new SVGTiler(tile, scannerStrategy);
                 if (inputFile == null || outputFile == null) {
                     throw new CmdLineException("Input and output files must be supplied");

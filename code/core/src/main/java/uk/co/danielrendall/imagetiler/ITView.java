@@ -16,29 +16,15 @@
  * along with ImageTiler.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package uk.co.danielrendall.imagetiler.tasks;
+package uk.co.danielrendall.imagetiler;
 
-import org.jdesktop.application.Application;
-import org.jdesktop.application.Task;
-import uk.co.danielrendall.imagetiler.ITContext;
-import uk.co.danielrendall.imagetiler.ITModel;
-import uk.co.danielrendall.imagetiler.ImageTilerApplication;
+import javax.swing.*;
 
 /**
  * @author Daniel Rendall
  */
-public abstract class BaseTask<T, V> extends Task<T, V> {
+public interface ITView {
+    void initView ();
 
-    protected final ITContext context;
-    protected final ITModel model;
-
-    public BaseTask(ITContext context, ITModel model) {
-        super(context.getAppContext().getApplication());
-        this.context = context;
-        this.model = model;
-    }
-
-    protected ImageTilerApplication application() {
-        return (ImageTilerApplication) getApplication();
-    }
+    public JFrame getMainFrame();
 }

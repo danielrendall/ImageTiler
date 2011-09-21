@@ -24,6 +24,8 @@ import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.svg2svg.SVGTranscoder;
 import org.jdesktop.application.Application;
 import org.w3c.dom.svg.SVGDocument;
+import uk.co.danielrendall.imagetiler.ITContext;
+import uk.co.danielrendall.imagetiler.ITModel;
 import uk.co.danielrendall.imagetiler.logging.Log;
 
 import javax.imageio.ImageIO;
@@ -40,8 +42,8 @@ import java.io.Writer;
 public class SaveSvgFileTask extends BaseTask<Boolean, Void> {
     private final File file;
 
-    public SaveSvgFileTask(Application application, File file) {
-        super(application);
+    public SaveSvgFileTask(ITContext context, ITModel model, File file) {
+        super(context, model);
         this.file = file;
     }
 
@@ -67,7 +69,7 @@ public class SaveSvgFileTask extends BaseTask<Boolean, Void> {
 
     @Override
     protected Boolean doInBackground() throws IOException {
-        SVGDocument document = application().getDocument();
+        SVGDocument document = model.getDocument();
         try {
             SVGTranscoder t = new SVGTranscoder();
             TranscoderInput transInput = new TranscoderInput(document);
