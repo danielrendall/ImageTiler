@@ -47,11 +47,6 @@ public class ImageTilerApplication extends SingleFrameApplication {
 
     private static final Insets zeroInsets = new Insets(0, 0, 0, 0);
     private ResourceMap appResourceMap;
-    ImageTilerPanel imageTilerPanel;
-    private JDialog aboutBox = null;
-
-
-    private FileChoosers fileChoosers;
 
     private ITContext context;
     private ITModel model;
@@ -124,14 +119,6 @@ public class ImageTilerApplication extends SingleFrameApplication {
     }
 
 
-    private JFileChooser createFileChooser(String name, FileFilter filter) {
-        JFileChooser fc = new JFileChooser();
-        fc.setName(name);
-        fc.setFileFilter(filter);
-        appResourceMap.injectComponents(fc);
-        return fc;
-    }
-    
     private javax.swing.Action getAction(String actionName) {
         return getContext().getActionMap().get(actionName);
     }

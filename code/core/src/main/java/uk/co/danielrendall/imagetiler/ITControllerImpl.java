@@ -20,11 +20,13 @@ package uk.co.danielrendall.imagetiler;
 
 import org.jdesktop.application.Task;
 import uk.co.danielrendall.imagetiler.gui.FileChoosers;
+import uk.co.danielrendall.imagetiler.gui.dialogs.AboutDialog;
 import uk.co.danielrendall.imagetiler.tasks.GenerateTask;
 import uk.co.danielrendall.imagetiler.tasks.LoadBitmapFileTask;
 import uk.co.danielrendall.imagetiler.tasks.SaveSvgFileTask;
 
 import javax.inject.Inject;
+import javax.inject.Provider;
 import javax.inject.Singleton;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -39,6 +41,7 @@ public class ITControllerImpl  implements ITController {
     private final ITModel model;
     private final ITView view;
     private FileChoosers fileChoosers;
+    @Inject private Provider<AboutDialog> prAboutDialog;
 
     private ActionMap actionMap;
 
@@ -95,24 +98,10 @@ public class ITControllerImpl  implements ITController {
 //         imageTilerPanel.zoomOut(evt);
 //     }
     
-//    @org.jdesktop.application.Action
-//    public void showAboutBox() {
-//        if (aboutBox == null) {
-//            aboutBox = createAboutBox();
-//        }
-//        show(aboutBox);
-//    }
-
-    /**
-     * Close the about box dialog.
-     */
-//    @org.jdesktop.application.Action
-//    public void closeAboutBox() {
-//        if (aboutBox != null) {
-//            aboutBox.setVisible(false);
-//            aboutBox = null;
-//        }
-//    }
+    @org.jdesktop.application.Action
+    public void showAboutDialog () {
+        context.showDialog (prAboutDialog.get ());
+    }
 
 
 }

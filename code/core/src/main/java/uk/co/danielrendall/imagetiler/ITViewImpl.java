@@ -20,7 +20,6 @@ package uk.co.danielrendall.imagetiler;
 
 import org.jdesktop.application.FrameView;
 import uk.co.danielrendall.imagetiler.gui.ImageTilerPanel;
-import uk.co.danielrendall.imagetiler.gui.StatusBar;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -107,7 +106,7 @@ public class ITViewImpl extends FrameView implements ITView {
                 ITController.ACTION_ZOOM_OUT
         };
         String[] helpMenuActionNames = {
-                ITController.ACTION_SHOW_ABOUT_BOX
+                ITController.ACTION_SHOW_ABOUT_DIALOG
         };
         menuBar.add(createMenu("fileMenu", fileMenuActionNames));
         menuBar.add(createMenu("displayMenu", displayMenuActionnames));

@@ -19,12 +19,14 @@
 package uk.co.danielrendall.imagetiler;
 
 import org.jdesktop.application.ApplicationContext;
+import org.jdesktop.application.SingleFrameApplication;
 import uk.co.danielrendall.imagetiler.logging.Log;
 import uk.co.danielrendall.imagetiler.registry.ClassDescription;
 import uk.co.danielrendall.imagetiler.registry.PluginRegistry;
 import uk.co.danielrendall.imagetiler.shared.ScannerStrategy;
 import uk.co.danielrendall.imagetiler.svg.SVGTile;
 
+import javax.swing.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
@@ -100,6 +102,10 @@ public class ITContextImpl implements ITContext {
         Vector<ClassDescription> classes = new Vector<ClassDescription>();
         classes.addAll(pluginRegistry.getClassDescriptions(PLUGIN_TYPE_STRATEGY));
         return classes;
+    }
+
+    public void showDialog (JDialog dlg) {
+        ((SingleFrameApplication)appContext.getApplication()).show(dlg);
     }
 
 }

@@ -19,11 +19,13 @@
 package uk.co.danielrendall.imagetiler;
 
 import org.jdesktop.application.ApplicationContext;
+import uk.co.danielrendall.imagetiler.gui.dialogs.AboutDialog;
 import uk.co.danielrendall.imagetiler.registry.ClassDescription;
 import uk.co.danielrendall.imagetiler.registry.PluginRegistry;
 import uk.co.danielrendall.imagetiler.shared.ScannerStrategy;
 import uk.co.danielrendall.imagetiler.svg.SVGTile;
 
+import javax.swing.*;
 import java.util.Vector;
 
 /**
@@ -43,4 +45,6 @@ public interface ITContext {
     Vector<ClassDescription> getTileClassesList();
 
     Vector<ClassDescription> getStrategyClassesList();
+
+    void showDialog(JDialog dialog);
 }

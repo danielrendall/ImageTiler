@@ -32,7 +32,7 @@ public interface ITController {
     public final static String ACTION_QUIT = "quit";
     public final static String ACTION_ZOOM_IN = "zoomIn";
     public final static String ACTION_ZOOM_OUT = "zoomOut";
-    public final static String ACTION_SHOW_ABOUT_BOX = "showAboutBox";
+    public final static String ACTION_SHOW_ABOUT_DIALOG = "showAboutDialog";
 
 
     ActionMap getActionMap ();
