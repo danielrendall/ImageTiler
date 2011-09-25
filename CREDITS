@@ -1,0 +1,14 @@
+Daniel Rendall - main author
+
+Thanks to:
+Hannah Thomas - original inspiration.
+
+Sam Howe - gave me the idea of doing the lego tile.
+
+Stefan Saring - wrote SportsTracker (http://www.saring.de/sportstracker/index.html) which
+makes good use of the Better Swing Application Framework, and which I used as reference
+while refactoring the code to be more MVC-like. Some of the general layout of the files
+(the ITController, ITView, ITDocument and ITContext classes, for example) is based closely
+on his layout.
+
+
