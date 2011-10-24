@@ -1,13 +1,17 @@
-To build this, you need a JDK installed (anything with generics will probably
-work) and also Apache Maven (from http://maven.apache.org/)
+To build this, you need a Sun JDK installed and also Apache Maven 
+(from http://maven.apache.org/). It has to be the Sun JDK, not OpenJDK 
+because the Better Swing Application Framework that I'm using has a
+dependency on a jar which only the Sun version of Java includes. I have no
+immediate plans to do anything about this.
 
 Firstly, you need to download and install JavaMathLib. You can get this from 
-https://github.com/danielrendall/JavaMathLib
+https://github.com/danielrendall/JavaMathLib. This depends on version 1.0 of
+JavaMathLib so you'll need to use "git checkout 1.0" to switch to the 1.0
+tag before you build it (then "git checkout master" to return to the master
+branch if you like).
 
 There's a reasonable chance that things will work if you run ./build.sh and
 then ./run.sh. If you're on Windows, you'll have to translate these into
 crazy Windows-batch-file-speak.
 
-Various things don't work at the moment, such as saving the SVG - in fact,
-doing almost anything with the SVG such as zooming, scrolling etc. It's on
-the list.
+Currently I'm refactoring the code to be a bit more MVC-like.
