@@ -89,8 +89,8 @@ public class CreateEditableComponentsVisitor implements FieldVisitor {
         final JLabel label = getLabel(dField.name());
         s.setPaintLabels(true);
         Hashtable<Integer, JLabel> ht = new Hashtable<Integer, JLabel>();
-        ht.put(new Integer(SliderMinimum), new JLabel(Double.toString(dField.minValue())));
-        ht.put(new Integer(SliderMaximum), new JLabel(Double.toString(dField.maxValue())));
+        ht.put(new Integer(SliderMinimum), new JLabel(String.format("%1.2f", dField.minValue())));
+        ht.put(new Integer(SliderMaximum), new JLabel(String.format("%1.2f", dField.maxValue())));
         s.setLabelTable(ht);
         s.addChangeListener(new ChangeListener(){
             public void stateChanged(ChangeEvent e) {
@@ -103,7 +103,7 @@ public class CreateEditableComponentsVisitor implements FieldVisitor {
                         s.setValue(getScaledValueForSlider(dField, newValue));
                     }
                 }
-                label.setText(dField.name() + " " + fieldValue);
+                label.setText(String.format("%s %1.2f",dField.name(), fieldValue));
             }
         });
         addComponent(dField, label, s);
@@ -115,20 +115,20 @@ public class CreateEditableComponentsVisitor implements FieldVisitor {
         s.setPaintLabels(true);
         s.setPaintTicks(true);
         Hashtable<Integer, JLabel> ht = new Hashtable<Integer, JLabel>();
-        ht.put(new Integer(iField.minValue()), new JLabel(Integer.toString(iField.minValue())));
-        ht.put(new Integer(iField.maxValue()), new JLabel(Integer.toString(iField.maxValue())));
+        ht.put(new Integer(iField.minValue()), new JLabel(String.format("%d", iField.minValue())));
+        ht.put(new Integer(iField.maxValue()), new JLabel(String.format("%d", iField.minValue())));
         s.setLabelTable(ht);
         s.addChangeListener(new ChangeListener(){
             public void stateChanged(ChangeEvent e) {
+                int value = s.getValue();
                 if (!s.getValueIsAdjusting()) {
-                    int value = s.getValue();
                     iField.set(value);
                     int newValue = iField.get();
                     if (newValue != value) {
                         s.setValue(newValue);
                     }
                 }
-                label.setText(iField.name() + " " + s.getValue());
+                label.setText(String.format("%s %2d",iField.name(), value));
             }
         });
         addComponent(iField, label, s);
