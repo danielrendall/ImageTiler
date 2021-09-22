@@ -16,13 +16,12 @@
   ~ along with ImageTiler.  If not, see <http://www.gnu.org/licenses/>
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>uk.co.danielrendall</groupId>
   <artifactId>sampletiles</artifactId>
   <packaging>jar</packaging>
-  <version>1.2-SNAPSHOT</version>
+  <version>1.2</version>
   <licenses>
     <license>
       <name>GPL v3</name>
@@ -36,7 +35,7 @@
     <connection>scm:git:${project.scm.url}</connection>
     <developerConnection>scm:git:${project.scm.url}</developerConnection>
     <url>git@github.com:danielrendall/ImageTiler.git</url>
-    <tag>HEAD</tag>
+    <tag>sampletiles-1.2</tag>
   </scm>
   <distributionManagement>
     <repository>
