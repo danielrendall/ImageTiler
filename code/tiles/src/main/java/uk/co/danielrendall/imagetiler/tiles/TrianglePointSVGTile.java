@@ -18,7 +18,8 @@
 
 package uk.co.danielrendall.imagetiler.tiles;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.w3c.dom.Element;
 import uk.co.danielrendall.imagetiler.annotations.BooleanParameter;
 import uk.co.danielrendall.imagetiler.annotations.ClassDescriptor;
@@ -39,7 +40,7 @@ import java.awt.Color;
  */
 @ClassDescriptor(name="TrianglePoint", description="Triangle with apex at center of image")
 public class TrianglePointSVGTile extends SimpleSVGTile {
-    public final static Logger log = Logger.getLogger(TrianglePointSVGTile.class);
+    public final static Logger log = LogManager.getLogger(TrianglePointSVGTile.class);
 
 
     @DoubleParameter(name = "strokeWidth", description = "Width of stroke as fraction of tile size", defaultValue=0.05d, minValue = 0.001d, maxValue = 0.5d)

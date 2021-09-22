@@ -18,7 +18,8 @@
 
 package uk.co.danielrendall.imagetiler.tiles;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Element;
 import uk.co.danielrendall.imagetiler.annotations.ClassDescriptor;
 import uk.co.danielrendall.imagetiler.annotations.DoubleParameter;
@@ -39,7 +40,7 @@ import java.awt.Color;
  */
 @ClassDescriptor(name="Star", description="5-pointed star")
 public class StarSVGTile extends SimpleSVGTile {
-    public final static Logger log = Logger.getLogger(StarSVGTile.class);
+    public final static Logger log = LogManager.getLogger(StarSVGTile.class);
 
     // TODO - rotation angle offset? Some kind of skew angle to rotate inner points relative to outer?
     @DoubleParameter(name = "strokeWidth", description = "Width of stroke as fraction of tile size", defaultValue=0.05d, minValue = 0.001d, maxValue = 0.5d)

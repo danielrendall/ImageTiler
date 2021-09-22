@@ -19,7 +19,8 @@
 package uk.co.danielrendall.imagetiler.strategies;
 
 import org.apache.commons.collections.comparators.ReverseComparator;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import uk.co.danielrendall.imagetiler.annotations.BooleanParameter;
 import uk.co.danielrendall.imagetiler.annotations.ClassDescriptor;
 import uk.co.danielrendall.imagetiler.shared.Pixel;
@@ -38,7 +39,7 @@ import java.util.*;
  */
 @ClassDescriptor(name="Circle", description="Concentric circles running out from the center")
 public class CircleStrategy extends ScannerStrategy {
-    public final static Logger log = Logger.getLogger(CircleStrategy.class);
+    public final static Logger log = LogManager.getLogger(CircleStrategy.class);
 
     @BooleanParameter(name = "invert", description = "Make circles run from the outside into the center", defaultValue = false)
     private boolean invert;
@@ -97,7 +98,7 @@ public class CircleStrategy extends ScannerStrategy {
             distanceCache.put(p, distance);
             return distance;
         }
-        
+
         private double angleOfPoint(Pixel p) {
             Double d = angleCache.get(p);
             if (d != null) return d;

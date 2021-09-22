@@ -18,7 +18,8 @@
 
 package uk.co.danielrendall.imagetiler.strategies;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import uk.co.danielrendall.imagetiler.annotations.ClassDescriptor;
 import uk.co.danielrendall.imagetiler.shared.Pixel;
 import uk.co.danielrendall.imagetiler.shared.PixelFilter;
@@ -31,7 +32,7 @@ import java.util.*;
  */
 @ClassDescriptor(name="Chessboard", description="White chessboard squares first, then black")
 public class ChessboardStrategy extends ScannerStrategy {
-    public final static Logger log = Logger.getLogger(ChessboardStrategy.class);
+    public final static Logger log = LogManager.getLogger(ChessboardStrategy.class);
 
     private Iterator<Pixel> pixelIterator;
 

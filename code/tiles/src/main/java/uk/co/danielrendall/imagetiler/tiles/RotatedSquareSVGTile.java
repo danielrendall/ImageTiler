@@ -18,7 +18,8 @@
 
 package uk.co.danielrendall.imagetiler.tiles;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Element;
 import uk.co.danielrendall.imagetiler.annotations.BooleanParameter;
 import uk.co.danielrendall.imagetiler.annotations.ClassDescriptor;
@@ -39,7 +40,7 @@ import java.awt.Color;
 @ClassDescriptor(name="RotatedSquare", description="Square on its point")
 public class RotatedSquareSVGTile extends SimpleSVGTile {
 
-    public final static Logger log = Logger.getLogger(StarSVGTile.class);
+    public final static Logger log = LogManager.getLogger(StarSVGTile.class);
 
     private final double diamondAngle = Math.PI / 4.0d;
 
