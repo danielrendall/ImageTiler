@@ -94,13 +94,17 @@ public class ITModelImpl extends AbstractBean implements ITModel {
     }
 
     public void selectedTileChanged(ClassDescription cd) {
-        Log.gui.debug("Tile changed to " + cd.getName());
-        setSvgTile(context.getTile(cd));
+        if (cd != null) {
+            Log.gui.debug("Tile changed to " + cd.getName());
+            setSvgTile(context.getTile(cd));
+        }
     }
 
     public void selectedStrategyChanged(ClassDescription cd) {
-        Log.gui.debug("Strategy changed to " + cd.getName());
-        setScannerStrategy(context.getStrategy(cd));
+        if (cd != null) {
+            Log.gui.debug("Strategy changed to " + cd.getName());
+            setScannerStrategy(context.getStrategy(cd));
+        }
     }
 
 
