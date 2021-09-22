@@ -17,7 +17,7 @@
   -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>uk.co.danielrendall</groupId>
   <artifactId>imagetiler</artifactId>
@@ -32,87 +32,108 @@
   </licenses>
   <name>Image Tiler</name>
   <url>http://www.danielrendall.co.uk/imagetiler/</url>
+  <scm>
+    <connection>scm:git:${project.scm.url}</connection>
+    <developerConnection>scm:git:${project.scm.url}</developerConnection>
+    <url>git@github.com:danielrendall/ImageTiler.git</url>
+    <tag>HEAD</tag>
+  </scm>
+  <distributionManagement>
+    <repository>
+      <id>github</id>
+      <name>GitHub</name>
+      <url>https://maven.pkg.github.com/danielrendall/ImageTiler</url>
+      <layout>default</layout>
+    </repository>
+  </distributionManagement>
   <dependencies>
-      <dependency>
-          <groupId>uk.co.danielrendall</groupId>
-          <artifactId>javamathlib</artifactId>
-          <version>1.0</version>
-      </dependency>
+    <dependency>
+      <groupId>uk.co.danielrendall</groupId>
+      <artifactId>javamathlib</artifactId>
+      <version>1.1</version>
+    </dependency>
+
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.4</version>
+      <version>4.13.2</version>
       <scope>test</scope>
     </dependency>
-      
-      <dependency>
-          <groupId>com.google.inject</groupId>
-          <artifactId>guice</artifactId>
-          <version>3.0</version>
-      </dependency>
 
-      <dependency>
-          <groupId>javax.inject</groupId>
-          <artifactId>javax.inject</artifactId>
-          <version>1</version>
-      </dependency>
+    <dependency>
+      <groupId>com.google.inject</groupId>
+      <artifactId>guice</artifactId>
+      <version>5.0.1</version>
+    </dependency>
 
-      <dependency>
-          <groupId>org.swinglabs</groupId>
-          <artifactId>swingx</artifactId>
-          <version>1.6</version>
-      </dependency>
+    <dependency>
+      <groupId>javax.inject</groupId>
+      <artifactId>javax.inject</artifactId>
+      <version>1</version>
+    </dependency>
 
-      <dependency>
-          <groupId>args4j</groupId>
-          <artifactId>args4j</artifactId>
-          <version>2.0.11</version>
-      </dependency>
+    <dependency>
+      <groupId>org.swinglabs</groupId>
+      <artifactId>swingx</artifactId>
+      <version>1.6.1</version>
+    </dependency>
 
-      <dependency>
-          <groupId>commons-lang</groupId>
-          <artifactId>commons-lang</artifactId>
-          <version>2.4</version>
-      </dependency>
+    <dependency>
+      <groupId>args4j</groupId>
+      <artifactId>args4j</artifactId>
+      <version>2.33</version>
+    </dependency>
 
-      <dependency>
-          <groupId>commons-configuration</groupId>
-          <artifactId>commons-configuration</artifactId>
-          <version>1.6</version>
-      </dependency>
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+      <version>2.6</version>
+    </dependency>
 
-      <dependency>
-          <groupId>org.jdesktop.bsaf</groupId>
-          <artifactId>bsaf</artifactId>
-          <version>1.9.2</version>
-      </dependency>
+    <dependency>
+      <groupId>commons-configuration</groupId>
+      <artifactId>commons-configuration</artifactId>
+      <version>1.10</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jdesktop.bsaf</groupId>
+      <artifactId>bsaf</artifactId>
+      <version>1.9.2</version>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.jnlp</groupId>
+      <artifactId>jnlp</artifactId>
+      <version>7.0</version>
+    </dependency>
 
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
       <version>1.2.15</version>
-		<exclusions>
-			<exclusion>
-				<groupId>javax.mail</groupId>
-				<artifactId>mail</artifactId>
-			</exclusion>
-			<exclusion>
-				<groupId>javax.activation</groupId>
-				<artifactId>activation</artifactId>
-			</exclusion>
-			<exclusion>
-				<groupId>javax.jms</groupId>
-				<artifactId>jms</artifactId>
-			</exclusion>
-			<exclusion>
-				<groupId>com.sun.jmx</groupId>
-				<artifactId>jmxri</artifactId>
-			</exclusion>
-			<exclusion>
-				<groupId>com.sun.jdmk</groupId>
-				<artifactId>jmxtools</artifactId>
-			</exclusion>
-		</exclusions>
+      <exclusions>
+        <exclusion>
+          <groupId>javax.mail</groupId>
+          <artifactId>mail</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>javax.activation</groupId>
+          <artifactId>activation</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>javax.jms</groupId>
+          <artifactId>jms</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.sun.jmx</groupId>
+          <artifactId>jmxri</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.sun.jdmk</groupId>
+          <artifactId>jmxtools</artifactId>
+        </exclusion>
+      </exclusions>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -121,107 +142,139 @@
       <version>1.7</version>
       <scope>compile</scope>
     </dependency>
-      <dependency>
-        <groupId>org.apache.xmlgraphics</groupId>
-        <artifactId>batik-codec</artifactId>
-        <version>1.7</version>
-        <scope>compile</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.xmlgraphics</groupId>
-        <artifactId>batik-swing</artifactId>
-        <version>1.7</version>
-        <scope>compile</scope>
-      </dependency>
-      <dependency>
-          <groupId>commons-beanutils</groupId>
-          <artifactId>commons-beanutils</artifactId>
-          <version>1.8.0</version>
-      </dependency>
-      <dependency>
-          <groupId>commons-collections</groupId>
-          <artifactId>commons-collections</artifactId>
-          <version>3.2</version>
-      </dependency>
+    <dependency>
+      <groupId>org.apache.xmlgraphics</groupId>
+      <artifactId>batik-codec</artifactId>
+      <version>1.7</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.xmlgraphics</groupId>
+      <artifactId>batik-swing</artifactId>
+      <version>1.7</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-beanutils</groupId>
+      <artifactId>commons-beanutils</artifactId>
+      <version>1.9.4</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
+      <version>20040616</version>
+    </dependency>
   </dependencies>
-  
+
   <build>
-          <plugins>
-            <!-- Turning on debug -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <debug>true</debug>
-                    <source>1.5</source>
-                    <target>1.5</target>
-                </configuration>
-            </plugin>
-
-        <plugin>
-            <artifactId>maven-assembly-plugin</artifactId>
+    <plugins>
+      <!-- Turning on debug -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.1</version>
+        <configuration>
+          <debug>true</debug>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0</version>
+        <executions>
+          <execution>
+            <id>enforce-versions</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
             <configuration>
-                <archive>
-                    <manifest>
-                        <mainClass>uk.co.danielrendall.imagetiler.ImageTilerApplication</mainClass>
-                    </manifest>
-                </archive>
-                <descriptorRefs>
-                    <descriptorRef>jar-with-dependencies</descriptorRef>
-                </descriptorRefs>
+              <rules>
+                <requireMavenVersion>
+                  <version>3.6.3</version>
+                </requireMavenVersion>
+                <requireJavaVersion>
+                  <version>1.8</version>
+                </requireJavaVersion>
+              </rules>
             </configuration>
-        </plugin>
-              <!--
-              Produces a single JAR containing all of the depenedencies, via a special
-              "One-jar" classloader - see
-                  http://www.dstovall.org/onejar-maven-plugin/usage.html
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>3.2.1</version>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>3.0.0-M4</version>
+        <configuration>
+          <scmCommentPrefix>Automated release</scmCommentPrefix>
+        </configuration>
+      </plugin>
 
-              For other techniques, see
+      <!--
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifest>
+              <mainClass>uk.co.danielrendall.imagetiler.ImageTilerApplication</mainClass>
+            </manifest>
+          </archive>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+        </configuration>
+      </plugin>
+      -->
+      <!--
+      Produces a single JAR containing all of the depenedencies, via a special
+      "One-jar" classloader - see
+          http://www.dstovall.org/onejar-maven-plugin/usage.html
 
-                  http://binkley.blogspot.com/2006/12/making-one-jar-with-maven.html
-                  http://maven-plugins.sourceforge.net/maven-javaapp-plugin/index.html
-                  http://maven.apache.org/plugins/maven-assembly-plugin/usage.html
-              -->
-              <!--<plugin>-->
-                <!--<groupId>org.dstovall</groupId>-->
-                <!--<artifactId>onejar-maven-plugin</artifactId>-->
-                <!--<version>1.4.4</version>-->
-                <!--<executions>-->
-                    <!--<execution>-->
-                        <!--<configuration>-->
-                            <!--<mainClass>uk.co.danielrendall.imagetiler.App</mainClass>-->
-                            <!--<onejarVersion>0.96</onejarVersion>-->
-                            <!--<filename>ImageTiler.jar</filename>-->
-                        <!--</configuration>-->
-                        <!--<goals>-->
-                            <!--<goal>one-jar</goal>-->
-                        <!--</goals>-->
-                    <!--</execution>-->
-                <!--</executions>-->
-            <!--</plugin>-->
+      For other techniques, see
 
-        </plugins>
-</build>
-  
+          http://binkley.blogspot.com/2006/12/making-one-jar-with-maven.html
+          http://maven-plugins.sourceforge.net/maven-javaapp-plugin/index.html
+          http://maven.apache.org/plugins/maven-assembly-plugin/usage.html
+      -->
+      <!--<plugin>-->
+      <!--<groupId>org.dstovall</groupId>-->
+      <!--<artifactId>onejar-maven-plugin</artifactId>-->
+      <!--<version>1.4.4</version>-->
+      <!--<executions>-->
+      <!--<execution>-->
+      <!--<configuration>-->
+      <!--<mainClass>uk.co.danielrendall.imagetiler.App</mainClass>-->
+      <!--<onejarVersion>0.96</onejarVersion>-->
+      <!--<filename>ImageTiler.jar</filename>-->
+      <!--</configuration>-->
+      <!--<goals>-->
+      <!--<goal>one-jar</goal>-->
+      <!--</goals>-->
+      <!--</execution>-->
+      <!--</executions>-->
+      <!--</plugin>-->
+
+    </plugins>
+  </build>
   <repositories>
-	<repository>
-		<id>IBiblio</id>
-		<url>http://mirrors.ibiblio.org/pub/mirrors/maven2/</url>
-	</repository>
+    <repository>
+      <id>anahata</id>
+      <url>http://repo.anahata.uno/artifactory/anahata-public/</url>
+    </repository>
+  </repositories>
 
-	<repository>
-		<id>maven2-repository.dev.java.net</id>
-		<name>Java.net Repository for Maven</name>
-		<url>http://download.java.net/maven/2/</url>
-		<layout>default</layout>
-	</repository>
-
-</repositories>
-
-<pluginRepositories>
-	<pluginRepository>
-		<id>onejar-maven-plugin.googlecode.com</id>
-		<url>http://onejar-maven-plugin.googlecode.com/svn/mavenrepo</url>
-	</pluginRepository>
-</pluginRepositories>
 </project>
