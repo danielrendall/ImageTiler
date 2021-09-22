@@ -23,7 +23,8 @@ import org.apache.batik.transcoder.TranscoderException;
 import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.svg2svg.SVGTranscoder;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -49,7 +50,7 @@ import java.io.Writer;
  */
 public class SVGTiler {
 
-    public final static Logger log = Logger.getLogger(SVGTiler.class);
+    public final static Logger log = LogManager.getLogger(SVGTiler.class);
 
     private final SVGTile tile;
     private final ScannerStrategy strategy;

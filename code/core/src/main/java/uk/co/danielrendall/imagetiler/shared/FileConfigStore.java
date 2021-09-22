@@ -18,7 +18,8 @@
 
 package uk.co.danielrendall.imagetiler.shared;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,7 +32,7 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public class FileConfigStore implements ConfigStore {
-    public final static Logger log = Logger.getLogger(FileConfigStore.class);
+    public final static Logger log = LogManager.getLogger(FileConfigStore.class);
     private final Map<String, Double> doubles;
     private final Map<String, Integer> ints;
     private final Map<String, Boolean> bools;

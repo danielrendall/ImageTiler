@@ -18,7 +18,8 @@
 
 package uk.co.danielrendall.imagetiler.svg;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import uk.co.danielrendall.mathlib.geom2d.Compass;
@@ -40,7 +41,7 @@ import java.awt.Color;
 // properties, or command-line settings
 public class TileContext {
 
-    public final static Logger log = Logger.getLogger(TileContext.class);
+    public final static Logger log = LogManager.getLogger(TileContext.class);
 
     private final double left;
     private final double right;

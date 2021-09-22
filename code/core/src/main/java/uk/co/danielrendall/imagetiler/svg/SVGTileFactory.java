@@ -18,7 +18,8 @@
 
 package uk.co.danielrendall.imagetiler.svg;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import uk.co.danielrendall.imagetiler.annotations.BooleanParameter;
 import uk.co.danielrendall.imagetiler.annotations.DoubleParameter;
 import uk.co.danielrendall.imagetiler.annotations.IntegerParameter;
@@ -35,7 +36,7 @@ import java.lang.reflect.Constructor;
  * To change this template use File | Settings | File Templates.
  */
 public class SVGTileFactory {
-    private final static Logger log = Logger.getLogger(SVGTileFactory.class);
+    private final static Logger log = LogManager.getLogger(SVGTileFactory.class);
 
     private final String type;
     private final ConfigStore store;
